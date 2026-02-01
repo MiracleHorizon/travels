@@ -1,9 +1,11 @@
-import { Outlet } from 'react-router-dom'
+import { ThemeProvider } from '@/entities/theme'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './app-router'
 
 export const App = () => {
   return (
-    <div>
-      <Outlet />
-    </div>
+    <ThemeProvider>
+      <RouterProvider router={router} />
+    </ThemeProvider>
   )
 }

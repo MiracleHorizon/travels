@@ -1,9 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { TravelsPage } from '@pages/travels'
-import { TravelsPlannedPage } from '@pages/travels-planned'
-import { TravelsPastPage } from '@pages/travels-past'
-import { TravelsArchivePage } from '@pages/travels-archive'
-import { App } from './app'
+import { TravelsPlannedPage, TravelsPastPage, TravelsArchivePage } from '@pages/travels'
 import { AppLayout } from './app-layout'
 
 export const router = createBrowserRouter([
@@ -12,12 +8,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <App />,
         children: [
-          {
-            index: true,
-            element: <TravelsPage />
-          },
           {
             path: 'travels/planned',
             element: <TravelsPlannedPage />

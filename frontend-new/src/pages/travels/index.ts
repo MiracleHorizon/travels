@@ -1,1 +1,3 @@
-export { TravelsPage } from './ui/TravelsPage'
+export { TravelsPlannedPage } from './planned'
+export { TravelsPastPage } from './past'
+export { TravelsArchivePage } from './archive'

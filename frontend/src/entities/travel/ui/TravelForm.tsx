@@ -25,16 +25,9 @@ interface TravelFormProps {
   onChange: (value: TravelFormData) => void
   onSubmit: () => void
   disabled?: boolean
-  error?: string | null
 }
 
-export const TravelForm = ({
-  value,
-  onChange,
-  disabled = false,
-  error,
-  onSubmit
-}: TravelFormProps) => {
+export const TravelForm = ({ value, onChange, disabled = false, onSubmit }: TravelFormProps) => {
   const handleDestinationChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...value,
@@ -71,6 +64,7 @@ export const TravelForm = ({
       }}
     >
       <FieldGroup>
+        {/* Название */}
         <Field>
           <FieldLabel>Название</FieldLabel>
           <Input
@@ -82,6 +76,7 @@ export const TravelForm = ({
           />
         </Field>
 
+        {/* Временные рамки */}
         <Field>
           <FieldLabel>Временные рамки</FieldLabel>
           <DateRangePicker
@@ -93,6 +88,7 @@ export const TravelForm = ({
           />
         </Field>
 
+        {/* Описание */}
         <Field>
           <FieldLabel>Описание</FieldLabel>
           <Textarea
@@ -104,18 +100,19 @@ export const TravelForm = ({
           />
         </Field>
 
+        {/* Тэги */}
         <Field>
           <FieldLabel className='flex items-center gap-2'>
             <Tag className='w-4 h-4' />
             Теги
           </FieldLabel>
+
           <FieldDescription className='mb-2'>
             Добавьте теги для категоризации путешествия (например: пляж, горы, культура)
           </FieldDescription>
+
           <TagsInput value={value.tags} onChange={handleTagsChange} disabled={disabled} />
         </Field>
-
-        {error && <div className='text-sm text-destructive'>{error}</div>}
       </FieldGroup>
     </form>
   )

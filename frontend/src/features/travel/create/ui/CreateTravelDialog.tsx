@@ -13,7 +13,8 @@ import { ModalDefinition, useHideModal } from '@/shared/lib'
 import { useCreateTravel } from '../model/useCreateTravel'
 
 const CreateTravelDialog = () => {
-  const { isLoading, error, formData, setFormData, createTravel } = useCreateTravel()
+  const { isLoading, formFields, setFormFields, createTravel } = useCreateTravel()
+
   const hideModal = useHideModal()
 
   return (
@@ -34,10 +35,9 @@ const CreateTravelDialog = () => {
         </DialogHeader>
 
         <TravelForm
-          value={formData}
-          error={error}
+          value={formFields}
           disabled={isLoading}
-          onChange={setFormData}
+          onChange={setFormFields}
           onSubmit={createTravel}
         />
 

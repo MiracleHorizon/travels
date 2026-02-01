@@ -1,17 +1,19 @@
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
 
-import { TravelApi } from '@/entities/travel'
 import { useHideModal } from '@/shared/lib'
+import { useCreateTravelMutation } from '../api/mutation'
+import { useQueryClient } from '@tanstack/react-query'
+import { TRAVELS_QUERY_KEY } from '@/entities/travel'
 
-interface TravelFormData {
+interface TravelFormFields {
   name: string
   description: string
   dateRange: DateRange
   tags: string[]
 }
 
-const DEFAULT_FORM_DATA: TravelFormData = {
+const DEFAULT_FORM_FIELDS: TravelFormFields = {
   name: '',
   description: '',
   dateRange: { from: undefined, to: undefined },
@@ -19,54 +21,44 @@ const DEFAULT_FORM_DATA: TravelFormData = {
 } as const
 
 export const useCreateTravel = () => {
+  const [formFields, setFormFields] = useState<TravelFormFields>(DEFAULT_FORM_FIELDS)
+
+  const queryClient = useQueryClient()
   const hideModal = useHideModal()
 
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [formData, setFormData] = useState<TravelFormData>(DEFAULT_FORM_DATA)
-
-  const resetForm = () => {
-    setFormData(DEFAULT_FORM_DATA)
-    setError(null)
-  }
-
-  const createTravel = async () => {
-    if (!formData.name.trim()) {
-      setError('Укажите название')
-      return
-    }
-
-    if (!formData.dateRange?.from || !formData.dateRange?.to) {
-      setError('Выберите даты')
-      return
-    }
-
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      await TravelApi.create({
-        name: formData.name,
-        description: formData.description || undefined,
-        startDate: formData.dateRange.from.toISOString(),
-        endDate: formData.dateRange.to.toISOString(),
-        tags: formData.tags
+  const { isPending, error, mutate } = useCreateTravelMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [TRAVELS_QUERY_KEY]
       })
-
-      resetForm()
       hideModal()
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ошибка при создании путешествия')
-    } finally {
-      setIsLoading(false)
     }
+  })
+
+  // TODO: Нужно сделать валидацию формы
+  const createTravel = async () => {
+    if (!formFields.name.trim()) {
+      return
+    }
+
+    if (!formFields.dateRange?.from || !formFields.dateRange?.to) {
+      return
+    }
+
+    mutate({
+      name: formFields.name,
+      description: formFields.description || undefined,
+      startDate: formFields.dateRange.from.toISOString(),
+      endDate: formFields.dateRange.to.toISOString(),
+      tags: formFields.tags
+    })
   }
 
   return {
-    isLoading,
     error,
-    formData,
-    setFormData,
+    isLoading: isPending,
+    formFields,
+    setFormFields,
     createTravel
   }
 }

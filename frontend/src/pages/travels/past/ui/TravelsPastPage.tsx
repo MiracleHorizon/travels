@@ -1,29 +1,13 @@
-import { useEffect, useState } from 'react'
-import { Travel, TravelApi } from '@/entities/travel'
+import { useTravelsQuery } from '@/entities/travel'
 import { TravelsList } from '@/widgets/TravelsList'
 import { Spinner } from '@/shared/ui'
 
 export const TravelsPastPage = () => {
-  const [travels, setTravels] = useState<Travel[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-
-  useEffect(() => {
-    const fetchTravels = async () => {
-      try {
-        setLoading(true)
-        const data = await TravelApi.getPast()
-        setTravels(data)
-      } catch (err) {
-        setError('Не удалось загрузить путешествия')
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchTravels()
-  }, [])
+  const {
+    data: travels = [],
+    isLoading,
+    error
+  } = useTravelsQuery({ status: 'past', archived: false })
 
   return (
     <div className='container py-6'>
@@ -32,7 +16,7 @@ export const TravelsPastPage = () => {
         <p className='text-muted-foreground'>Воспоминания о ваших путешествиях</p>
       </div>
 
-      {loading && (
+      {isLoading && (
         <div className='flex justify-center py-12'>
           <Spinner />
         </div>
@@ -40,11 +24,11 @@ export const TravelsPastPage = () => {
 
       {error && (
         <div className='rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive'>
-          {error}
+          Не удалось загрузить путешествия
         </div>
       )}
 
-      {!loading && !error && (
+      {!isLoading && !error && (
         <TravelsList travels={travels} emptyMessage='У вас пока нет прошедших путешествий' />
       )}
     </div>

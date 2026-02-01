@@ -1,34 +1,32 @@
 import { useState } from 'react'
-import { addDays, startOfDay } from 'date-fns'
+import { DateRange } from 'react-day-picker'
 
-import { TravelFormData, TravelApi } from '@/entities/travel'
+import { TravelApi } from '@/entities/travel'
 
 interface UseCreateTravelProps {
   onCreated?: () => void
 }
 
-const getInitialFormData = (): TravelFormData => {
-  const start = startOfDay(new Date())
-  const end = addDays(start, 7)
-
-  return {
-    destination: '',
-    dateRange: {
-      from: start,
-      to: end
-    },
-    tags: []
-  }
+interface TravelFormData {
+  destination: string
+  dateRange: DateRange
+  tags: string[]
 }
+
+const DEFAULT_FORM_DATA: TravelFormData = {
+  destination: '',
+  dateRange: { from: undefined, to: undefined },
+  tags: []
+} as const
 
 export const useCreateTravel = ({ onCreated }: UseCreateTravelProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [formData, setFormData] = useState<TravelFormData>(getInitialFormData)
+  const [formData, setFormData] = useState<TravelFormData>(DEFAULT_FORM_DATA)
 
   const resetForm = () => {
-    setFormData(getInitialFormData())
+    setFormData(DEFAULT_FORM_DATA)
     setError(null)
   }
 

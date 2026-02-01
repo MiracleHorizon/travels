@@ -1,20 +1,15 @@
-import { CalendarDays, Tag } from 'lucide-react'
+import { Tag } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
-import { format } from 'date-fns'
-import { ru } from 'date-fns/locale'
+import { ru } from 'react-day-picker/locale'
 
 import {
-  Button,
   Input,
-  Calendar,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
   Field,
   FieldGroup,
   FieldLabel,
   FieldDescription,
-  TagsInput
+  TagsInput,
+  DateRangePicker
 } from '@/shared/ui'
 import { ChangeEvent } from 'react'
 
@@ -60,17 +55,6 @@ export const TravelForm = ({
     })
   }
 
-  const formatDateRange = () => {
-    if (!value.dateRange?.from) return 'Выберите даты'
-    if (!value.dateRange.to) return format(value.dateRange.from, 'PPP', { locale: ru })
-
-    return `${format(value.dateRange.from, 'PPP', {
-      locale: ru
-    })} - ${format(value.dateRange.to, 'PPP', {
-      locale: ru
-    })}`
-  }
-
   return (
     <form
       onSubmit={ev => {
@@ -92,29 +76,13 @@ export const TravelForm = ({
 
         <Field>
           <FieldLabel>Временные рамки</FieldLabel>
-
-          <div className='flex items-center gap-x-2.5'>
-            <FieldDescription className='w-full'>{formatDateRange()}</FieldDescription>
-
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant='secondary' size='icon' disabled={disabled}>
-                  <CalendarDays />
-                </Button>
-              </PopoverTrigger>
-
-              <PopoverContent side='bottom' className='w-auto p-0'>
-                <Calendar
-                  mode='range'
-                  selected={value.dateRange}
-                  onSelect={handleDateRangeChange}
-                  numberOfMonths={2}
-                  locale={ru}
-                  disabled={disabled}
-                />
-              </PopoverContent>
-            </Popover>
-          </div>
+          <DateRangePicker
+            value={value.dateRange}
+            onChange={handleDateRangeChange}
+            disabled={disabled}
+            placeholder='Выберите даты'
+            locale={ru}
+          />
         </Field>
 
         <Field>

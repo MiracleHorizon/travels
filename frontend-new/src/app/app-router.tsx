@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { TravelsPlannedPage, TravelsPastPage, TravelsArchivePage } from '@pages/travels'
 import { AppLayout } from './app-layout'
 
@@ -8,18 +8,37 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
+        element: <Navigate to='/travels' />,
         children: [
           {
-            path: 'travels/planned',
-            element: <TravelsPlannedPage />
-          },
-          {
-            path: 'travels/past',
-            element: <TravelsPastPage />
-          },
-          {
-            path: 'travels/archive',
-            element: <TravelsArchivePage />
+            path: '/travels',
+            element: <Navigate to='/travels/planned' />,
+            handle: {
+              breadcrumb: 'Путешествия'
+            },
+            children: [
+              {
+                path: 'planned',
+                element: <TravelsPlannedPage />,
+                handle: {
+                  breadcrumb: 'Запланированные'
+                }
+              },
+              {
+                path: 'past',
+                element: <TravelsPastPage />,
+                handle: {
+                  breadcrumb: 'Прошедшие'
+                }
+              },
+              {
+                path: 'archive',
+                element: <TravelsArchivePage />,
+                handle: {
+                  breadcrumb: 'Архив'
+                }
+              }
+            ]
           }
         ]
       }

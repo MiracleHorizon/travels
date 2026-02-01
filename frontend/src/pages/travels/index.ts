@@ -1,1 +1,3 @@
-export { default as TravelsPage } from './ui/travels-page/travels-page.vue'
+export { TravelsPlannedPage } from './planned'
+export { TravelsPastPage } from './past'
+export { TravelsArchivePage } from './archive'

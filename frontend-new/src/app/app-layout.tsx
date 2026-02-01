@@ -1,5 +1,5 @@
-import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/shared/ui'
-import { AppSidebar } from '@/widgets/AppSidebar'
+import { SidebarInset, SidebarProvider } from '@/shared/ui'
+import { AppSidebar, AppSidebarTrigger } from '@/widgets/AppSidebar'
 import { Outlet } from 'react-router-dom'
 
 export const AppLayout = () => {
@@ -9,7 +9,7 @@ export const AppLayout = () => {
 
       <SidebarInset>
         <main className='p-4'>
-          <SidebarTrigger />
+          <AppSidebarTrigger />
           <Outlet />
         </main>
       </SidebarInset>

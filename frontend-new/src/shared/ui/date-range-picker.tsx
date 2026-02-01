@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { ChevronDownIcon } from 'lucide-react'
-import { DateRange } from 'react-day-picker'
+import { DateRange, Locale } from 'react-day-picker'
 import { format } from 'date-fns'
-import { ru } from 'react-day-picker/locale'
 
 import { cn } from '@/shared/lib/styles/utils'
 import { Button } from './button'
 import { Calendar } from './calendar'
 import { Label } from './label'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
+import { ru } from 'react-day-picker/locale'
 
 interface DateRangePickerProps {
   value?: DateRange
@@ -18,7 +18,8 @@ interface DateRangePickerProps {
   placeholder?: string
   id?: string
   className?: string
-  locale?: typeof ru
+  locale?: Locale
+  captionLayout?: 'dropdown'
 }
 
 export const DateRangePicker = ({
@@ -29,7 +30,8 @@ export const DateRangePicker = ({
   placeholder = 'Выберите диапазон',
   id,
   className,
-  locale = ru
+  locale = ru,
+  ...calendarProps
 }: DateRangePickerProps) => {
   const [open, setOpen] = useState(false)
 
@@ -68,6 +70,7 @@ export const DateRangePicker = ({
             numberOfMonths={2}
             locale={locale}
             disabled={disabled}
+            {...calendarProps}
           />
         </PopoverContent>
       </Popover>

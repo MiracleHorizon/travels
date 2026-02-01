@@ -1,6 +1,5 @@
 import { Tag } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
-import { ru } from 'react-day-picker/locale'
 
 import {
   Input,
@@ -81,7 +80,7 @@ export const TravelForm = ({
             onChange={handleDateRangeChange}
             disabled={disabled}
             placeholder='Выберите даты'
-            locale={ru}
+            captionLayout='dropdown'
           />
         </Field>
 

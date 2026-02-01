@@ -1,6 +1,6 @@
 export const TravelsPlannedPage = () => {
   return (
-    <div className='container mx-auto py-8'>
+    <div className='container'>
       <div className='flex items-center justify-between mb-6'>
         <div>
           <h1 className='text-3xl font-bold mb-2'>Запланированные путешествия</h1>

@@ -1,6 +1,7 @@
 export interface Travel {
   id: string
-  destination: string
+  name: string
+  description?: string
   startDate: string
   endDate: string
   tags?: string[]

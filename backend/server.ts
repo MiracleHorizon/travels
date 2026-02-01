@@ -101,11 +101,48 @@ const server = Bun.serve({
       })
     }
 
+    // GET /api/travels/planned - получить запланированные путешествия
+    if (path === '/api/travels/planned' && method === 'GET') {
+      const plannedTravels = Array.from(travels.values()).filter(
+        t => t.status === 'upcoming' && !t.isArchived
+      )
+      return new Response(JSON.stringify(plannedTravels), {
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      })
+    }
+
+    // GET /api/travels/past - получить прошедшие путешествия
+    if (path === '/api/travels/past' && method === 'GET') {
+      const pastTravels = Array.from(travels.values()).filter(
+        t => t.status === 'past' && !t.isArchived
+      )
+      return new Response(JSON.stringify(pastTravels), {
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      })
+    }
+
+    // GET /api/travels/archived - получить архивированные путешествия
+    if (path === '/api/travels/archived' && method === 'GET') {
+      const archivedTravels = Array.from(travels.values()).filter(t => t.isArchived)
+      return new Response(JSON.stringify(archivedTravels), {
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
+      })
+    }
+
     // GET /api/travels/:travelId/places - получить все места путешествия
     if (path.match(/^\/api\/travels\/[^/]+\/places$/) && method === 'GET') {
       const travelId = path.split('/')[3]
       const travelPlaces = Array.from(places.values()).filter(p => p.travelId === travelId)
-      
+
       return new Response(JSON.stringify(travelPlaces), {
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
       })
@@ -221,7 +258,7 @@ const server = Bun.serve({
       }
 
       travels.delete(id)
-      
+
       // Удаляем все места, связанные с этим путешествием
       for (const [placeId, place] of places.entries()) {
         if (place.travelId === id) {
@@ -358,7 +395,7 @@ const server = Bun.serve({
       // В реальном приложении здесь была бы загрузка на S3/CDN
       // Сейчас просто возвращаем mock URL
       const mockUrl = `https://picsum.photos/800/600?random=${Date.now()}`
-      
+
       return new Response(JSON.stringify({ url: mockUrl }), {
         status: 201,
         headers: { 'Content-Type': 'application/json', ...corsHeaders }

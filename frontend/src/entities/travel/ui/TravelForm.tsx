@@ -8,12 +8,14 @@ import {
   FieldLabel,
   FieldDescription,
   TagsInput,
-  DateRangePicker
+  DateRangePicker,
+  Textarea
 } from '@/shared/ui'
 import { ChangeEvent } from 'react'
 
 interface TravelFormData {
-  destination: string
+  name: string
+  description: string
   dateRange: DateRange | undefined
   tags: string[]
 }
@@ -36,7 +38,14 @@ export const TravelForm = ({
   const handleDestinationChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...value,
-      destination: ev.target.value
+      name: ev.target.value
+    })
+  }
+
+  const handleDescriptionChange = (ev: ChangeEvent<HTMLTextAreaElement>) => {
+    onChange({
+      ...value,
+      description: ev.target.value
     })
   }
 
@@ -63,11 +72,11 @@ export const TravelForm = ({
     >
       <FieldGroup>
         <Field>
-          <FieldLabel>Направление</FieldLabel>
+          <FieldLabel>Название</FieldLabel>
           <Input
             type='text'
-            placeholder='Сеул, Республика Корея'
-            value={value.destination}
+            placeholder='Пхукет, 2026'
+            value={value.name}
             onChange={handleDestinationChange}
             disabled={disabled}
           />
@@ -81,6 +90,17 @@ export const TravelForm = ({
             disabled={disabled}
             placeholder='Выберите даты'
             captionLayout='dropdown'
+          />
+        </Field>
+
+        <Field>
+          <FieldLabel>Описание</FieldLabel>
+          <Textarea
+            placeholder='Опишите ваше путешествие...'
+            value={value.description}
+            onChange={handleDescriptionChange}
+            disabled={disabled}
+            rows={6}
           />
         </Field>
 

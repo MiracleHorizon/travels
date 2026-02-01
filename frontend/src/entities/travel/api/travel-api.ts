@@ -16,4 +16,36 @@ export class TravelApi {
     }
     return response.json()
   }
+
+  static async getAll(): Promise<Travel[]> {
+    const response = await fetch(`${API_BASE_URL}/travels`)
+    if (!response.ok) {
+      throw new Error('Failed to fetch travels')
+    }
+    return response.json()
+  }
+
+  static async getPlanned(): Promise<Travel[]> {
+    const response = await fetch(`${API_BASE_URL}/travels/planned`)
+    if (!response.ok) {
+      throw new Error('Failed to fetch planned travels')
+    }
+    return response.json()
+  }
+
+  static async getPast(): Promise<Travel[]> {
+    const response = await fetch(`${API_BASE_URL}/travels/past`)
+    if (!response.ok) {
+      throw new Error('Failed to fetch past travels')
+    }
+    return response.json()
+  }
+
+  static async getArchived(): Promise<Travel[]> {
+    const response = await fetch(`${API_BASE_URL}/travels/archived`)
+    if (!response.ok) {
+      throw new Error('Failed to fetch archived travels')
+    }
+    return response.json()
+  }
 }

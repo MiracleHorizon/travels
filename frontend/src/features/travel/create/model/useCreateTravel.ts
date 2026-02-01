@@ -5,13 +5,15 @@ import { TravelApi } from '@/entities/travel'
 import { useHideModal } from '@/shared/lib'
 
 interface TravelFormData {
-  destination: string
+  name: string
+  description: string
   dateRange: DateRange
   tags: string[]
 }
 
 const DEFAULT_FORM_DATA: TravelFormData = {
-  destination: '',
+  name: '',
+  description: '',
   dateRange: { from: undefined, to: undefined },
   tags: []
 } as const
@@ -29,8 +31,8 @@ export const useCreateTravel = () => {
   }
 
   const createTravel = async () => {
-    if (!formData.destination.trim()) {
-      setError('Укажите направление')
+    if (!formData.name.trim()) {
+      setError('Укажите название')
       return
     }
 
@@ -44,7 +46,8 @@ export const useCreateTravel = () => {
 
     try {
       await TravelApi.create({
-        destination: formData.destination,
+        name: formData.name,
+        description: formData.description || undefined,
         startDate: formData.dateRange.from.toISOString(),
         endDate: formData.dateRange.to.toISOString(),
         tags: formData.tags

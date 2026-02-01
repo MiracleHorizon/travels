@@ -35,7 +35,7 @@ export function TagsInput({
   }
 
   const removeTag = (tagToRemove: string) => {
-    onChange?.(value.filter((tag) => tag !== tagToRemove))
+    onChange?.(value.filter(tag => tag !== tagToRemove))
   }
 
   return (
@@ -47,7 +47,7 @@ export function TagsInput({
       )}
       onClick={() => !disabled && inputRef.current?.focus()}
     >
-      {value.map((tag) => (
+      {value.map(tag => (
         <span
           key={tag}
           className='inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-1 text-xs font-medium'
@@ -58,7 +58,7 @@ export function TagsInput({
             variant='ghost'
             size='icon-xs'
             className='h-4 w-4 p-0 hover:bg-secondary-foreground/20'
-            onClick={(e) => {
+            onClick={e => {
               e.stopPropagation()
               removeTag(tag)
             }}
@@ -73,7 +73,7 @@ export function TagsInput({
         ref={inputRef}
         type='text'
         value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
+        onChange={e => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder={value.length === 0 ? placeholder : ''}
         disabled={disabled}

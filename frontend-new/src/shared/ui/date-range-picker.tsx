@@ -25,7 +25,7 @@ export const DateRangePicker = ({
   value,
   onChange,
   disabled = false,
-  label = 'Дата',
+  label,
   placeholder = 'Выберите диапазон',
   id,
   className,

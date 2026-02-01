@@ -36,7 +36,7 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
         </SidebarGroup>
 
         {menuGroups.map(group => (
-          <SidebarGroup>
+          <SidebarGroup key={group.title}>
             <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>

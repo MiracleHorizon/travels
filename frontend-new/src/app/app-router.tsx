@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import { TravelsPlannedPage, TravelsPastPage, TravelsArchivePage } from '@pages/travels'
 import { AppLayout } from './app-layout'
 
@@ -8,11 +8,9 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Navigate to='/travels' />,
         children: [
           {
             path: '/travels',
-            element: <Navigate to='/travels/planned' />,
             handle: {
               breadcrumb: 'Путешествия'
             },

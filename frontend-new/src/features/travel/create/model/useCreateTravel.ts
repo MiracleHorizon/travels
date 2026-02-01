@@ -2,10 +2,7 @@ import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
 
 import { TravelApi } from '@/entities/travel'
-
-interface UseCreateTravelProps {
-  onCreated?: () => void
-}
+import { useHideModal } from '@/shared/lib'
 
 interface TravelFormData {
   destination: string
@@ -19,8 +16,9 @@ const DEFAULT_FORM_DATA: TravelFormData = {
   tags: []
 } as const
 
-export const useCreateTravel = ({ onCreated }: UseCreateTravelProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+export const useCreateTravel = () => {
+  const hideModal = useHideModal()
+
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [formData, setFormData] = useState<TravelFormData>(DEFAULT_FORM_DATA)
@@ -53,8 +51,7 @@ export const useCreateTravel = ({ onCreated }: UseCreateTravelProps) => {
       })
 
       resetForm()
-      setIsOpen(false)
-      onCreated?.()
+      hideModal()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Ошибка при создании путешествия')
     } finally {
@@ -62,20 +59,11 @@ export const useCreateTravel = ({ onCreated }: UseCreateTravelProps) => {
     }
   }
 
-  const openChange = (open: boolean) => {
-    setIsOpen(open)
-    if (!open) {
-      resetForm()
-    }
-  }
-
   return {
-    isOpen,
     isLoading,
     error,
     formData,
     setFormData,
-    createTravel,
-    openChange
+    createTravel
   }
 }

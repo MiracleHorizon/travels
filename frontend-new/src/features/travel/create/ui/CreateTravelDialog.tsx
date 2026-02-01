@@ -1,7 +1,6 @@
 import {
   Button,
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -10,22 +9,22 @@ import {
   DialogClose
 } from '@/shared/ui'
 import { TravelForm } from '@/entities/travel'
+import { ModalDefinition, useHideModal } from '@/shared/lib'
 import { useCreateTravel } from '../model/useCreateTravel'
 
-interface CreateTravelDialogProps {
-  onCreated?: () => void
-}
-
-export const CreateTravelDialog = ({ onCreated }: CreateTravelDialogProps) => {
-  const { isOpen, isLoading, error, formData, setFormData, createTravel, openChange } =
-    useCreateTravel({ onCreated })
+const CreateTravelDialog = () => {
+  const { isLoading, error, formData, setFormData, createTravel } = useCreateTravel()
+  const hideModal = useHideModal()
 
   return (
-    <Dialog open={isOpen} onOpenChange={openChange}>
-      <DialogTrigger asChild>
-        <Button>Новое путешествие</Button>
-      </DialogTrigger>
-
+    <Dialog
+      open
+      onOpenChange={open => {
+        if (!open) {
+          hideModal()
+        }
+      }}
+    >
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Новое путешествие</DialogTitle>
@@ -56,4 +55,9 @@ export const CreateTravelDialog = ({ onCreated }: CreateTravelDialogProps) => {
       </DialogContent>
     </Dialog>
   )
+}
+
+export const createTravelModalDefinition: ModalDefinition = {
+  name: 'createTravelModal',
+  component: CreateTravelDialog
 }

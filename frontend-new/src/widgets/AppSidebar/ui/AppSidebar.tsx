@@ -14,8 +14,11 @@ import {
 } from '@/shared/ui'
 import { CirclePlus } from 'lucide-react'
 import { ComponentPropsWithoutRef } from 'react'
+import { useCreateTravelAction } from '@/features/travel/create'
 
 export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
+  const { createTravel } = useCreateTravelAction()
+
   const location = useLocation()
 
   return (
@@ -27,6 +30,7 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
               <SidebarMenuButton
                 tooltip='Новое путешествие'
                 className='bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear'
+                onClick={createTravel}
               >
                 <CirclePlus />
                 <span>Новое путешествие</span>

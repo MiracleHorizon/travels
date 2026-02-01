@@ -1,5 +1,3 @@
-import { CreateTravelDialog } from '@features/travel/create'
-
 export const TravelsPlannedPage = () => {
   return (
     <div className='container mx-auto py-8'>
@@ -10,8 +8,6 @@ export const TravelsPlannedPage = () => {
             Здесь будет список ваших запланированных путешествий
           </p>
         </div>
-
-        <CreateTravelDialog />
       </div>
     </div>
   )

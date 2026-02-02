@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@/entities/theme'
-import { ModalProvider, ModalsContainer } from '@/shared/lib'
+import { ModalProvider, ModalsContainer } from '@/shared/lib/modal'
 import { RouterProvider } from 'react-router-dom'
 import { router } from './app-router'
 import { QueryProvider } from './providers/QueryProvider'

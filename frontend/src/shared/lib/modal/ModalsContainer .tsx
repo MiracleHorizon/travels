@@ -1,13 +1,14 @@
-import { useHideModal } from '@/shared/lib'
-import { useModalContext } from '@/shared/lib/modal/ModalContext'
-import { ModalInstance } from '@/shared/lib/modal/types'
+import { useHideModal } from './useHideModal'
+import { useModalContext } from './ModalContext'
+import { ModalInstance } from './types'
 import { createPortal } from 'react-dom'
+import { ReactNode } from 'react'
 
 const modalsRoot = document.createElement('div')
 modalsRoot.id = 'modals-root'
 modalsRoot.className = 'hidden'
 
-const Portal = ({ children, container }: { children: React.ReactNode; container: HTMLElement }) => {
+const Portal = ({ children, container }: { children: ReactNode; container: HTMLElement }) => {
   return createPortal(children, container)
 }
 

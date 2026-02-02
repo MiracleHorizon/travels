@@ -1,5 +1,5 @@
 import { Card, Badge } from '@/shared/ui'
-import { plural } from '@/shared/lib'
+import { plural } from '@/shared/lib/i18n'
 import { Calendar, Clock } from 'lucide-react'
 import { differenceInDays } from 'date-fns'
 
@@ -19,7 +19,7 @@ export const TravelCover = ({ startDate, endDate, name, isPast }: TravelCoverPro
     <Card className='overflow-hidden p-0'>
       <div className='relative h-[400px] w-full'>
         <img
-          src='https://avatar.vercel.sh/shadcn5'
+          src='https://avatar.vercel.sh/shadcn3'
           alt={name}
           className='h-full w-full object-cover'
         />

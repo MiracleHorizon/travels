@@ -11,21 +11,23 @@ import {
   Button
 } from '@/shared/ui'
 import { useCreateTravelAction } from '@/features/travel/create'
+import { useNavigate } from 'react-router-dom'
 
 interface TravelsListProps {
   travels: Travel[]
   className?: string
   emptyMessage?: string
-  onTravelClick?: (travel: Travel) => void
 }
 
 export const TravelsList = ({
   travels,
   className,
-  emptyMessage = 'Нет путешествий',
-  onTravelClick
+  emptyMessage = 'Нет путешествий'
 }: TravelsListProps) => {
   const { createTravel } = useCreateTravelAction()
+
+  const navigate = useNavigate()
+  const navigateToTravel = (travelId: string) => navigate(`/travels/${travelId}`)
 
   if (travels.length === 0) {
     return (
@@ -49,11 +51,7 @@ export const TravelsList = ({
   return (
     <div className={cn('flex gap-4', className)}>
       {travels.map(travel => (
-        <TravelCard
-          key={travel.id}
-          travel={travel}
-          onClick={onTravelClick ? () => onTravelClick(travel) : undefined}
-        />
+        <TravelCard key={travel.id} travel={travel} onClick={() => navigateToTravel(travel.id)} />
       ))}
     </div>
   )

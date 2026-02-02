@@ -20,7 +20,7 @@ export const TravelDetailPage = () => {
   }
 
   return (
-    <div className='container'>
+    <div className='flex flex-col gap-6'>
       <TravelCover
         name={travel.name}
         startDate={travel.startDate}

@@ -16,7 +16,7 @@ export const TravelCover = ({ startDate, endDate, name, isPast }: TravelCoverPro
   const duration = differenceInDays(endDate, startDate)
 
   return (
-    <Card className='overflow-hidden mb-6 p-0'>
+    <Card className='overflow-hidden p-0'>
       <div className='relative h-[400px] w-full'>
         <img
           src='https://avatar.vercel.sh/shadcn5'

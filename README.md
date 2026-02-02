@@ -5,6 +5,7 @@
 ## Технологии
 
 ### Frontend
+
 - Vue 3 + TypeScript
 - Tailwind CSS v4
 - Reka UI
@@ -12,10 +13,12 @@
 - Bun
 
 ### Backend
+
 - Bun
 - REST API
 
 ### Архитектура
+
 - Feature-Sliced Design (FSD)
 
 ## Установка и запуск

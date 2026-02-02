@@ -10,7 +10,7 @@ export const AppLayout = () => {
 
       <SidebarInset>
         <AppToolbar sidebarTrigger={<AppSidebarTrigger />} />
-        <main className='p-4'>
+        <main className='p-4 flex-1'>
           <Outlet />
         </main>
       </SidebarInset>

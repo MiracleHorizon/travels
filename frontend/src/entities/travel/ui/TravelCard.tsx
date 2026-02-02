@@ -14,7 +14,11 @@ interface TravelCardProps {
 export const TravelCard = memo(({ travel, className, onClick }: TravelCardProps) => {
   return (
     <Card
-      className={cn('group relative w-[340px] max-w-sm pt-0 overflow-hidden', className)}
+      className={cn(
+        'group relative w-[340px] max-w-sm pt-0 overflow-hidden',
+        onClick && 'cursor-pointer',
+        className
+      )}
       onClick={onClick}
     >
       {/* <div className='absolute inset-0 z-30 aspect-video bg-black/35 group-hover:scale-110 transition-transform duration-500 ease-out' /> */}

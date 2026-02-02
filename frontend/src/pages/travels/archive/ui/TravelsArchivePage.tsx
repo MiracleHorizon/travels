@@ -6,7 +6,7 @@ export const TravelsArchivePage = () => {
   const { data: travels = [], isLoading, error } = useTravelsQuery({ archived: true })
 
   return (
-    <div className='container py-6'>
+    <div className='container'>
       <div className='mb-6'>
         <h1 className='text-3xl font-bold mb-2'>Архив путешествий</h1>
         <p className='text-muted-foreground'>Архивированные путешествия</p>

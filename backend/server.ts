@@ -13,6 +13,27 @@ interface Travel {
   updatedAt: string
 }
 
+type ExpenseCategory =
+  | 'transport'
+  | 'accommodation'
+  | 'food'
+  | 'entertainment'
+  | 'shopping'
+  | 'other'
+
+interface Expense {
+  id: string
+  travelId: string
+  title: string
+  amount: number
+  currency: string
+  category: ExpenseCategory
+  date: string
+  description?: string
+  createdAt: string
+  updatedAt: string
+}
+
 interface CreateTravelDto {
   name: string
   description?: string
@@ -30,13 +51,114 @@ interface UpdateTravelDto {
   tags?: string[]
 }
 
+interface CreateExpenseDto {
+  title: string
+  amount: number
+  currency: string
+  category: ExpenseCategory
+  date: string
+  description?: string
+}
+
 // In-memory хранилище (в будущем можно заменить на БД)
 const travels = new Map<string, Travel>()
+const expenses = new Map<string, Expense>()
 
 // Генерация UUID
 function generateId(): string {
   return crypto.randomUUID()
 }
+
+// Seed данные для демонстрации
+function seedData() {
+  // Создаём тестовое путешествие
+  const travel1: Travel = {
+    id: '1',
+    name: 'Париж',
+    description: 'Романтическое путешествие в столицу Франции',
+    startDate: '2024-06-01',
+    endDate: '2024-06-10',
+    status: 'past',
+    isArchived: false,
+    tags: ['Европа', 'Город', 'Культура'],
+    createdAt: '2024-05-01T10:00:00Z',
+    updatedAt: '2024-05-01T10:00:00Z'
+  }
+  travels.set(travel1.id, travel1)
+
+  // Добавляем расходы для этого путешествия
+  const expense1: Expense = {
+    id: 'e1',
+    travelId: '1',
+    title: 'Авиабилеты',
+    amount: 45000,
+    currency: 'RUB',
+    category: 'transport',
+    date: '2024-06-01',
+    description: 'Перелёт туда и обратно',
+    createdAt: '2024-06-01T10:00:00Z',
+    updatedAt: '2024-06-01T10:00:00Z'
+  }
+  expenses.set(expense1.id, expense1)
+
+  const expense2: Expense = {
+    id: 'e2',
+    travelId: '1',
+    title: 'Отель',
+    amount: 80000,
+    currency: 'RUB',
+    category: 'accommodation',
+    date: '2024-06-01',
+    description: '9 ночей в центре города',
+    createdAt: '2024-06-01T11:00:00Z',
+    updatedAt: '2024-06-01T11:00:00Z'
+  }
+  expenses.set(expense2.id, expense2)
+
+  const expense3: Expense = {
+    id: 'e3',
+    travelId: '1',
+    title: 'Ужин в ресторане',
+    amount: 5500,
+    currency: 'RUB',
+    category: 'food',
+    date: '2024-06-02',
+    description: 'Ужин в традиционном французском ресторане',
+    createdAt: '2024-06-02T20:00:00Z',
+    updatedAt: '2024-06-02T20:00:00Z'
+  }
+  expenses.set(expense3.id, expense3)
+
+  const expense4: Expense = {
+    id: 'e4',
+    travelId: '1',
+    title: 'Билеты в Лувр',
+    amount: 3000,
+    currency: 'RUB',
+    category: 'entertainment',
+    date: '2024-06-03',
+    createdAt: '2024-06-03T10:00:00Z',
+    updatedAt: '2024-06-03T10:00:00Z'
+  }
+  expenses.set(expense4.id, expense4)
+
+  const expense5: Expense = {
+    id: 'e5',
+    travelId: '1',
+    title: 'Сувениры',
+    amount: 8000,
+    currency: 'RUB',
+    category: 'shopping',
+    date: '2024-06-08',
+    description: 'Подарки и сувениры для друзей',
+    createdAt: '2024-06-08T15:00:00Z',
+    updatedAt: '2024-06-08T15:00:00Z'
+  }
+  expenses.set(expense5.id, expense5)
+}
+
+// Инициализация seed данных
+seedData()
 
 // Определение статуса путешествия на основе дат
 function getTravelStatus(endDate: string): TravelStatus {
@@ -207,6 +329,105 @@ const server = Bun.serve({
       travels.delete(id)
 
       return new Response(JSON.stringify({ message: 'Travel deleted' }), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      })
+    }
+
+    // GET /api/travels/:travelId/expenses - получить расходы путешествия
+    if (path.match(/^\/api\/travels\/[^/]+\/expenses$/) && method === 'GET') {
+      const travelId = path.split('/')[3]
+
+      // Проверяем существование путешествия
+      if (!travels.has(travelId)) {
+        return new Response(JSON.stringify({ error: 'Travel not found' }), {
+          status: 404,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        })
+      }
+
+      const travelExpenses = Array.from(expenses.values()).filter(
+        expense => expense.travelId === travelId
+      )
+
+      return new Response(JSON.stringify(travelExpenses), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      })
+    }
+
+    // POST /api/travels/:travelId/expenses - создать расход
+    if (path.match(/^\/api\/travels\/[^/]+\/expenses$/) && method === 'POST') {
+      const travelId = path.split('/')[3]
+
+      // Проверяем существование путешествия
+      if (!travels.has(travelId)) {
+        return new Response(JSON.stringify({ error: 'Travel not found' }), {
+          status: 404,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        })
+      }
+
+      try {
+        const body = (await req.json()) as CreateExpenseDto
+
+        // Валидация
+        if (!body.title || !body.amount || !body.currency || !body.category || !body.date) {
+          return new Response(JSON.stringify({ error: 'Missing required fields' }), {
+            status: 400,
+            headers: { 'Content-Type': 'application/json', ...corsHeaders }
+          })
+        }
+
+        const now = new Date().toISOString()
+        const expense: Expense = {
+          id: generateId(),
+          travelId,
+          title: body.title,
+          amount: body.amount,
+          currency: body.currency,
+          category: body.category,
+          date: body.date,
+          description: body.description,
+          createdAt: now,
+          updatedAt: now
+        }
+
+        expenses.set(expense.id, expense)
+
+        return new Response(JSON.stringify(expense), {
+          status: 201,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        })
+      } catch (error) {
+        return new Response(JSON.stringify({ error: 'Invalid JSON' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        })
+      }
+    }
+
+    // DELETE /api/travels/:travelId/expenses/:expenseId - удалить расход
+    if (path.match(/^\/api\/travels\/[^/]+\/expenses\/[^/]+$/) && method === 'DELETE') {
+      const [, , , travelId, , expenseId] = path.split('/')
+
+      const expense = expenses.get(expenseId)
+
+      if (!expense) {
+        return new Response(JSON.stringify({ error: 'Expense not found' }), {
+          status: 404,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        })
+      }
+
+      if (expense.travelId !== travelId) {
+        return new Response(JSON.stringify({ error: 'Expense does not belong to this travel' }), {
+          status: 400,
+          headers: { 'Content-Type': 'application/json', ...corsHeaders }
+        })
+      }
+
+      expenses.delete(expenseId)
+
+      return new Response(JSON.stringify({ message: 'Expense deleted' }), {
         headers: { 'Content-Type': 'application/json', ...corsHeaders }
       })
     }

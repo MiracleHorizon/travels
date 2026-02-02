@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
 
-import { useHideModal } from '@/shared/lib'
+import { useHideModal } from '@/shared/lib/modal'
 import { useCreateTravelMutation } from '../api/mutation'
 import { useQueryClient } from '@tanstack/react-query'
 import { TRAVELS_QUERY_KEY } from '@/entities/travel'

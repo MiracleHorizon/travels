@@ -9,7 +9,7 @@ import {
   DialogClose
 } from '@/shared/ui'
 import { TravelForm } from '@/entities/travel'
-import { ModalDefinition, useHideModal } from '@/shared/lib'
+import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useCreateTravel } from '../model/useCreateTravel'
 
 const CreateTravelDialog = () => {

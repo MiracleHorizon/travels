@@ -12,7 +12,7 @@ import {
   SidebarMenuItem,
   SidebarMenuButton
 } from '@/shared/ui'
-import { CirclePlus } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { ComponentPropsWithoutRef } from 'react'
 import { useCreateTravelAction } from '@/features/travel/create'
 
@@ -24,21 +24,6 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
   return (
     <Sidebar {...props}>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenuItem className='flex items-center gap-2'>
-              <SidebarMenuButton
-                tooltip='Новое путешествие'
-                className='bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear'
-                onClick={createTravel}
-              >
-                <CirclePlus />
-                <span>Новое путешествие</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
         {menuGroups.map(group => (
           <SidebarGroup key={group.title}>
             <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
@@ -62,6 +47,21 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
             </SidebarGroupContent>
           </SidebarGroup>
         ))}
+
+        <SidebarGroup>
+          <SidebarGroupContent>
+            <SidebarMenuItem className='flex items-center gap-2'>
+              <SidebarMenuButton
+                tooltip='Новое путешествие'
+                className='bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground active:bg-primary/90 active:text-primary-foreground min-w-8 duration-200 ease-linear'
+                onClick={createTravel}
+              >
+                <Plus />
+                <span>Новое путешествие</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter>

@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useTravelQuery, TravelCover } from '@/entities/travel'
 import { Spinner, Badge, Card, CardContent, CardTitle } from '@/shared/ui'
+import { ExpensesList } from '@/widgets/ExpensesList'
 import { TravelDetailPageEmpty } from './TravelDetailPageEmpty'
 
 export const TravelDetailPage = () => {
@@ -29,7 +30,7 @@ export const TravelDetailPage = () => {
       />
 
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-        <div className='lg:col-span-2'>
+        <div className='lg:col-span-2 space-y-6'>
           {travel.description && (
             <Card>
               <CardContent>
@@ -40,6 +41,8 @@ export const TravelDetailPage = () => {
               </CardContent>
             </Card>
           )}
+
+          <ExpensesList travelId={travel.id} />
         </div>
 
         <div className='space-y-6'>

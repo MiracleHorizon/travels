@@ -11,7 +11,7 @@ import { Link, useMatches } from 'react-router-dom'
 import { ReactNode } from 'react'
 
 interface BreadcrumbHandle {
-  breadcrumb: string
+  breadcrumb: string | ((data: unknown) => string)
 }
 
 interface AppToolbarProps {
@@ -23,10 +23,17 @@ export const AppToolbar = ({ sidebarTrigger }: AppToolbarProps) => {
 
   const breadcrumbs = matches
     .filter(match => Boolean((match.handle as BreadcrumbHandle)?.breadcrumb))
-    .map(match => ({
-      label: (match.handle as BreadcrumbHandle).breadcrumb,
-      pathname: match.pathname
-    }))
+    .map(match => {
+      const handle = match.handle as BreadcrumbHandle
+      const breadcrumb = handle.breadcrumb
+
+      const label = typeof breadcrumb === 'function' ? breadcrumb(match.data) : breadcrumb
+
+      return {
+        label,
+        pathname: match.pathname
+      }
+    })
 
   return (
     <header className='flex h-[48px] shrink-0 items-center gap-2 border-b px-4'>

@@ -10,7 +10,7 @@ export const TravelsPastPage = () => {
   } = useTravelsQuery({ status: 'past', archived: false })
 
   return (
-    <div className='container py-6'>
+    <div className='container'>
       <div className='mb-6'>
         <h1 className='text-3xl font-bold mb-2'>Прошедшие путешествия</h1>
         <p className='text-muted-foreground'>Воспоминания о ваших путешествиях</p>

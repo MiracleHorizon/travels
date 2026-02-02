@@ -1,6 +1,12 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { TravelsPlannedPage, TravelsPastPage, TravelsArchivePage } from '@pages/travels'
+import {
+  TravelsPlannedPage,
+  TravelsPastPage,
+  TravelsArchivePage,
+  TravelDetailPage
+} from '@pages/travels'
 import { AppLayout } from './app-layout'
+import { API_BASE_URL } from '@/shared/api'
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +40,21 @@ export const router = createBrowserRouter([
                 element: <TravelsArchivePage />,
                 handle: {
                   breadcrumb: 'Архив'
+                }
+              },
+              {
+                path: ':id',
+                element: <TravelDetailPage />,
+                // TODO: Вынести это в функцию, а то стыдобища какая-то
+                loader: async ({ params }) => {
+                  const response = await fetch(`${API_BASE_URL}/travels/${params.id}`)
+                  if (!response.ok) {
+                    throw new Error('Travel not found')
+                  }
+                  return response.json()
+                },
+                handle: {
+                  breadcrumb: (data: { name: string }) => data?.name
                 }
               }
             ]

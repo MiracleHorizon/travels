@@ -1,4 +1,4 @@
-import { useShowModal } from '@/shared/lib'
+import { useShowModal } from '@/shared/lib/modal'
 import { createTravelModalDefinition } from './CreateTravelDialog'
 
 export const useCreateTravelAction = () => {

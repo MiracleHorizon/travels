@@ -31,7 +31,7 @@ export const TravelsList = ({
 
   if (travels.length === 0) {
     return (
-      <Empty className='py-16'>
+      <Empty>
         <EmptyHeader>
           <EmptyMedia className='rounded-full bg-muted/50 p-4'>
             <Plane className='h-12 w-12 text-muted-foreground/50' />

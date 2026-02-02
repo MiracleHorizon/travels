@@ -5,7 +5,7 @@ export const AppSidebarTrigger = () => {
 
   return (
     <Tooltip>
-      <TooltipTrigger>
+      <TooltipTrigger asChild>
         <SidebarTrigger />
       </TooltipTrigger>
       <TooltipContent>{open ? 'Скрыть' : 'Показать'} меню</TooltipContent>

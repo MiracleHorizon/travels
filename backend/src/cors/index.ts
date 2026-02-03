@@ -24,8 +24,8 @@ const allowedMethods = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTION
 
 export const corsHeaders: CorsOptions = {
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  headers: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  headers: ['Content-Type'],
   credentials: true
 }
 
@@ -144,7 +144,7 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
       }
 
       const route = wrappedRoutes[path]
-      if ('OPTIONS' in route && !route['OPTIONS']) {
+      if (typeof route === 'object' && route !== null && !route['OPTIONS']) {
         route['OPTIONS'] = async () =>
           new Response(null, {
             status: 204,

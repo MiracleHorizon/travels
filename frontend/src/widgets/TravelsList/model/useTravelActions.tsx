@@ -2,15 +2,14 @@ import { DropdownAction } from '@/shared/ui'
 import { Pencil, Trash } from 'lucide-react'
 import type { MouseEvent } from 'react'
 import { useDeleteTravelAction } from '@/features/travel/delete'
+import { useUpdateTravelAction } from '@/features/travel/update'
+import { Travel } from '@/entities/travel'
 
-export const useTravelActions = (): ((travelId: string, travelName: string) => DropdownAction[]) => {
+export const useTravelActions = (): ((travel: Travel) => DropdownAction[]) => {
   const deleteTravelAction = useDeleteTravelAction()
+  const updateTravelAction = useUpdateTravelAction()
 
-  const editTravel = (travelId: string) => {
-    console.log('editTravel', travelId)
-  }
-
-  return (travelId: string, travelName: string) => {
+  return (travel: Travel) => {
     return [
       {
         type: 'item',
@@ -18,7 +17,7 @@ export const useTravelActions = (): ((travelId: string, travelName: string) => D
         icon: <Pencil />,
         onClick: (ev: MouseEvent<HTMLDivElement>) => {
           ev.stopPropagation()
-          editTravel(travelId)
+          updateTravelAction(travel)
         }
       },
       {
@@ -31,7 +30,7 @@ export const useTravelActions = (): ((travelId: string, travelName: string) => D
         variant: 'destructive',
         onClick: (ev: MouseEvent<HTMLDivElement>) => {
           ev.stopPropagation()
-          deleteTravelAction(travelId, travelName)
+          deleteTravelAction(travel.id, travel.name)
         }
       }
     ]

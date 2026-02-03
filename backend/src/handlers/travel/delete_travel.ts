@@ -1,6 +1,5 @@
 import type { BunRequest } from 'bun'
 import { postgres } from '../../database'
-import { corsHeaders } from '../../cors'
 
 export const deleteTravelHandler = async (req: BunRequest) => {
   console.log('deleteTravelHandler', req)
@@ -10,29 +9,17 @@ export const deleteTravelHandler = async (req: BunRequest) => {
     const result = await postgres`DELETE FROM travels WHERE id = ${id}`
     if (result.rowCount === 0) {
       return new Response(JSON.stringify({ error: 'Travel not found' }), {
-        status: 404,
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        }
+        status: 404
       })
     }
 
     return new Response(null, {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders
-      }
+      status: 200
     })
   } catch (error) {
     console.error('Error deleting travel:', error)
     return new Response(JSON.stringify({ error: 'Failed to delete travel' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders
-      }
+      status: 500
     })
   }
 }

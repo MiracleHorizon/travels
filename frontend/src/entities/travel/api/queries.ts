@@ -2,16 +2,11 @@ import { useQuery } from '@tanstack/react-query'
 import { API_BASE_URL } from '@/shared/api'
 import type { Travel } from '../model/types'
 
-interface TravelsFilter {
-  status?: 'upcoming' | 'past'
-  archived?: boolean
-}
-
 export const TRAVELS_QUERY_KEY = 'travels'
 
-export const useTravelsQuery = (filter?: TravelsFilter) => {
+export const useTravelsQuery = () => {
   return useQuery({
-    queryKey: [TRAVELS_QUERY_KEY, filter],
+    queryKey: [TRAVELS_QUERY_KEY],
     queryFn: async () => {
       const params = new URLSearchParams()
 
@@ -35,11 +30,11 @@ export const useTravelsQuery = (filter?: TravelsFilter) => {
   })
 }
 
-export const useTravelQuery = (id: string) => {
+export const useTravelQuery = (travelId: string) => {
   return useQuery<Travel>({
-    queryKey: [TRAVELS_QUERY_KEY, id],
+    queryKey: [TRAVELS_QUERY_KEY, travelId],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/v1/travels/${id}`)
+      const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`)
 
       if (!response.ok) {
         throw new Error('Failed to fetch travel')

@@ -6,19 +6,13 @@ export const useDeleteTravelMutation = ({
   onError
 }: {
   onSuccess?: () => void
-  onError?: () => void
+  onError?: (error: unknown) => void
 } = {}) => {
   return useMutation({
-    mutationFn: async (id: string) => {
-      const response = await fetch(`${API_BASE_URL}/v1/travels/${id}`, {
+    mutationFn: async (travelId: string) => {
+      await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
         method: 'DELETE'
       })
-
-      if (!response.ok) {
-        throw new Error('Failed to delete travel')
-      }
-
-      return response.json()
     },
     onSuccess,
     onError

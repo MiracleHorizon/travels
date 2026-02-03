@@ -64,11 +64,11 @@ export const createTravelHandler = async (req: BunRequest) => {
 
     // Создание путешествия
     const result = await postgres`
-      INSERT INTO travels (name, description, start_date, end_date, tags, created_at)
+      INSERT INTO travels (name, description, start_date, end_date, tags, created_at, updated_at)
       VALUES (${body.name.trim()}, ${body.description?.trim() || null}, ${body.startDate}, ${
       body.endDate
-    }, ${body.tags || []}, NOW())
-      RETURNING id, name, description, start_date, end_date, tags, created_at
+    }, ${body.tags || []}, NOW(), NOW())
+      RETURNING id, name, description, start_date, end_date, tags, created_at, updated_at
     `
 
     return new Response(JSON.stringify(result[0]), {

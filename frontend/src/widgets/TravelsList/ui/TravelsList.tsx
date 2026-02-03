@@ -59,7 +59,7 @@ export const TravelsList = ({
           tags={travel.tags}
           startDate={travel.start_date}
           endDate={travel.end_date}
-          actions={actions(travel.id, travel.name)}
+          actions={actions(travel)}
           onClick={() => navigateToTravel(travel.id)}
         />
       ))}

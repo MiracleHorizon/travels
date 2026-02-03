@@ -1,6 +1,5 @@
 import type { BunRequest } from 'bun'
 import { postgres } from '../../database'
-import { corsHeaders } from '../../cors'
 
 export const getTravelHandler = async (req: BunRequest) => {
   try {
@@ -9,11 +8,7 @@ export const getTravelHandler = async (req: BunRequest) => {
 
     if (result.rowCount === 0) {
       return new Response(JSON.stringify({ error: 'Travel not found' }), {
-        status: 404,
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        }
+        status: 404
       })
     }
 
@@ -23,21 +18,13 @@ export const getTravelHandler = async (req: BunRequest) => {
     }
 
     return new Response(JSON.stringify(travel), {
-      status: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders
-      }
+      status: 200
     })
   } catch (error) {
     console.error('Error fetching travel:', error)
 
     return new Response(JSON.stringify({ error: 'Failed to fetch travel' }), {
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders
-      }
+      status: 500
     })
   }
 }

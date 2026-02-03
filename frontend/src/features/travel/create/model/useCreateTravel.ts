@@ -2,9 +2,10 @@ import { useState } from 'react'
 import { DateRange } from 'react-day-picker'
 
 import { useHideModal } from '@/shared/lib/modal'
-import { useCreateTravelMutation } from '../api/mutation'
+import { useCreateTravelMutation } from '../api/useCreateTravelMutation'
 import { useQueryClient } from '@tanstack/react-query'
 import { TRAVELS_QUERY_KEY } from '@/entities/travel'
+import { toast } from 'sonner'
 
 interface TravelFormFields {
   name: string
@@ -32,6 +33,12 @@ export const useCreateTravel = () => {
         queryKey: [TRAVELS_QUERY_KEY]
       })
       hideModal()
+      toast.success('Путешествие создано, можно начать планировать')
+    },
+    onError: () => {
+      toast.error('Не удалось создать путешествие', {
+        description: 'Пожалуйста, попробуйте еще раз'
+      })
     }
   })
 

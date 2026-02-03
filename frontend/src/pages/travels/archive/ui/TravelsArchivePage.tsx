@@ -3,7 +3,7 @@ import { TravelsList } from '@/widgets/TravelsList'
 import { Spinner } from '@/shared/ui'
 
 export const TravelsArchivePage = () => {
-  const { data: travels = [], isLoading, error } = useTravelsQuery({ archived: true })
+  const { data: travels = [], isLoading, error } = useTravelsQuery()
 
   return (
     <div className='container'>

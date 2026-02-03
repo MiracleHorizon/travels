@@ -24,8 +24,8 @@ export const TravelDetailPage = () => {
     <div className='flex flex-col gap-6'>
       <TravelCover
         name={travel.name}
-        startDate={travel.startDate}
-        endDate={travel.endDate}
+        startDate={travel.start_date}
+        endDate={travel.end_date}
         isPast={travel.status === 'past'}
       />
 
@@ -46,7 +46,7 @@ export const TravelDetailPage = () => {
         </div>
 
         <div className='space-y-6'>
-          {travel.tags.length > 0 && (
+          {Boolean(travel.tags.length) && (
             <Card>
               <CardContent>
                 <CardTitle className='text-lg font-semibold mb-4'>Теги</CardTitle>

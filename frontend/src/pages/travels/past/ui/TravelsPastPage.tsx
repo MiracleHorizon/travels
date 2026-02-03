@@ -3,11 +3,7 @@ import { TravelsList } from '@/widgets/TravelsList'
 import { Spinner } from '@/shared/ui'
 
 export const TravelsPastPage = () => {
-  const {
-    data: travels = [],
-    isLoading,
-    error
-  } = useTravelsQuery({ status: 'past', archived: false })
+  const { data: travels = [], isLoading, error } = useTravelsQuery()
 
   return (
     <div className='container'>

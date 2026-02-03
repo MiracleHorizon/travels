@@ -1,4 +1,4 @@
-import { ReactNode } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -6,14 +6,13 @@ import {
   DropdownMenuItem,
   DropdownMenuSeparator
 } from './dropdown-menu'
-import { Tooltip, TooltipContent, TooltipTrigger } from './tooltip'
 
 interface DropdownActionItem {
   type: 'item'
   label: string
   icon?: ReactNode
   variant?: 'default' | 'destructive'
-  onClick: () => void
+  onClick: (ev: MouseEvent<HTMLDivElement>) => void
 }
 
 interface DropdownActionSeparator {
@@ -30,13 +29,10 @@ interface DropdownActionsProps {
 
 export const DropdownActions = ({ trigger, actions, onOpenChange }: DropdownActionsProps) => {
   return (
-    <DropdownMenu onOpenChange={onOpenChange}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
-        </TooltipTrigger>
-        <TooltipContent side='bottom'>Действия</TooltipContent>
-      </Tooltip>
+    <DropdownMenu modal={false} onOpenChange={onOpenChange}>
+      <DropdownMenuTrigger asChild onClick={ev => ev.stopPropagation()}>
+        {trigger}
+      </DropdownMenuTrigger>
 
       <DropdownMenuContent>
         {actions.map((action, index) => {

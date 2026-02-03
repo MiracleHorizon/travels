@@ -8,7 +8,7 @@ export const useExpensesQuery = (travelId: string) => {
   return useQuery<Expense[]>({
     queryKey: [EXPENSES_QUERY_KEY, travelId],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/travels/${travelId}/expenses`)
+      const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}/expenses`)
 
       if (!response.ok) {
         throw new Error('Failed to fetch expenses')

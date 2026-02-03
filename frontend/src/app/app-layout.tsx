@@ -1,4 +1,4 @@
-import { SidebarInset, SidebarProvider } from '@/shared/ui'
+import { SidebarInset, SidebarProvider, Toaster } from '@/shared/ui'
 import { AppSidebar, AppSidebarTrigger } from '@/widgets/AppSidebar'
 import { AppToolbar } from '@/widgets/AppToolbar'
 import { Outlet } from 'react-router-dom'
@@ -6,6 +6,7 @@ import { Outlet } from 'react-router-dom'
 export const AppLayout = () => {
   return (
     <SidebarProvider>
+      <Toaster />
       <AppSidebar variant='inset' collapsible='offcanvas' />
 
       <SidebarInset>

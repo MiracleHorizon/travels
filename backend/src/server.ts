@@ -5,31 +5,25 @@ import {
   getTravelsListHandler,
   updateTravelHandler
 } from './handlers/travel'
-import { corsHeaders } from './cors'
-
-const handleOptions = () => {
-  return new Response(null, {
-    status: 204,
-    headers: corsHeaders
-  })
-}
+import { corsHeaders, injectCORS } from './cors'
 
 const server = Bun.serve({
   port: 4200,
-  routes: {
-    // Путешествие
-    '/api/v1/travels': {
-      OPTIONS: handleOptions,
-      POST: createTravelHandler,
-      GET: getTravelsListHandler
+  routes: injectCORS(
+    {
+      // Путешествие
+      '/api/v1/travels': {
+        POST: createTravelHandler,
+        GET: getTravelsListHandler
+      },
+      '/api/v1/travels/:id': {
+        GET: getTravelHandler,
+        PATCH: updateTravelHandler,
+        DELETE: deleteTravelHandler
+      }
     },
-    '/api/v1/travels/:id': {
-      OPTIONS: handleOptions,
-      GET: getTravelHandler,
-      PATCH: updateTravelHandler,
-      DELETE: deleteTravelHandler
-    }
-  },
+    corsHeaders
+  ),
   fetch: () => {
     return new Response('Not Found', {
       status: 404

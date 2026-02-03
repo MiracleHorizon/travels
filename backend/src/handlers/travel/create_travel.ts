@@ -1,5 +1,4 @@
 import { postgres } from '../../database'
-import { corsHeaders } from '../../cors'
 import type { BunRequest } from 'bun'
 
 interface CreateTravelDto {
@@ -21,11 +20,7 @@ export const createTravelHandler = async (req: BunRequest) => {
           error: 'Name is required'
         }),
         {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...corsHeaders
-          }
+          status: 400
         }
       )
     }
@@ -36,11 +31,7 @@ export const createTravelHandler = async (req: BunRequest) => {
           error: 'Start date and end date are required'
         }),
         {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...corsHeaders
-          }
+          status: 400
         }
       )
     }
@@ -55,11 +46,7 @@ export const createTravelHandler = async (req: BunRequest) => {
           error: 'Invalid date format'
         }),
         {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...corsHeaders
-          }
+          status: 400
         }
       )
     }
@@ -70,11 +57,7 @@ export const createTravelHandler = async (req: BunRequest) => {
           error: 'Start date must be before end date'
         }),
         {
-          status: 400,
-          headers: {
-            'Content-Type': 'application/json',
-            ...corsHeaders
-          }
+          status: 400
         }
       )
     }
@@ -89,11 +72,7 @@ export const createTravelHandler = async (req: BunRequest) => {
     `
 
     return new Response(JSON.stringify(result[0]), {
-      status: 201,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders
-      }
+      status: 201
     })
   } catch (error) {
     console.error('Error creating travel:', error)
@@ -102,11 +81,7 @@ export const createTravelHandler = async (req: BunRequest) => {
         error: 'Internal server error'
       }),
       {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-          ...corsHeaders
-        }
+        status: 500
       }
     )
   }

@@ -12,6 +12,7 @@ import {
 } from '@/shared/ui'
 import { useCreateTravelAction } from '@/features/travel/create'
 import { useNavigate } from 'react-router-dom'
+import { useTravelActions } from '../model/useTravelActions'
 
 interface TravelsListProps {
   travels: Travel[]
@@ -25,6 +26,7 @@ export const TravelsList = ({
   emptyMessage = 'Нет путешествий'
 }: TravelsListProps) => {
   const { createTravel } = useCreateTravelAction()
+  const actions = useTravelActions()
 
   const navigate = useNavigate()
   const navigateToTravel = (travelId: string) => navigate(`/travels/${travelId}`)
@@ -51,7 +53,15 @@ export const TravelsList = ({
   return (
     <div className={cn('flex gap-4', className)}>
       {travels.map(travel => (
-        <TravelCard key={travel.id} travel={travel} onClick={() => navigateToTravel(travel.id)} />
+        <TravelCard
+          key={travel.id}
+          name={travel.name}
+          tags={travel.tags}
+          startDate={travel.start_date}
+          endDate={travel.end_date}
+          actions={actions(travel.id, travel.name)}
+          onClick={() => navigateToTravel(travel.id)}
+        />
       ))}
     </div>
   )

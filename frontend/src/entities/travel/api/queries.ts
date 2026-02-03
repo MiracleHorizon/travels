@@ -15,15 +15,15 @@ export const useTravelsQuery = (filter?: TravelsFilter) => {
     queryFn: async () => {
       const params = new URLSearchParams()
 
-      if (filter?.status) {
-        params.append('status', filter.status)
-      }
+      // if (filter?.status) {
+      //   params.append('status', filter.status)
+      // }
 
-      if (filter?.archived !== undefined) {
-        params.append('archived', String(filter.archived))
-      }
+      // if (filter?.archived !== undefined) {
+      //   params.append('archived', String(filter.archived))
+      // }
 
-      const url = `${API_BASE_URL}/travels${params.toString() ? `?${params.toString()}` : ''}`
+      const url = `${API_BASE_URL}/v1/travels${params.toString() ? `?${params.toString()}` : ''}`
       const response = await fetch(url)
 
       if (!response.ok) {
@@ -39,7 +39,7 @@ export const useTravelQuery = (id: string) => {
   return useQuery<Travel>({
     queryKey: [TRAVELS_QUERY_KEY, id],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/travels/${id}`)
+      const response = await fetch(`${API_BASE_URL}/v1/travels/${id}`)
 
       if (!response.ok) {
         throw new Error('Failed to fetch travel')

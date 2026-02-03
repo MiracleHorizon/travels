@@ -2,11 +2,11 @@ export interface Travel {
   id: string
   name: string
   description?: string
-  startDate: string
-  endDate: string
-  status: 'upcoming' | 'past'
-  tags: string[]
-  isArchived: boolean
-  createdAt: string
-  updatedAt: string
+  start_date: string
+  end_date: string
+  status?: 'upcoming' | 'past'
+  tags?: string[]
+  is_archived: boolean
+  created_at: string
+  updated_at: string
 }

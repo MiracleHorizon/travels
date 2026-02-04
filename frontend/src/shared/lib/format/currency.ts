@@ -12,5 +12,11 @@ export const formatCurrency = (
 ): string => {
   const symbol = currencySymbols[currency] || currency
 
-  return `${amount.toLocaleString(locale)} ${symbol}`
+  const formattedAmount = new Intl.NumberFormat(locale, {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+    useGrouping: true
+  }).format(amount)
+
+  return `${formattedAmount} ${symbol}`
 }

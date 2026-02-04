@@ -1,5 +1,6 @@
 // UI
 export { ExpenseCard } from './ui/ExpenseCard'
+export { ExpenseCategorySelect } from './ui/ExpenseCategorySelect'
 
 // API
 export { useExpensesQuery, EXPENSES_QUERY_KEY } from './api/queries'

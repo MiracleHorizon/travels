@@ -64,10 +64,10 @@ export const TravelForm = ({ value, onChange, disabled = false, onSubmit }: Trav
       }}
     >
       <FieldGroup>
-        {/* Название */}
         <Field>
-          <FieldLabel>Название</FieldLabel>
+          <FieldLabel htmlFor='name'>Название</FieldLabel>
           <Input
+            id='name'
             type='text'
             placeholder='Пхукет, 2026'
             value={value.name}
@@ -76,10 +76,10 @@ export const TravelForm = ({ value, onChange, disabled = false, onSubmit }: Trav
           />
         </Field>
 
-        {/* Временные рамки */}
         <Field>
-          <FieldLabel>Временные рамки</FieldLabel>
+          <FieldLabel htmlFor='dateRange'>Временные рамки</FieldLabel>
           <DateRangePicker
+            id='dateRange'
             value={value.dateRange}
             onChange={handleDateRangeChange}
             disabled={disabled}
@@ -88,10 +88,10 @@ export const TravelForm = ({ value, onChange, disabled = false, onSubmit }: Trav
           />
         </Field>
 
-        {/* Описание */}
         <Field>
-          <FieldLabel>Описание</FieldLabel>
+          <FieldLabel htmlFor='description'>Описание</FieldLabel>
           <Textarea
+            id='description'
             placeholder='Опишите ваше путешествие...'
             value={value.description}
             onChange={handleDescriptionChange}
@@ -100,7 +100,6 @@ export const TravelForm = ({ value, onChange, disabled = false, onSubmit }: Trav
           />
         </Field>
 
-        {/* Тэги */}
         <Field>
           <FieldLabel className='flex items-center gap-2'>
             <Tag className='w-4 h-4' />

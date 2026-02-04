@@ -1,14 +1,17 @@
+import { Plane, Home, UtensilsCrossed, FerrisWheel, DollarSign, Ellipsis } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
+
 export interface Expense {
-  id: string
-  travelId: string
+  id: string | number
+  travel_id: string
   title: string
   amount: number
   currency: string
   category: ExpenseCategory
-  date: string
+  date?: string
   description?: string
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export type ExpenseCategory =
@@ -26,4 +29,13 @@ export const EXPENSE_CATEGORIES: Record<ExpenseCategory, string> = {
   entertainment: 'Развлечения',
   shopping: 'Покупки',
   other: 'Прочее'
+}
+
+export const EXPENSE_CATEGORY_ICONS: Record<ExpenseCategory, LucideIcon> = {
+  transport: Plane,
+  accommodation: Home,
+  food: UtensilsCrossed,
+  entertainment: FerrisWheel,
+  shopping: DollarSign,
+  other: Ellipsis
 }

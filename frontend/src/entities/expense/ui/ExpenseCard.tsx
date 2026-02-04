@@ -40,10 +40,12 @@ export const ExpenseCard = memo(
     size = 'default',
     actions
   }: ExpenseCardProps) => {
-    const formattedDate = new Date(date).toLocaleDateString(locale, {
-      day: 'numeric',
-      month: 'short'
-    })
+    const formattedDate = date
+      ? new Date(date).toLocaleDateString(locale, {
+          day: 'numeric',
+          month: 'short'
+        })
+      : null
     const formattedAmount = formatCurrency(amount, currency, locale)
 
     const [hovered, setHovered] = useState(false)
@@ -67,8 +69,12 @@ export const ExpenseCard = memo(
             {title}
             <ExpenseBadge category={category} />
 
-            <Separator orientation='vertical' className='h-4 shrink-0' />
-            <p className='text-xs text-muted-foreground'>{formattedDate}</p>
+            {formattedDate && (
+              <>
+                <Separator orientation='vertical' className='h-4 shrink-0' />
+                <p className='text-xs text-muted-foreground'>{formattedDate}</p>
+              </>
+            )}
           </ItemTitle>
 
           {description && <ItemDescription>{description}</ItemDescription>}

@@ -6,6 +6,8 @@ import {
   updateTravelHandler
 } from './handlers/travel'
 import { corsHeaders, injectCORS } from './cors'
+import { createExpenseHandler } from './handlers/expense/create_expense'
+import { getExpensesListHandler } from './handlers/expense/get_expenses_list'
 
 const server = Bun.serve({
   port: 4200,
@@ -20,6 +22,11 @@ const server = Bun.serve({
         GET: getTravelHandler,
         PATCH: updateTravelHandler,
         DELETE: deleteTravelHandler
+      },
+      // Расходы
+      '/api/v1/travels/:travelId/expenses': {
+        POST: createExpenseHandler,
+        GET: getExpensesListHandler
       }
     },
     corsHeaders

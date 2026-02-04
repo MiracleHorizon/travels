@@ -1,10 +1,11 @@
 import { Button, Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/shared/ui'
 import { Plus } from 'lucide-react'
 
-export const ExpensesListEmpty = () => {
-  // TODO: Добавить функцию добавления расхода
-  const addExpense = () => {}
+interface ExpensesListEmptyProps {
+  onAddExpense: () => void
+}
 
+export const ExpensesListEmpty = ({ onAddExpense }: ExpensesListEmptyProps) => {
   return (
     <Empty>
       <EmptyHeader>
@@ -14,7 +15,7 @@ export const ExpensesListEmpty = () => {
         </EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button variant='outline' onClick={addExpense}>
+        <Button variant='outline' onClick={onAddExpense}>
           <Plus />
           Учесть расходы
         </Button>

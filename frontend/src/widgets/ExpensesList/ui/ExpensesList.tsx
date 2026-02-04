@@ -5,13 +5,17 @@ import {
   CardTitle,
   Spinner,
   Button,
-  CardDescription,
-  TotalAmount
+  TotalAmount,
+  Empty,
+  EmptyContent,
+  EmptyHeader,
+  EmptyDescription
 } from '@/shared/ui'
-import { Plus } from 'lucide-react'
+import { Plus, RefreshCcw } from 'lucide-react'
 import { ExpensesListEmpty } from './ExpensesListEmpty'
 import { useExpenseActions } from '../model/useExpenseActions'
 import { formatCurrency } from '@/shared/lib/format'
+import { useCreateExpenseAction } from '@/features/expense/create'
 
 interface ExpensesListProps {
   travelId: string
@@ -22,11 +26,10 @@ const locale = 'ru-RU'
 const currency = 'RUB'
 
 export const ExpensesList = ({ travelId }: ExpensesListProps) => {
-  const { data: expenses, isLoading, error } = useExpensesQuery(travelId)
-  const actions = useExpenseActions()
+  const { data: expenses, isLoading, error, refetch } = useExpensesQuery({ travelId })
 
-  // TODO: Добавить функцию добавления расхода
-  const addExpense = () => {}
+  const { createExpense } = useCreateExpenseAction({ travelId })
+  const actions = useExpenseActions()
 
   if (isLoading) {
     return (
@@ -40,17 +43,25 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
 
   if (error) {
     return (
-      <Card>
-        <CardContent className='py-8'>
-          <CardDescription className='text-center'>Не удалось загрузить расходы</CardDescription>
-        </CardContent>
+      <Card className='p-0'>
+        <Empty>
+          <EmptyHeader>
+            <EmptyDescription className='text-md'>Не удалось загрузить расходы</EmptyDescription>
+          </EmptyHeader>
+          <EmptyContent className='flex-row justify-center gap-2'>
+            <Button variant='outline' size='sm' onClick={() => refetch()}>
+              <RefreshCcw />
+              Попробовать снова
+            </Button>
+          </EmptyContent>
+        </Empty>
       </Card>
     )
   }
 
   const total =
     expenses && expenses.length > 0
-      ? expenses.reduce((total, expense) => total + expense.amount, 0)
+      ? expenses.reduce((total, expense) => total + +expense.amount, 0)
       : 0
 
   return (
@@ -59,7 +70,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
         <div className='flex justify-between items-center'>
           <CardTitle className='text-xl font-semibold'>Расходы</CardTitle>
 
-          <Button onClick={addExpense} size='sm'>
+          <Button onClick={createExpense} size='sm'>
             <Plus />
             Добавить
           </Button>
@@ -84,7 +95,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
             </div>
           </>
         ) : (
-          <ExpensesListEmpty />
+          <ExpensesListEmpty onAddExpense={createExpense} />
         )}
       </CardContent>
     </Card>

@@ -37,7 +37,7 @@ const UpdateTravelDialog = ({ travel }: UpdateTravelDialogProps) => {
         </DialogHeader>
 
         <TravelForm
-          value={formFields}
+          values={formFields}
           disabled={isLoading}
           onChange={setFormFields}
           onSubmit={updateTravel}
@@ -60,6 +60,6 @@ const UpdateTravelDialog = ({ travel }: UpdateTravelDialogProps) => {
 }
 
 export const updateTravelModalDefinition: ModalDefinition = {
-  name: 'updateTravelModal',
+  name: 'UpdateTravelModal',
   component: UpdateTravelDialog
 }

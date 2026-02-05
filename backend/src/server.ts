@@ -9,6 +9,7 @@ import { corsHeaders, injectCORS } from './cors'
 import { createExpenseHandler } from './handlers/expense/create_expense'
 import { getExpensesListHandler } from './handlers/expense/get_expenses_list'
 import { deleteExpenseHandler } from './handlers/expense/delete_expense'
+import { updateExpenseHandler } from './handlers/expense/update_expense'
 
 const server = Bun.serve({
   port: 4200,
@@ -30,6 +31,7 @@ const server = Bun.serve({
         GET: getExpensesListHandler
       },
       '/api/v1/expenses/:expenseId': {
+        PATCH: updateExpenseHandler,
         DELETE: deleteExpenseHandler
       }
     },

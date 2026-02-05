@@ -35,7 +35,7 @@ const CreateTravelDialog = () => {
         </DialogHeader>
 
         <TravelForm
-          value={formFields}
+          values={formFields}
           disabled={isLoading}
           onChange={setFormFields}
           onSubmit={createTravel}

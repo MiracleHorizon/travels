@@ -9,16 +9,16 @@ import {
   DialogClose
 } from '@/shared/ui'
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
-import { useCreateExpense } from '../model/useCreateExpense'
-import { ExpenseForm } from '@/entities/expense'
+import { useUpdateExpense } from '../model/useUpdateExpense'
+import { ExpenseForm, Expense } from '@/entities/expense'
 
-interface CreateExpenseDialogProps {
-  travelId: string
+interface UpdateExpenseDialogProps {
+  expense: Expense
 }
 
-const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
-  const { isLoading, formFields, setFormFields, createExpense } = useCreateExpense({
-    travelId
+const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
+  const { isLoading, formFields, setFormFields, updateExpense } = useUpdateExpense({
+    expense
   })
 
   const hideModal = useHideModal()
@@ -34,17 +34,15 @@ const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Добавление расхода</DialogTitle>
-          <DialogDescription>
-            Укажите сумму и описание расхода для учета в путешествии
-          </DialogDescription>
+          <DialogTitle>Редактирование расхода</DialogTitle>
+          <DialogDescription>Измените детали</DialogDescription>
         </DialogHeader>
 
         <ExpenseForm
           values={formFields}
           disabled={isLoading}
           onChange={setFormFields}
-          onSubmit={createExpense}
+          onSubmit={updateExpense}
         />
 
         <DialogFooter>
@@ -54,8 +52,8 @@ const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
             </Button>
           </DialogClose>
 
-          <Button size='sm' onClick={createExpense} isLoading={isLoading}>
-            Добавить
+          <Button size='sm' onClick={updateExpense} isLoading={isLoading}>
+            Сохранить
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -63,7 +61,7 @@ const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
   )
 }
 
-export const createExpenseModalDefinition: ModalDefinition<CreateExpenseDialogProps> = {
-  name: 'СreateExpenseModal',
-  component: CreateExpenseDialog
+export const updateExpenseModalDefinition: ModalDefinition<UpdateExpenseDialogProps> = {
+  name: 'UpdateExpenseModal',
+  component: UpdateExpenseDialog
 }

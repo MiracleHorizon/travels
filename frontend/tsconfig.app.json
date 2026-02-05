@@ -1,15 +1,23 @@
 {
   "include": ["env.d.ts", "src/**/*", "src/**/*.tsx"],
   "compilerOptions": {
+    "typeRoots": ["./node_modules/@types", "./node_modules/@yandex/ymaps3-types"],
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "paths": {
       "@/*": ["./src/*"],
       "@entities/*": ["./src/entities/*"],
       "@features/*": ["./src/features/*"],
       "@widgets/*": ["./src/widgets/*"],
       "@pages/*": ["./src/pages/*"],
-      "@shared/*": ["./src/shared/*"]
+      "@shared/*": ["./src/shared/*"],
+      "ymaps3": ["./node_modules/@yandex/ymaps3-types"]
     }
   }
 }

@@ -29,7 +29,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
   const { data: expenses, isLoading, error, refetch } = useExpensesQuery({ travelId })
 
   const { createExpense } = useCreateExpenseAction({ travelId })
-  const actions = useExpenseActions()
+  const actions = useExpenseActions({ travelId })
 
   if (isLoading) {
     return (
@@ -83,7 +83,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
                 <ExpenseCard
                   {...expense}
                   key={expense.id}
-                  actions={actions(expense.id)}
+                  actions={actions(expense)}
                   locale={locale}
                   size='sm'
                 />

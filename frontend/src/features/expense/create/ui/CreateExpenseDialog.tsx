@@ -167,6 +167,6 @@ const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
 }
 
 export const createExpenseModalDefinition: ModalDefinition<CreateExpenseDialogProps> = {
-  name: 'createExpenseModal',
+  name: 'СreateExpenseModal',
   component: CreateExpenseDialog
 }

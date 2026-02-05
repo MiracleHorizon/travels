@@ -8,26 +8,27 @@ import {
   AlertDialogHeader,
   AlertDialogTitle
 } from '@/shared/ui/alert-dialog'
-import { useDeleteTravel } from '../model/useDeleteTravel'
+import { useDeleteExpense } from '../model/useDeleteExpense'
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 
-interface DeleteTravelDialogProps {
+interface DeleteExpenseDialogProps {
   travelId: string
-  travelName: string
+  expenseId: string
+  expenseTitle: string
 }
 
-const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) => {
-  const { isLoading, deleteTravel } = useDeleteTravel(travelId)
+const DeleteExpenseDialog = ({ travelId, expenseId, expenseTitle }: DeleteExpenseDialogProps) => {
+  const { isLoading, deleteExpense } = useDeleteExpense(travelId, expenseId)
   const hideModal = useHideModal()
 
   return (
     <AlertDialog open>
       <AlertDialogContent size='sm'>
         <AlertDialogHeader>
-          <AlertDialogTitle>Удалить путешествие?</AlertDialogTitle>
+          <AlertDialogTitle>Удалить расход?</AlertDialogTitle>
 
           <AlertDialogDescription>
-            Вы уверены, что хотите удалить путешествие <strong>«{travelName}»</strong>?
+            Вы уверены, что хотите удалить расход <strong>«{expenseTitle}»</strong>?
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -35,7 +36,7 @@ const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) =
           <AlertDialogCancel disabled={isLoading} onClick={hideModal}>
             Отмена
           </AlertDialogCancel>
-          <AlertDialogAction variant='destructive' onClick={deleteTravel} disabled={isLoading}>
+          <AlertDialogAction variant='destructive' onClick={deleteExpense} disabled={isLoading}>
             Удалить
           </AlertDialogAction>
         </AlertDialogFooter>
@@ -44,7 +45,7 @@ const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) =
   )
 }
 
-export const deleteTravelModalDefinition: ModalDefinition = {
-  name: 'DeleteTravelDialog',
-  component: DeleteTravelDialog
+export const deleteExpenseModalDefinition: ModalDefinition = {
+  name: 'DeleteExpenseDialog',
+  component: DeleteExpenseDialog
 }

@@ -21,7 +21,7 @@ interface ExpenseCardProps {
   amount: number
   currency: string
   category: ExpenseCategory
-  date: string
+  date?: string
   description?: string
   locale: string
   size?: 'default' | 'sm'

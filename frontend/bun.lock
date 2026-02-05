@@ -33,6 +33,7 @@
         "@types/react": "^19.0.6",
         "@types/react-dom": "^19.0.2",
         "@vitejs/plugin-react": "^4.3.4",
+        "@yandex/ymaps3-types": "1.0.18650382",
         "eslint": "^9.39.2",
         "eslint-plugin-react-hooks": "^5.1.0",
         "eslint-plugin-react-refresh": "^0.4.16",
@@ -426,6 +427,8 @@
     "@typescript-eslint/visitor-keys": ["@typescript-eslint/visitor-keys@8.54.0", "", { "dependencies": { "@typescript-eslint/types": "8.54.0", "eslint-visitor-keys": "^4.2.1" } }, "sha512-VFlhGSl4opC0bprJiItPQ1RfUhGDIBokcPwaFH4yiBCaNPeld/9VeXbiPO1cLyorQi1G1vL+ecBk1x8o1axORA=="],
 
     "@vitejs/plugin-react": ["@vitejs/plugin-react@4.7.0", "", { "dependencies": { "@babel/core": "^7.28.0", "@babel/plugin-transform-react-jsx-self": "^7.27.1", "@babel/plugin-transform-react-jsx-source": "^7.27.1", "@rolldown/pluginutils": "1.0.0-beta.27", "@types/babel__core": "^7.20.5", "react-refresh": "^0.17.0" }, "peerDependencies": { "vite": "^4.2.0 || ^5.0.0 || ^6.0.0 || ^7.0.0" } }, "sha512-gUu9hwfWvvEDBBmgtAowQCojwZmJ5mcLn3aufeCsitijs3+f2NsrPtlAWIR6OPiqljl96GVCUbLe0HyqIpVaoA=="],
+
+    "@yandex/ymaps3-types": ["@yandex/ymaps3-types@1.0.18650382", "", { "peerDependencies": { "@types/react": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "@types/react-dom": "^16.0.0 || ^17.0.0 || ^18.0.0 || ^19.0.0", "@vue/runtime-core": "3" }, "optionalPeers": ["@types/react", "@types/react-dom", "@vue/runtime-core"] }, "sha512-1GDLd21yiZWataQnlN3ycywKPUupxI+8pASuG08o1avXJqlO6gIaj8JLqQaWw2XxN95w8hLwvUrB/3gNYye1Jw=="],
 
     "acorn": ["acorn@8.15.0", "", { "bin": { "acorn": "bin/acorn" } }, "sha512-NZyJarBfL7nWwIq+FDL6Zp/yHEhePMNnnJ0y3qfieCrmNvYct8uvtiV41UvlSe6apAfk0fY1FbWx+NwfmpvtTg=="],
 

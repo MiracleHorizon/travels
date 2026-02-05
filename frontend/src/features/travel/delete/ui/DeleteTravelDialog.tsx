@@ -9,7 +9,7 @@ import {
   AlertDialogTitle
 } from '@/shared/ui/alert-dialog'
 import { useDeleteTravel } from '../model/useDeleteTravel'
-import { ModalDefinition } from '@/shared/lib/modal'
+import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 
 interface DeleteTravelDialogProps {
   travelId: string
@@ -18,6 +18,7 @@ interface DeleteTravelDialogProps {
 
 const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) => {
   const { isLoading, deleteTravel } = useDeleteTravel(travelId)
+  const hideModal = useHideModal()
 
   return (
     <AlertDialog open>
@@ -31,7 +32,9 @@ const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) =
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading}>Отмена</AlertDialogCancel>
+          <AlertDialogCancel disabled={isLoading} onClick={hideModal}>
+            Отмена
+          </AlertDialogCancel>
           <AlertDialogAction variant='destructive' onClick={deleteTravel} disabled={isLoading}>
             Удалить
           </AlertDialogAction>

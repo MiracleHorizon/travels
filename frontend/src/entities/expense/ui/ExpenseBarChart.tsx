@@ -5,10 +5,13 @@ import {
   ChartLegend,
   ChartLegendContent
 } from '@/shared/ui/chart'
-import { Bar, BarChart, CartesianGrid, XAxis } from 'recharts'
+import { Bar, BarChart, XAxis } from 'recharts'
+import type { TooltipProps } from 'recharts'
 import { EXPENSE_CHART_CATEGORIES } from '../model/consts'
 import { useBarExpenses } from '../model/useBarExpenses'
 import type { Expense } from '../model/types'
+import { formatCurrency } from '@/shared/lib/format'
+import { useMemo } from 'react'
 
 interface ExpenseBarChartProps {
   expenses: Expense[]
@@ -27,16 +30,11 @@ export const ExpenseBarChart = ({ expenses }: ExpenseBarChartProps) => {
     <div className='flex flex-col w-full'>
       <ChartContainer config={chartConfig} className='min-h-[250px] h-[250px] w-full'>
         <BarChart data={chartData}>
-          <CartesianGrid vertical={false} />
-          <XAxis
-            dataKey='dayLabel'
-            tickLine={false}
-            tickMargin={10}
-            axisLine={false}
-            tickFormatter={value => value.split('\n')[0]}
-          />
-          <ChartTooltip content={<ChartTooltipContent />} />
+          <XAxis dataKey='dayLabel' tickLine={true} axisLine={true} />
+
+          <ChartTooltip content={<CustomTooltip />} />
           <ChartLegend content={<ChartLegendContent />} />
+
           <Bar
             dataKey='transport'
             stackId='a'
@@ -62,4 +60,26 @@ export const ExpenseBarChart = ({ expenses }: ExpenseBarChartProps) => {
       </ChartContainer>
     </div>
   )
+}
+
+const CustomTooltip = (props: TooltipProps<number, string>) => {
+  const payload = useMemo(() => {
+    if (!props.payload) {
+      return []
+    }
+
+    return (
+      props.payload
+        // Отображаем только категории с суммой больше 0.
+        .filter(category => category.value && category.value > 0)
+        // Добавляем форматирование суммы с отображением символа валюты.
+        .map(category => ({
+          ...category,
+          value: formatCurrency(category.value, 'RUB')
+        }))
+    )
+  }, [props.payload])
+
+  // @ts-expect-error - проблема типизация тултипа.
+  return <ChartTooltipContent {...props} payload={payload} hideLabel />
 }

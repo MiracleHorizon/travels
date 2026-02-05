@@ -1,4 +1,4 @@
-import { ExpenseCard, useExpensesQuery } from '@/entities/expense'
+import { ExpenseCard, useExpensesQuery, ExpenseBarChart } from '@/entities/expense'
 import {
   Card,
   CardContent,
@@ -26,7 +26,7 @@ const locale = 'ru-RU'
 const currency = 'RUB'
 
 export const ExpensesList = ({ travelId }: ExpensesListProps) => {
-  const { data: expenses, isLoading, error, refetch } = useExpensesQuery({ travelId })
+  const { data: expenses, isLoading, isSuccess, error, refetch } = useExpensesQuery({ travelId })
 
   const { createExpense } = useCreateExpenseAction({ travelId })
   const actions = useExpenseActions({ travelId })
@@ -59,6 +59,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
     )
   }
 
+  const isEmpty = isSuccess && expenses && expenses.length === 0
   const total =
     expenses && expenses.length > 0
       ? expenses.reduce((total, expense) => total + +expense.amount, 0)
@@ -66,8 +67,8 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
 
   return (
     <Card>
-      <CardContent className='space-y-8'>
-        <div className='flex justify-between items-center'>
+      <CardContent>
+        <div className='flex justify-between items-center pb-5'>
           <CardTitle className='text-xl font-semibold'>Расходы</CardTitle>
 
           <Button onClick={createExpense} size='sm'>
@@ -76,8 +77,10 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
           </Button>
         </div>
 
-        {expenses && expenses.length > 0 ? (
-          <>
+        {!isEmpty ? (
+          <div className='flex flex-col p-4 space-y-6'>
+            <ExpenseBarChart expenses={expenses} />
+
             <div className='space-y-4'>
               {expenses.map(expense => (
                 <ExpenseCard
@@ -90,10 +93,10 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
               ))}
             </div>
 
-            <div className='pt-4 border-t'>
+            <div className='pt-6 border-t'>
               <TotalAmount amount={formatCurrency(total, currency)} />
             </div>
-          </>
+          </div>
         ) : (
           <ExpensesListEmpty onAddExpense={createExpense} />
         )}

@@ -4,13 +4,25 @@ import type { Expense } from './types'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
 
+const NO_DATE_FLAG = 'no_date'
+
+interface DayTotal {
+  day: string
+  transport: number
+  accommodation: number
+  food: number
+  entertainment: number
+  shopping: number
+  other: number
+}
+
 export const useBarExpenses = (expenses: Expense[]) => {
   return useMemo(() => {
     // Группируем расходы по дням и категориям
     const dayTotals = expenses.reduce(
       (acc, expense) => {
         // Если даты нет, используем "День 0"
-        const day = expense.date || 'День 0'
+        const day = expense.date || NO_DATE_FLAG
 
         if (!acc[day]) {
           acc[day] = {
@@ -27,43 +39,39 @@ export const useBarExpenses = (expenses: Expense[]) => {
         acc[day][expense.category] += +expense.amount
         return acc
       },
-      {} as Record<
-        string,
-        {
-          day: string
-          transport: number
-          accommodation: number
-          food: number
-          entertainment: number
-          shopping: number
-          other: number
-        }
-      >
+      {} as Record<string, DayTotal>
     )
 
-    // Преобразуем в массив и сортируем
     const sortedData = Object.values(dayTotals).sort((a, b) => {
       // "День 0" всегда первый
-      if (a.day === 'День 0') return -1
-      if (b.day === 'День 0') return 1
+      if (a.day === NO_DATE_FLAG) return -1
+      if (b.day === NO_DATE_FLAG) return 1
 
-      // Остальные сортируем по дате
+      // Остальное сортируем по дате
       return new Date(a.day).getTime() - new Date(b.day).getTime()
     })
 
-    // Форматируем названия дней
+    // Проверяем, есть ли расходы без даты
+    const hasNoDayExpenses = sortedData.some(item => item.day === NO_DATE_FLAG)
+
     return sortedData.map((item, index) => {
-      if (item.day === 'День 0') {
-        return { ...item, dayLabel: 'Без даты' }
+      if (item.day === NO_DATE_FLAG) {
+        return {
+          ...item,
+          dayLabel: 'Без даты'
+        }
       }
 
       const date = new Date(item.day)
-      const dayNumber = index // Номер дня в путешествии (начиная с 0 для "Без даты")
+      // Если есть "Без даты", то первый реальный день будет иметь индекс 1, иначе 0
+      // Но нумерация дней должна начинаться с 1
+      const dayNumber = hasNoDayExpenses ? index : index + 1
       const formattedDate = format(date, 'dd.MM.yyyy', { locale: ru })
 
       return {
         ...item,
-        dayLabel: `День ${dayNumber} - ${formattedDate}`
+        // eslint-disable-next-line no-irregular-whitespace
+        dayLabel: `День ${dayNumber} — ${formattedDate}`
       }
     })
   }, [expenses])

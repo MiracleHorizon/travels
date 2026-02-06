@@ -71,7 +71,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
         <div className='flex justify-between items-center pb-5'>
           <CardTitle className='text-xl font-semibold'>Расходы</CardTitle>
 
-          <Button onClick={createExpense} size='sm'>
+          <Button variant='outline' onClick={createExpense} size='sm'>
             <Plus />
             Добавить
           </Button>

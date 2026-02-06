@@ -30,7 +30,7 @@ export const TravelCover = ({
 
         <div className='absolute inset-0 bg-linear-to-t from-black/60 via-black/20 to-transparent pointer-events-none' />
 
-        <div className='absolute bottom-0 left-0 right-0 p-8 text-white'>
+        <div className='absolute bottom-0 left-0 right-0 px-8 pb-8 text-white'>
           <div className='flex items-end justify-between gap-4'>
             <div className='flex-1'>
               <h1 className='text-4xl font-bold mb-3'>{name}</h1>

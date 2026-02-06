@@ -4,7 +4,8 @@ import { postgres } from '../../database'
 export const getExpensesListHandler = async (req: BunRequest) => {
   try {
     const { travelId } = req.params
-    const expenses = await postgres`SELECT * FROM expenses WHERE travel_id = ${travelId}`
+    const expenses =
+      await postgres`SELECT * FROM expenses WHERE travel_id = ${travelId} ORDER BY created_at ASC`
 
     return new Response(JSON.stringify(expenses))
   } catch (error) {

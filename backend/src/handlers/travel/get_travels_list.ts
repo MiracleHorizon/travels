@@ -3,7 +3,7 @@ import { postgres } from '../../database'
 
 export const getTravelsListHandler = async (_req: BunRequest) => {
   try {
-    const travels = await postgres`SELECT * FROM travels ORDER BY created_at DESC`
+    const travels = await postgres`SELECT * FROM travels ORDER BY created_at ASC`
 
     return new Response(JSON.stringify(travels))
   } catch (error) {

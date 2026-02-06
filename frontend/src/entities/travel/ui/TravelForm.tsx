@@ -9,7 +9,8 @@ import {
   FieldDescription,
   TagsInput,
   DateRangePicker,
-  Textarea
+  Textarea,
+  FieldContent
 } from '@/shared/ui'
 import { ChangeEvent } from 'react'
 
@@ -65,39 +66,46 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
     >
       <FieldGroup>
         <Field>
-          <FieldLabel htmlFor='name'>Название</FieldLabel>
-          <Input
-            id='name'
-            type='text'
-            placeholder='Пхукет, 2026'
-            value={values.name}
-            onChange={handleDestinationChange}
-            disabled={disabled}
-          />
+          <FieldContent>
+            <FieldLabel htmlFor='name'>Название</FieldLabel>
+            <Input
+              id='name'
+              type='text'
+              autoComplete='off'
+              placeholder='Пхукет, 2026'
+              value={values.name}
+              onChange={handleDestinationChange}
+              disabled={disabled}
+            />
+          </FieldContent>
         </Field>
 
         <Field>
-          <FieldLabel htmlFor='dateRange'>Временные рамки</FieldLabel>
-          <DateRangePicker
-            id='dateRange'
-            value={values.dateRange}
-            onChange={handleDateRangeChange}
-            disabled={disabled}
-            placeholder='Выберите даты'
-            captionLayout='dropdown'
-          />
+          <FieldContent>
+            <FieldLabel htmlFor='dateRange'>Временные рамки</FieldLabel>
+            <DateRangePicker
+              id='dateRange'
+              value={values.dateRange}
+              onChange={handleDateRangeChange}
+              disabled={disabled}
+              placeholder='Выберите даты'
+              captionLayout='dropdown'
+            />
+          </FieldContent>
         </Field>
 
         <Field>
-          <FieldLabel htmlFor='description'>Описание</FieldLabel>
-          <Textarea
-            id='description'
-            placeholder='Опишите ваше путешествие...'
-            value={values.description}
-            onChange={handleDescriptionChange}
-            disabled={disabled}
-            rows={6}
-          />
+          <FieldContent>
+            <FieldLabel htmlFor='description'>Описание</FieldLabel>
+            <Textarea
+              id='description'
+              placeholder='Опишите ваше путешествие...'
+              value={values.description}
+              onChange={handleDescriptionChange}
+              disabled={disabled}
+              rows={6}
+            />
+          </FieldContent>
         </Field>
 
         <Field>
@@ -106,7 +114,7 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
             Теги
           </FieldLabel>
 
-          <FieldDescription className='mb-2'>
+          <FieldDescription>
             Добавьте теги для категоризации путешествия (например: пляж, горы, культура)
           </FieldDescription>
 

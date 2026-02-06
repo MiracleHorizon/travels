@@ -24,7 +24,7 @@ export const TravelCover = ({
   const duration = differenceInDays(endDate, startDate)
 
   return (
-    <Card className='overflow-hidden p-0'>
+    <Card className='overflow-hidden border-0 p-0'>
       <div className='relative h-[400px] w-full'>
         {renderGallery()}
 

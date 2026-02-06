@@ -51,7 +51,7 @@ export const TravelsList = ({
   }
 
   return (
-    <div className={cn('flex gap-4', className)}>
+    <div className={cn('flex gap-4 flex-wrap', className)}>
       {travels.map(travel => (
         <TravelCard
           key={travel.id}

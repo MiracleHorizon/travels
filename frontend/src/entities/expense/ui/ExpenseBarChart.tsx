@@ -11,7 +11,7 @@ import { EXPENSE_CHART_CATEGORIES } from '../model/consts'
 import { useBarExpenses } from '../model/useBarExpenses'
 import type { Expense } from '../model/types'
 import { formatCurrency } from '@/shared/lib/format'
-import { useMemo } from 'react'
+import { memo, useMemo } from 'react'
 
 interface ExpenseBarChartProps {
   expenses: Expense[]
@@ -19,10 +19,10 @@ interface ExpenseBarChartProps {
 
 const chartConfig = EXPENSE_CHART_CATEGORIES
 
-export const ExpenseBarChart = ({ expenses }: ExpenseBarChartProps) => {
+export const ExpenseBarChart = memo(({ expenses }: ExpenseBarChartProps) => {
   const chartData = useBarExpenses(expenses)
 
-  if (chartData.length === 0) {
+  if (chartData.length <= 1) {
     return null
   }
 
@@ -60,7 +60,7 @@ export const ExpenseBarChart = ({ expenses }: ExpenseBarChartProps) => {
       </ChartContainer>
     </div>
   )
-}
+})
 
 const CustomTooltip = (props: TooltipProps<number, string>) => {
   const payload = useMemo(() => {

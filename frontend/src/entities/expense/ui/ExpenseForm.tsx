@@ -153,6 +153,7 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
                   selected={values.date}
                   onSelect={handleDateChange}
                   locale={ruDayPicker}
+                  captionLayout='dropdown'
                 />
               </PopoverContent>
             </Popover>

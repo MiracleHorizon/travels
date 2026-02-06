@@ -1,8 +1,24 @@
 import { useParams } from 'react-router-dom'
-import { useTravelQuery, TravelCover } from '@/entities/travel'
+import { useTravelQuery, TravelCover, TravelGallery } from '@/entities/travel'
 import { Spinner, Badge, Card, CardContent, CardTitle } from '@/shared/ui'
 import { ExpensesList } from '@/widgets/ExpensesList'
 import { TravelDetailPageEmpty } from './TravelDetailPageEmpty'
+
+import AutoplayPlugin from 'embla-carousel-autoplay'
+import FadePlugin from 'embla-carousel-fade'
+
+const MOCK_IMAGES: string[] = [
+  'https://avatar.vercel.sh/shadcn1',
+  'https://avatar.vercel.sh/shadcn2',
+  'https://avatar.vercel.sh/shadcn3',
+  'https://avatar.vercel.sh/shadcn4',
+  'https://avatar.vercel.sh/shadcn5',
+  'https://avatar.vercel.sh/shadcn6',
+  'https://avatar.vercel.sh/shadcn7',
+  'https://avatar.vercel.sh/shadcn8',
+  'https://avatar.vercel.sh/shadcn9',
+  'https://avatar.vercel.sh/shadcn10'
+] as const
 
 export const TravelDetailPage = () => {
   const { id } = useParams<{ id: string }>()
@@ -27,6 +43,22 @@ export const TravelDetailPage = () => {
         startDate={travel.start_date}
         endDate={travel.end_date}
         isPast={travel.status === 'past'}
+        renderGallery={() => (
+          <TravelGallery
+            images={MOCK_IMAGES}
+            travelName={travel.name}
+            plugins={[
+              AutoplayPlugin({
+                delay: 3_000,
+                active: true,
+                stopOnFocusIn: false,
+                stopOnLastSnap: false,
+                stopOnInteraction: false
+              }),
+              FadePlugin()
+            ]}
+          />
+        )}
       />
 
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>

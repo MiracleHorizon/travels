@@ -1,19 +1,10 @@
 import { formatFileSize } from '@/shared/lib/file'
-import {
-  Field,
-  FieldContent,
-  FieldLabel,
-  FieldDescription,
-  Input,
-  FilePreviewItem,
-  FileDropzone
-} from '@/shared/ui'
+import { Field, FieldContent, FieldLabel, FieldDescription, Input, FileDropzone } from '@/shared/ui'
 import { DropzoneOptions, useDropzone } from 'react-dropzone'
 
 interface TravelPhotoUploadFormData {
   photo: File | null
-  photoName: string
-  previewUrl: string | null
+  description: string
 }
 
 interface TravelPhotoUploadFormProps {
@@ -35,15 +26,15 @@ export const TravelPhotoUploadForm = ({
     <form className='space-y-4' onSubmit={ev => ev.preventDefault()}>
       <Field>
         <FieldContent>
-          <FieldLabel htmlFor='photoName'>Название</FieldLabel>
+          <FieldLabel htmlFor='description'>Название</FieldLabel>
           <Input
             required
-            id='photoName'
+            id='description'
             type='text'
             autoComplete='off'
             placeholder='Эйфелева башня, Париж'
-            value={value.photoName}
-            onChange={ev => onChange({ ...value, photoName: ev.target.value })}
+            value={value.description}
+            onChange={ev => onChange({ ...value, description: ev.target.value })}
           />
           <FieldDescription>
             Название будет использоваться как подпись к фотографии
@@ -65,14 +56,6 @@ export const TravelPhotoUploadForm = ({
           />
         </FieldContent>
       </Field>
-
-      {value.photo && value.previewUrl && (
-        <FilePreviewItem
-          file={value.photo}
-          previewUrl={value.previewUrl}
-          onRemove={() => onChange({ photoName: '', photo: null, previewUrl: null })}
-        />
-      )}
     </form>
   )
 }

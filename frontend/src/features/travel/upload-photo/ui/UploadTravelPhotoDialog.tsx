@@ -6,12 +6,14 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose
+  DialogClose,
+  FilePreviewItem
 } from '@/shared/ui'
 import { TravelPhotoUploadForm } from '@/entities/travel'
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useUploadTravelPhotos } from '../model/useUploadTravelPhotos'
 import { ACCEPTED_FILE_TYPES, MAX_FILE_SIZE, MAX_FILES_COUNT } from '../model/consts'
+import { useState } from 'react'
 
 interface UploadTravelPhotoDialogProps {
   travelId: string
@@ -20,6 +22,7 @@ interface UploadTravelPhotoDialogProps {
 const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => {
   const hideModal = useHideModal()
 
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const { isLoading, formFields, uploadTravelPhotos, setFormFields } = useUploadTravelPhotos({
     travelId
   })
@@ -50,9 +53,9 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
 
                 setFormFields(prevState => ({
                   ...prevState,
-                  photo: firstFile,
-                  previewUrl: URL.createObjectURL(firstFile)
+                  photo: firstFile
                 }))
+                setPreviewUrl(URL.createObjectURL(firstFile))
               }
             },
             accept: {
@@ -62,6 +65,20 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
             maxSize: MAX_FILE_SIZE
           }}
         />
+
+        {formFields.photo && previewUrl && (
+          <FilePreviewItem
+            file={formFields.photo}
+            previewUrl={previewUrl}
+            onRemove={() => {
+              setPreviewUrl(null)
+              setFormFields(prevState => ({
+                ...prevState,
+                photo: null
+              }))
+            }}
+          />
+        )}
 
         <DialogFooter>
           <DialogClose asChild>
@@ -75,7 +92,7 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
             onClick={() =>
               uploadTravelPhotos({
                 photo: formFields.photo!,
-                photoName: formFields.photoName
+                description: formFields.description
               })
             }
             disabled={!formFields.photo || isLoading}

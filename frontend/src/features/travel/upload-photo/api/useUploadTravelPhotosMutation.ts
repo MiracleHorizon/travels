@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query'
 
 interface UploadTravelPhotosDto {
   photo: File
-  photoName: string
+  description: string
 }
 
 interface UseUploadTravelPhotosMutationParams {
@@ -19,11 +19,11 @@ export const useUploadTravelPhotosMutation = ({
   onError
 }: UseUploadTravelPhotosMutationParams) => {
   return useMutation({
-    mutationFn: async ({ photo, photoName }: UploadTravelPhotosDto) => {
+    mutationFn: async ({ photo, description }: UploadTravelPhotosDto) => {
       const formData = new FormData()
 
       formData.append('photo', photo)
-      formData.append('photoName', photoName)
+      formData.append('description', description)
 
       await fetch(`${API_BASE_URL}/v1/photos/travels/${travelId}`, {
         method: 'POST',

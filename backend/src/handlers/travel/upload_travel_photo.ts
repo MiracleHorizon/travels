@@ -6,12 +6,11 @@ export const uploadTravelPhotoHandler = async (req: BunRequest) => {
     const { travelId } = req.params
     const formData = await req.formData()
     const photo = formData.get('photo') as File
-    const photoName = formData.get('photoName') as string
+    const description = formData.get('description') as string
 
     const photoUrl = await uploadTravelPhoto({
       photo,
-      travelId,
-      photoName
+      travelId
     })
 
     return new Response(JSON.stringify({ photoUrl }), {

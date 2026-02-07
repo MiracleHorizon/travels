@@ -6,9 +6,8 @@ import { toast } from 'sonner'
 import { useState } from 'react'
 
 interface TravelPhotoUploadFormFields {
-  photoName: string
   photo: File | null
-  previewUrl: string | null
+  description: string
 }
 
 interface UseUploadTravelPhotosParams {
@@ -17,9 +16,8 @@ interface UseUploadTravelPhotosParams {
 
 export const useUploadTravelPhotos = ({ travelId }: UseUploadTravelPhotosParams) => {
   const [formFields, setFormFields] = useState<TravelPhotoUploadFormFields>({
-    photoName: '',
     photo: null,
-    previewUrl: null
+    description: ''
   })
 
   const queryClient = useQueryClient()

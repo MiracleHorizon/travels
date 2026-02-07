@@ -1,5 +1,5 @@
 export interface Expense {
-  id: string | number
+  id: string
   travel_id: string
   title: string
   amount: number
@@ -7,8 +7,6 @@ export interface Expense {
   category: ExpenseCategory
   date?: string
   description?: string
-  createdAt?: string
-  updatedAt?: string
 }
 
 export type ExpenseCategory =

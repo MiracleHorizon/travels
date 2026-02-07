@@ -1,4 +1,4 @@
-import type { BunRequest } from 'bun'
+import { randomUUIDv7, type BunRequest } from 'bun'
 import { postgres } from '../../database'
 
 interface CreateExpenseDto {
@@ -24,8 +24,9 @@ export const createExpenseHandler = async (req: BunRequest) => {
     // TODO: Поддержка выбора валюты
     const currency = 'RUB'
 
+    const expenseId = randomUUIDv7()
     const expense =
-      await postgres`INSERT INTO expenses (travel_id, title, amount, currency, category, date, description) VALUES (${travelId}, ${title}, ${amount}, ${currency}, ${category}, ${date}, ${description}) RETURNING *`
+      await postgres`INSERT INTO travel_expenses (id, travel_id, title, amount, currency, category, date, description) VALUES (${expenseId}, ${travelId}, ${title}, ${amount}, ${currency}, ${category}, ${date}, ${description}) RETURNING *`
 
     return new Response(JSON.stringify(expense[0]), {
       status: 201

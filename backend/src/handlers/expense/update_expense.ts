@@ -15,7 +15,7 @@ export const updateExpenseHandler = async (req: BunRequest) => {
     const body = (await req.json()) as UpdateExpenseDto
 
     const result =
-      await postgres`UPDATE expenses SET title = ${body.title}, amount = ${body.amount}, description = ${body.description}, date = ${body.date}, category = ${body.category}, updated_at = NOW() WHERE id = ${expenseId} RETURNING *`
+      await postgres`UPDATE travel_expenses SET title = ${body.title}, amount = ${body.amount}, description = ${body.description}, date = ${body.date}, category = ${body.category}, updated_at = NOW() WHERE id = ${expenseId} RETURNING *`
 
     if (result.count === 0) {
       return new Response(JSON.stringify({ error: 'Expense not found' }), {

@@ -18,9 +18,14 @@ export const getTravelsListHandler = async (req: BunRequest) => {
       conditions.push('start_date >= CURRENT_DATE')
     }
 
-    if (archived !== undefined) {
+    // Архивные путешествия возвращаем только если явно запрошены
+    if (archived === true) {
       conditions.push(`is_archived = $${params.length + 1}`)
-      params.push(archived)
+      params.push(true)
+    } else {
+      // По умолчанию показываем только неархивные
+      conditions.push(`is_archived = $${params.length + 1}`)
+      params.push(false)
     }
 
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''

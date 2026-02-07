@@ -5,7 +5,7 @@ export const deleteExpenseHandler = async (req: BunRequest) => {
   try {
     const { expenseId } = req.params
 
-    const result = await postgres`DELETE FROM expenses WHERE id = ${expenseId}`
+    const result = await postgres`DELETE FROM travel_expenses WHERE id = ${expenseId}`
     if (result.rowCount === 0) {
       return new Response(JSON.stringify({ error: 'Expense not found' }), {
         status: 404

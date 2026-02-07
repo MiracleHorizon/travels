@@ -1,5 +1,5 @@
 import { postgres } from '../../database'
-import type { BunRequest } from 'bun'
+import { randomUUIDv7, type BunRequest } from 'bun'
 
 interface CreateTravelDto {
   name: string
@@ -63,15 +63,14 @@ export const createTravelHandler = async (req: BunRequest) => {
     }
 
     // Создание путешествия
-    const result = await postgres`
-      INSERT INTO travels (name, description, start_date, end_date, tags, created_at, updated_at)
-      VALUES (${body.name.trim()}, ${body.description?.trim() || null}, ${body.startDate}, ${
-      body.endDate
-    }, ${body.tags || []}, NOW(), NOW())
-      RETURNING id, name, description, start_date, end_date, tags, created_at, updated_at
-    `
+    const travelId = randomUUIDv7()
+    const travel = await postgres`
+      INSERT INTO travels (id, name, description, start_date, end_date, tags, created_at, updated_at)
+      VALUES (${travelId}, ${body.name.trim()}, ${body.description?.trim() || null}, ${body.startDate}, ${
+        body.endDate
+      }, ${body.tags || []}, NOW(), NOW()) RETURNING *`
 
-    return new Response(JSON.stringify(result[0]), {
+    return new Response(JSON.stringify(travel[0]), {
       status: 201
     })
   } catch (error) {

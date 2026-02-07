@@ -18,11 +18,15 @@ interface TravelGalleryProps {
   onClick?: () => void
 }
 
+const FALLBACK_IMAGE = 'https://avatar.vercel.sh/shadcn1'
+
 export const TravelGallery = memo(({ images, travelName, ...props }: TravelGalleryProps) => {
+  const imagesToShow = images.length > 0 ? images.slice(0, 10) : [FALLBACK_IMAGE]
+
   return (
     <Carousel {...props} className={cn('group', props.onClick && 'cursor-pointer')}>
       <CarouselContent>
-        {images.slice(0, 10).map((image, index) => (
+        {imagesToShow.map((image, index) => (
           <CarouselItem key={index}>
             <div className='h-[400px] w-full'>
               <img
@@ -35,16 +39,19 @@ export const TravelGallery = memo(({ images, travelName, ...props }: TravelGalle
         ))}
       </CarouselContent>
 
-      <CarouselPrevious
-        variant='secondary'
-        className='left-4 h-11 opacity-0 transition-opacity group-hover:opacity-100'
-      />
-      <CarouselNext
-        variant='secondary'
-        className='right-4 h-11 opacity-0 transition-opacity group-hover:opacity-100'
-      />
-
-      {images.length > 1 && <CarouselDots />}
+      {imagesToShow.length > 1 && (
+        <>
+          <CarouselPrevious
+            variant='secondary'
+            className='left-4 h-11 opacity-0 transition-opacity group-hover:opacity-100'
+          />
+          <CarouselNext
+            variant='secondary'
+            className='right-4 h-11 opacity-0 transition-opacity group-hover:opacity-100'
+          />
+          <CarouselDots />
+        </>
+      )}
     </Carousel>
   )
 })

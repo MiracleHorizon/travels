@@ -27,6 +27,34 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
     travelId
   })
 
+  const handleUpload = () => {
+    uploadTravelPhotos({
+      photo: formFields.photo!,
+      description: formFields.description
+    })
+  }
+
+  const handleDropFile = (acceptedFiles: File[]) => {
+    let file: File | null = null
+    if (acceptedFiles.length > 0) {
+      file = acceptedFiles[0]
+    }
+
+    setFormFields(prevState => ({
+      ...prevState,
+      photo: file
+    }))
+    setPreviewUrl(URL.createObjectURL(file))
+  }
+
+  const handleRemoveFile = () => {
+    setPreviewUrl(null)
+    setFormFields(prevState => ({
+      ...prevState,
+      photo: null
+    }))
+  }
+
   return (
     <Dialog
       open
@@ -36,7 +64,7 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
         }
       }}
     >
-      <DialogContent className='max-w-lg'>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Загрузка фотографии</DialogTitle>
           <DialogDescription>Добавьте воспоминание к вашему путешествию</DialogDescription>
@@ -47,22 +75,12 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
           maxFileSize={MAX_FILE_SIZE}
           onChange={setFormFields}
           dropzoneOptions={{
-            onDrop: acceptedFiles => {
-              if (acceptedFiles.length > 0) {
-                const firstFile = acceptedFiles[0]
-
-                setFormFields(prevState => ({
-                  ...prevState,
-                  photo: firstFile
-                }))
-                setPreviewUrl(URL.createObjectURL(firstFile))
-              }
-            },
             accept: {
               'image/*': ACCEPTED_FILE_TYPES
             },
             maxFiles: MAX_FILES_COUNT,
-            maxSize: MAX_FILE_SIZE
+            maxSize: MAX_FILE_SIZE,
+            onDrop: handleDropFile
           }}
         />
 
@@ -70,31 +88,21 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
           <FilePreviewItem
             file={formFields.photo}
             previewUrl={previewUrl}
-            onRemove={() => {
-              setPreviewUrl(null)
-              setFormFields(prevState => ({
-                ...prevState,
-                photo: null
-              }))
-            }}
+            onRemove={handleRemoveFile}
           />
         )}
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button size='sm' variant='secondary' disabled={isLoading}>
+            <Button size='sm' variant='secondary'>
               Отмена
             </Button>
           </DialogClose>
 
           <Button
             size='sm'
-            onClick={() =>
-              uploadTravelPhotos({
-                photo: formFields.photo!,
-                description: formFields.description
-              })
-            }
+            onClick={handleUpload}
+            // TODO: Валидация формы
             disabled={!formFields.photo || isLoading}
             isLoading={isLoading}
           >

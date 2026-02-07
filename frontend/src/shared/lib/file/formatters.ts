@@ -1,5 +1,5 @@
 const KILOBYTE = 1024
-const FILE_SIZES = ['Bytes', 'KB', 'MB', 'GB'] as const
+const FILE_SIZES = ['Bytes', 'KB', 'MB'] as const
 
 export const formatFileSize = (bytes: number): string => {
   if (bytes === 0) {
@@ -10,5 +10,6 @@ export const formatFileSize = (bytes: number): string => {
   const sizeLabel = FILE_SIZES[index]
   const sizeValue = Math.round((bytes / Math.pow(KILOBYTE, index)) * 100) / 100
 
-  return `${sizeValue} ${sizeLabel}`
+  // eslint-disable-next-line no-irregular-whitespace
+  return `${sizeValue} ${sizeLabel}`
 }

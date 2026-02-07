@@ -8,7 +8,8 @@ import {
   EmptyTitle,
   EmptyDescription,
   EmptyContent,
-  Button
+  Button,
+  Skeleton
 } from '@/shared/ui'
 import { useCreateTravelAction } from '@/features/travel/create'
 import { useNavigate } from 'react-router-dom'
@@ -19,19 +20,43 @@ interface TravelsListProps {
   className?: string
   emptyMessage?: string
   allowCreate?: boolean
+  isLoading?: boolean
+  error?: unknown
 }
 
 export const TravelsList = ({
   travels,
   className,
   emptyMessage = 'Нет путешествий',
-  allowCreate = true
+  allowCreate = true,
+  isLoading = false,
+  error
 }: TravelsListProps) => {
   const { createTravel } = useCreateTravelAction()
   const actions = useTravelActions()
 
   const navigate = useNavigate()
   const navigateToTravel = (travelId: string) => navigate(`/travels/${travelId}`)
+
+  if (isLoading) {
+    return (
+      <div className={cn('flex gap-4 flex-wrap', className)}>
+        <Skeleton className='h-[146px] w-full rounded-lg' />
+        <Skeleton className='h-[146px] w-full rounded-lg' />
+        <Skeleton className='h-[146px] w-full rounded-lg' />
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className={cn('flex gap-4 flex-wrap', className)}>
+        <div className='rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive'>
+          Не удалось загрузить путешествия
+        </div>
+      </div>
+    )
+  }
 
   if (travels.length === 0) {
     return (

@@ -90,8 +90,8 @@ export const TravelCard = ({
       {actions && showActions && (
         <DropdownActions
           trigger={
-            <Button variant='secondary' size='icon-sm' className='absolute top-2 right-2'>
-              <Ellipsis className='size-5' />
+            <Button variant='secondary' size='icon-xs' className='absolute top-2 right-2'>
+              <Ellipsis />
             </Button>
           }
           actions={actions}

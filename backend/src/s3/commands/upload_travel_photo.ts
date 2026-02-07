@@ -5,15 +5,14 @@ import { randomUUIDv7 } from 'bun'
 
 interface UploadTravelPhotoCommandInput {
   photo: File
-  travelId: string
 }
 
-export const uploadTravelPhoto = async ({ photo, travelId }: UploadTravelPhotoCommandInput) => {
+export const uploadTravelPhoto = async ({ photo }: UploadTravelPhotoCommandInput) => {
   const arrayBuffer = await photo.arrayBuffer()
   const body = Buffer.from(arrayBuffer)
 
   const photoNameHash = randomUUIDv7()
-  const key = `travels/gallery/${travelId}/${photoNameHash}`
+  const key = `travels/gallery/${photoNameHash}`
   const command = new PutObjectCommand({
     Bucket: S3_BUCKET_NAME,
     Key: key,
@@ -23,5 +22,5 @@ export const uploadTravelPhoto = async ({ photo, travelId }: UploadTravelPhotoCo
 
   await s3Client.send(command)
 
-  return `${YANDEX_CLOUD_STORAGE_URL}/${S3_BUCKET_NAME}/travels/gallery/${travelId}/${photoNameHash}`
+  return `${YANDEX_CLOUD_STORAGE_URL}/${S3_BUCKET_NAME}/travels/gallery/${photoNameHash}`
 }

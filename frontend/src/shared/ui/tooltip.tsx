@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { ReactNode } from 'react'
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 
 import { cn } from '@/shared/lib/styles/utils'
@@ -52,4 +53,17 @@ function TooltipContent({
   )
 }
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
+const TooltipComposer = ({
+  children,
+  content,
+  ...props
+}: React.ComponentProps<typeof TooltipContent> & { content: ReactNode }) => {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>{children}</TooltipTrigger>
+      <TooltipContent {...props}>{content}</TooltipContent>
+    </Tooltip>
+  )
+}
+
+export { TooltipComposer, Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }

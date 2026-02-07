@@ -1,11 +1,13 @@
 import { useParams } from 'react-router-dom'
 import { useTravelQuery, TravelCover, TravelGallery } from '@/entities/travel'
-import { Spinner, Badge, Card, CardContent, CardTitle } from '@/shared/ui'
+import { Spinner, Badge, Card, CardContent, CardTitle, Button } from '@/shared/ui'
 import { ExpensesList } from '@/widgets/ExpensesList'
 import { TravelDetailPageEmpty } from './TravelDetailPageEmpty'
+import { useUploadTravelPhotoAction } from '@/features/travel/upload-photo'
 
 import AutoplayPlugin from 'embla-carousel-autoplay'
 import FadePlugin from 'embla-carousel-fade'
+import { Upload } from 'lucide-react'
 
 const MOCK_IMAGES: string[] = [
   'https://avatar.vercel.sh/shadcn1',
@@ -21,8 +23,9 @@ const MOCK_IMAGES: string[] = [
 ] as const
 
 export const TravelDetailPage = () => {
-  const { id } = useParams<{ id: string }>()
-  const { data: travel, isLoading, error } = useTravelQuery(id)
+  const { travelId } = useParams<{ travelId: string }>()
+  const { data: travel, isLoading, error } = useTravelQuery(travelId)
+  const { uploadTravelPhoto } = useUploadTravelPhotoAction()
 
   if (isLoading) {
     return (
@@ -49,7 +52,7 @@ export const TravelDetailPage = () => {
             travelName={travel.name}
             plugins={[
               AutoplayPlugin({
-                delay: 3_000,
+                delay: 6000,
                 active: true,
                 stopOnFocusIn: false,
                 stopOnLastSnap: false,
@@ -60,6 +63,13 @@ export const TravelDetailPage = () => {
           />
         )}
       />
+
+      <div className='flex justify-end'>
+        <Button onClick={() => uploadTravelPhoto(travelId)}>
+          <Upload className='h-5 w-5' aria-hidden={true} />
+          Загрузить фотографию
+        </Button>
+      </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
         <div className='lg:col-span-2 space-y-6'>

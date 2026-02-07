@@ -11,11 +11,11 @@ interface UpdateTravelDto {
 
 export const updateTravelHandler = async (req: BunRequest) => {
   try {
-    const { id } = req.params
+    const { travelId } = req.params
     const body = (await req.json()) as UpdateTravelDto
 
     const result =
-      await postgres`UPDATE travels SET name = ${body.name}, description = ${body.description}, start_date = ${body.startDate}, end_date = ${body.endDate}, tags = ${body.tags}, updated_at = NOW() WHERE id = ${id} RETURNING *`
+      await postgres`UPDATE travels SET name = ${body.name}, description = ${body.description}, start_date = ${body.startDate}, end_date = ${body.endDate}, tags = ${body.tags}, updated_at = NOW() WHERE id = ${travelId} RETURNING *`
 
     if (result.count === 0) {
       return new Response(JSON.stringify({ error: 'Travel not found' }), {

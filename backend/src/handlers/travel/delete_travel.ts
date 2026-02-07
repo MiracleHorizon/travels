@@ -2,11 +2,10 @@ import type { BunRequest } from 'bun'
 import { postgres } from '../../database'
 
 export const deleteTravelHandler = async (req: BunRequest) => {
-  console.log('deleteTravelHandler', req)
   try {
-    const { id } = req.params
+    const { travelId } = req.params
 
-    const result = await postgres`DELETE FROM travels WHERE id = ${id}`
+    const result = await postgres`DELETE FROM travels WHERE id = ${travelId}`
     if (result.rowCount === 0) {
       return new Response(JSON.stringify({ error: 'Travel not found' }), {
         status: 404

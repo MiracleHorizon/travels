@@ -3,7 +3,8 @@ import {
   deleteTravelHandler,
   getTravelHandler,
   getTravelsListHandler,
-  updateTravelHandler
+  updateTravelHandler,
+  uploadTravelPhotoHandler
 } from './handlers/travel'
 import { corsHeaders, injectCORS } from './cors'
 import { createExpenseHandler } from './handlers/expense/create_expense'
@@ -20,10 +21,13 @@ const server = Bun.serve({
         POST: createTravelHandler,
         GET: getTravelsListHandler
       },
-      '/api/v1/travels/:id': {
+      '/api/v1/travels/:travelId': {
         GET: getTravelHandler,
         PATCH: updateTravelHandler,
         DELETE: deleteTravelHandler
+      },
+      '/api/v1/photos/travels/:travelId': {
+        POST: uploadTravelPhotoHandler
       },
       // Расходы
       '/api/v1/expenses/:travelId': {

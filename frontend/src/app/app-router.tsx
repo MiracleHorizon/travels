@@ -43,11 +43,11 @@ export const router = createBrowserRouter([
                 }
               },
               {
-                path: ':id',
+                path: ':travelId',
                 element: <TravelDetailPage />,
                 // TODO: Вынести это в функцию, а то стыдобища какая-то
                 loader: async ({ params }) => {
-                  const response = await fetch(`${API_BASE_URL}/v1/travels/${params.id}`)
+                  const response = await fetch(`${API_BASE_URL}/v1/travels/${params.travelId}`)
                   if (!response.ok) {
                     throw new Error('Travel not found')
                   }

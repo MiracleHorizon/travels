@@ -1,26 +1,31 @@
 import { PutObjectCommand } from '@aws-sdk/client-s3'
-import { S3_BUCKET_NAME, YANDEX_CLOUD_STORAGE_URL } from '../consts'
-import { s3Client } from '../client'
 import { randomUUIDv7 } from 'bun'
+
+import { s3Client } from '../client'
+import { S3_BUCKET_NAME } from '../consts'
+import { getTravelPhotoPath, getPhotoUrl } from '../utils'
 
 interface UploadTravelPhotoCommandInput {
   photo: File
 }
 
 export const uploadTravelPhoto = async ({ photo }: UploadTravelPhotoCommandInput) => {
-  const arrayBuffer = await photo.arrayBuffer()
-  const body = Buffer.from(arrayBuffer)
+  // Преобразуем файл в буфер для загрузки в S3.
+  const fileArrayBuffer = await photo.arrayBuffer()
+  const fileBuffer = Buffer.from(fileArrayBuffer)
 
-  const photoNameHash = randomUUIDv7()
-  const key = `travels/gallery/${photoNameHash}`
+  // Генерируем случайное имя для фотографии и получаем итоговый путь загрузки в S3.
+  const photoName = randomUUIDv7()
+  const photoPath = getTravelPhotoPath(photoName)
+
   const command = new PutObjectCommand({
     Bucket: S3_BUCKET_NAME,
-    Key: key,
-    Body: body,
-    ContentLength: body.length
+    Key: photoPath,
+    Body: fileBuffer,
+    ContentLength: fileBuffer.length
   })
 
   await s3Client.send(command)
 
-  return `${YANDEX_CLOUD_STORAGE_URL}/${S3_BUCKET_NAME}/travels/gallery/${photoNameHash}`
+  return getPhotoUrl(photoPath)
 }

@@ -16,7 +16,6 @@ export interface TravelDetailed extends Travel {
 }
 
 export interface TravelPhoto {
-  id: string
   url: string
   description?: string
 }

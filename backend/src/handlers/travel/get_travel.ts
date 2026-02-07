@@ -13,7 +13,7 @@ export const getTravelHandler = async (req: BunRequest) => {
     }
 
     const photos =
-      await postgres`SELECT id, url, description FROM travel_photos WHERE travel_id = ${travelId} ORDER BY created_at ASC`
+      await postgres`SELECT url, description FROM travel_photos WHERE travel_id = ${travelId} ORDER BY created_at ASC`
 
     const travel = {
       ...result[0],

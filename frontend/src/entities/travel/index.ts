@@ -8,6 +8,8 @@ export type { Travel } from './model/types'
 export { TravelForm } from './ui/TravelForm'
 export { TravelCard } from './ui/TravelCard'
 export { TravelCover } from './ui/TravelCover'
+export { TravelGallery } from './ui/TravelGallery'
+export { TravelPhotoUploadForm } from './ui/TravelPhotoUploadForm'
 
 // Lib
 export { formatTravelDateRange } from './lib/formatters'

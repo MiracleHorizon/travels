@@ -3,8 +3,8 @@ import { postgres } from '../../database'
 
 export const getTravelHandler = async (req: BunRequest) => {
   try {
-    const { id } = req.params
-    const result = await postgres`SELECT * FROM travels WHERE id = ${id}`
+    const { travelId } = req.params
+    const result = await postgres`SELECT * FROM travels WHERE id = ${travelId}`
 
     if (result.rowCount === 0) {
       return new Response(JSON.stringify({ error: 'Travel not found' }), {
@@ -12,9 +12,13 @@ export const getTravelHandler = async (req: BunRequest) => {
       })
     }
 
+    const photos =
+      await postgres`SELECT url, description FROM travel_photos WHERE travel_id = ${travelId} ORDER BY created_at ASC`
+
     const travel = {
       ...result[0],
-      status: result[0].start_date < new Date() ? 'past' : 'upcoming'
+      status: result[0].start_date < new Date() ? 'past' : 'upcoming',
+      photos
     }
 
     return new Response(JSON.stringify(travel), {

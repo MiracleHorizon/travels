@@ -4,21 +4,25 @@ import type { TravelDetailed } from '../model/types'
 
 export const TRAVELS_QUERY_KEY = 'travels'
 
-export const useTravelsQuery = () => {
+interface UseTravelsQueryParams {
+  status?: 'upcoming' | 'past'
+  archived?: boolean
+}
+
+export const useTravelsQuery = ({ status, archived }: UseTravelsQueryParams = {}) => {
   return useQuery({
-    queryKey: [TRAVELS_QUERY_KEY],
+    queryKey: [TRAVELS_QUERY_KEY, status, archived],
     queryFn: async () => {
-      const params = new URLSearchParams()
+      const url = new URL(`${API_BASE_URL}/v1/travels`)
 
-      // if (filter?.status) {
-      //   params.append('status', filter.status)
-      // }
+      if (status !== undefined) {
+        url.searchParams.append('status', status)
+      }
 
-      // if (filter?.archived !== undefined) {
-      //   params.append('archived', String(filter.archived))
-      // }
+      if (archived !== undefined) {
+        url.searchParams.append('archived', String(archived))
+      }
 
-      const url = `${API_BASE_URL}/v1/travels${params.toString() ? `?${params.toString()}` : ''}`
       const response = await fetch(url)
 
       if (!response.ok) {

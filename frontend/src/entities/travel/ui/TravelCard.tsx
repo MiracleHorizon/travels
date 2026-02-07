@@ -45,7 +45,7 @@ export const TravelCard = ({
   return (
     <Card
       className={cn(
-        'group relative w-[340px] max-w-sm pt-0 overflow-hidden',
+        '@container/travel-card group relative w-full overflow-hidden flex flex-row p-0 gap-0',
         onClick && 'cursor-pointer',
         className
       )}
@@ -53,13 +53,39 @@ export const TravelCard = ({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* <div className='absolute inset-0 z-30 aspect-video bg-black/35 group-hover:scale-110 transition-transform duration-500 ease-out' /> */}
+      <div className='relative w-36 shrink-0 overflow-hidden hidden @[600px]/travel-card:block'>
+        <img
+          src='https://avatar.vercel.sh/shadcn3'
+          alt='Travel cover'
+          className='h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out'
+        />
+      </div>
 
-      <img
-        src='https://avatar.vercel.sh/shadcn3'
-        alt='Travel cover'
-        className='relative aspect-video w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out'
-      />
+      <div className='flex flex-col h-full justify-center py-7 flex-1 min-w-0'>
+        <CardHeader className='gap-2 pb-3'>
+          <CardTitle title={name} className='truncate'>
+            {name}
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className='gap-3 flex flex-col pt-0'>
+          <div className='flex items-center gap-2 text-sm text-muted-foreground'>
+            <Calendar className='h-4 w-4 shrink-0' />
+            <span>{formatTravelDateRange(startDate, endDate)}</span>
+          </div>
+
+          {Boolean(tags.length) && (
+            <div className='flex items-center gap-2'>
+              <Tag className='h-4 w-4 shrink-0 text-muted-foreground' />
+              <div className='flex flex-wrap gap-2'>
+                {tags.slice(0, MAX_BADGES_TO_SHOW).map((tag, index) => (
+                  <Badge key={index}>{tag}</Badge>
+                ))}
+              </div>
+            </div>
+          )}
+        </CardContent>
+      </div>
 
       {actions && showActions && (
         <DropdownActions
@@ -72,30 +98,6 @@ export const TravelCard = ({
           onOpenChange={setDropdownOpen}
         />
       )}
-
-      <CardHeader className='gap-3'>
-        <CardTitle title={name} className='truncate'>
-          {name}
-        </CardTitle>
-      </CardHeader>
-
-      <CardContent className='gap-4 flex flex-col'>
-        <div className='flex items-center gap-2 text-sm text-muted-foreground truncate'>
-          <Calendar className='h-4 w-4 shrink-0' />
-          <span>{formatTravelDateRange(startDate, endDate)}</span>
-        </div>
-
-        {Boolean(tags.length) && (
-          <div className='flex items-center gap-2'>
-            <Tag className='h-4 w-4 shrink-0 text-muted-foreground' />
-            <div className='flex flex-wrap gap-2'>
-              {tags.slice(0, MAX_BADGES_TO_SHOW).map((tag, index) => (
-                <Badge key={index}>{tag}</Badge>
-              ))}
-            </div>
-          </div>
-        )}
-      </CardContent>
     </Card>
   )
 }

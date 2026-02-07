@@ -3,7 +3,13 @@ import { TravelsList } from '@/widgets/TravelsList'
 import { Spinner } from '@/shared/ui'
 
 export const TravelsArchivePage = () => {
-  const { data: travels = [], isLoading, error } = useTravelsQuery()
+  const {
+    data: travels = [],
+    isLoading,
+    error
+  } = useTravelsQuery({
+    archived: true
+  })
 
   return (
     <div className='container'>
@@ -25,7 +31,11 @@ export const TravelsArchivePage = () => {
       )}
 
       {!isLoading && !error && (
-        <TravelsList travels={travels} emptyMessage='В архиве пока нет путешествий' />
+        <TravelsList
+          travels={travels}
+          emptyMessage='В архиве пока нет путешествий'
+          allowCreate={false}
+        />
       )}
     </div>
   )

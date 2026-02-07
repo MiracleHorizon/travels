@@ -3,7 +3,13 @@ import { TravelsList } from '@/widgets/TravelsList'
 import { Spinner } from '@/shared/ui'
 
 export const TravelsPlannedPage = () => {
-  const { data: travels = [], isLoading, error } = useTravelsQuery()
+  const {
+    data: travels = [],
+    isLoading,
+    error
+  } = useTravelsQuery({
+    status: 'upcoming'
+  })
 
   return (
     <div className='container'>

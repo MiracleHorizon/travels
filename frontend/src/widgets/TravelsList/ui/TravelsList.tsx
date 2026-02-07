@@ -18,12 +18,14 @@ interface TravelsListProps {
   travels: Travel[]
   className?: string
   emptyMessage?: string
+  allowCreate?: boolean
 }
 
 export const TravelsList = ({
   travels,
   className,
-  emptyMessage = 'Нет путешествий'
+  emptyMessage = 'Нет путешествий',
+  allowCreate = true
 }: TravelsListProps) => {
   const { createTravel } = useCreateTravelAction()
   const actions = useTravelActions()
@@ -43,9 +45,11 @@ export const TravelsList = ({
             Создайте своё первое путешествие, чтобы начать планирование
           </EmptyDescription>
         </EmptyHeader>
-        <EmptyContent>
-          <Button onClick={createTravel}>Новое путешествие</Button>
-        </EmptyContent>
+        {allowCreate && (
+          <EmptyContent>
+            <Button onClick={createTravel}>Новое путешествие</Button>
+          </EmptyContent>
+        )}
       </Empty>
     )
   }

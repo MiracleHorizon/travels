@@ -11,7 +11,6 @@ import { EXPENSE_CHART_CATEGORIES } from '../model/consts'
 import { useBarExpenses } from '../model/useBarExpenses'
 import type { Expense } from '../model/types'
 import { formatCurrency } from '@/shared/lib/format'
-import { memo, useMemo } from 'react'
 
 interface ExpenseBarChartProps {
   expenses: Expense[]
@@ -19,7 +18,7 @@ interface ExpenseBarChartProps {
 
 const chartConfig = EXPENSE_CHART_CATEGORIES
 
-export const ExpenseBarChart = memo(({ expenses }: ExpenseBarChartProps) => {
+export const ExpenseBarChart = ({ expenses }: ExpenseBarChartProps) => {
   const chartData = useBarExpenses(expenses)
 
   if (chartData.length <= 1) {
@@ -60,25 +59,17 @@ export const ExpenseBarChart = memo(({ expenses }: ExpenseBarChartProps) => {
       </ChartContainer>
     </div>
   )
-})
+}
 
 const CustomTooltip = (props: TooltipProps<number, string>) => {
-  const payload = useMemo(() => {
-    if (!props.payload) {
-      return []
-    }
-
-    return (
-      props.payload
-        // Отображаем только категории с суммой больше 0.
+  const payload = !props.payload
+    ? []
+    : props.payload
         .filter(category => category.value && category.value > 0)
-        // Добавляем форматирование суммы с отображением символа валюты.
         .map(category => ({
           ...category,
           value: formatCurrency(category.value, 'RUB')
         }))
-    )
-  }, [props.payload])
 
   // @ts-expect-error - проблема типизация тултипа.
   return <ChartTooltipContent {...props} payload={payload} hideLabel />

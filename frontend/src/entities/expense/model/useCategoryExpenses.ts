@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import type { Expense } from './types'
 
 export interface CategoryExpense {
@@ -12,28 +11,24 @@ interface UseCategoryExpensesParams {
 }
 
 export const useCategoryExpenses = ({ expenses }: UseCategoryExpensesParams) => {
-  const categoryExpenses = useMemo(() => {
-    return expenses
-      .reduce((acc, expense) => {
-        const existing = acc.find(item => item.category === expense.category)
-        if (existing) {
-          existing.amount += +expense.amount
-          existing.count += 1
-        } else {
-          acc.push({
-            category: expense.category,
-            amount: +expense.amount,
-            count: 1
-          })
-        }
-        return acc
-      }, [] as CategoryExpense[])
-      .sort((a, b) => b.amount - a.amount)
-  }, [expenses])
+  const categoryExpenses = expenses
+    .reduce((acc, expense) => {
+      const existing = acc.find(item => item.category === expense.category)
+      if (existing) {
+        existing.amount += +expense.amount
+        existing.count += 1
+      } else {
+        acc.push({
+          category: expense.category,
+          amount: +expense.amount,
+          count: 1
+        })
+      }
+      return acc
+    }, [] as CategoryExpense[])
+    .sort((a, b) => b.amount - a.amount)
 
-  const total = useMemo(() => {
-    return expenses.reduce((sum, expense) => sum + +expense.amount, 0)
-  }, [expenses])
+  const total = expenses.reduce((sum, expense) => sum + +expense.amount, 0)
 
   return { categoryExpenses, total }
 }

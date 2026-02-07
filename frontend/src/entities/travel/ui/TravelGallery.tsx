@@ -8,7 +8,7 @@ import {
   CarouselPrevious
 } from '@/shared/ui'
 
-import { ComponentProps, memo } from 'react'
+import { ComponentProps } from 'react'
 
 interface TravelGalleryProps {
   images: string[]
@@ -20,7 +20,7 @@ interface TravelGalleryProps {
 
 const FALLBACK_IMAGE = 'https://avatar.vercel.sh/shadcn1'
 
-export const TravelGallery = memo(({ images, travelName, ...props }: TravelGalleryProps) => {
+export const TravelGallery = ({ images, travelName, ...props }: TravelGalleryProps) => {
   const imagesToShow = images.length > 0 ? images.slice(0, 10) : [FALLBACK_IMAGE]
 
   return (
@@ -54,4 +54,4 @@ export const TravelGallery = memo(({ images, travelName, ...props }: TravelGalle
       )}
     </Carousel>
   )
-})
+}

@@ -1,5 +1,3 @@
-import { useMemo } from 'react'
-
 import type { Expense } from './types'
 import { format } from 'date-fns'
 import { ru } from 'date-fns/locale'
@@ -17,9 +15,8 @@ interface DayTotal {
 }
 
 export const useBarExpenses = (expenses: Expense[]) => {
-  return useMemo(() => {
-    // Группируем расходы по дням и категориям
-    const dayTotals = expenses.reduce(
+  // Группируем расходы по дням и категориям
+  const dayTotals = expenses.reduce(
       (acc, expense) => {
         // Если даты нет, используем "День 0"
         const day = expense.date || NO_DATE_FLAG
@@ -74,5 +71,4 @@ export const useBarExpenses = (expenses: Expense[]) => {
         dayLabel: `День ${dayNumber} — ${formattedDate}`
       }
     })
-  }, [expenses])
 }

@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react'
 
 import { cn } from '@/shared/lib/styles/utils'
 import { Button } from '@/shared/ui/button'
-import { ComponentPropsWithRef, useCallback, useEffect, useState } from 'react'
+import { ComponentPropsWithRef, useEffect, useState } from 'react'
 
 type CarouselApi = UseEmblaCarouselType[1]
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>
@@ -58,32 +58,24 @@ function Carousel({
   const [canScrollPrev, setCanScrollPrev] = React.useState(false)
   const [canScrollNext, setCanScrollNext] = React.useState(false)
 
-  const onSelect = React.useCallback((api: CarouselApi) => {
+  const onSelect = (api: CarouselApi) => {
     if (!api) return
     setCanScrollPrev(api.canScrollPrev())
     setCanScrollNext(api.canScrollNext())
-  }, [])
+  }
 
-  const scrollPrev = React.useCallback(() => {
-    api?.scrollPrev()
-  }, [api])
+  const scrollPrev = () => api?.scrollPrev()
+  const scrollNext = () => api?.scrollNext()
 
-  const scrollNext = React.useCallback(() => {
-    api?.scrollNext()
-  }, [api])
-
-  const handleKeyDown = React.useCallback(
-    (event: React.KeyboardEvent<HTMLDivElement>) => {
-      if (event.key === 'ArrowLeft') {
-        event.preventDefault()
-        scrollPrev()
-      } else if (event.key === 'ArrowRight') {
-        event.preventDefault()
-        scrollNext()
-      }
-    },
-    [scrollPrev, scrollNext]
-  )
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'ArrowLeft') {
+      event.preventDefault()
+      scrollPrev()
+    } else if (event.key === 'ArrowRight') {
+      event.preventDefault()
+      scrollNext()
+    }
+  }
 
   React.useEffect(() => {
     if (!api || !setApi) return
@@ -251,25 +243,20 @@ const useDotButton = (): UseDotButtonType => {
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
 
-  const onDotButtonClick = useCallback(
-    (index: number) => {
-      if (!api) return
-      api.scrollTo(index)
-    },
-    [api]
-  )
-
-  const onInit = useCallback(() => {
+  const onDotButtonClick = (index: number) => {
     if (!api) return
+    api.scrollTo(index)
+  }
 
+  const onInit = () => {
+    if (!api) return
     setScrollSnaps(api.scrollSnapList())
-  }, [api])
+  }
 
-  const onSelect = useCallback(() => {
+  const onSelect = () => {
     if (!api) return
-
     setSelectedIndex(api.selectedScrollSnap())
-  }, [api])
+  }
 
   useEffect(() => {
     if (!api) return

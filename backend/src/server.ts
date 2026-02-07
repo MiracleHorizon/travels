@@ -3,6 +3,7 @@ import {
   deleteTravelHandler,
   getTravelHandler,
   getTravelsListHandler,
+  toggleTravelArchiveHandler,
   updateTravelHandler,
   uploadTravelPhotoHandler
 } from './handlers/travel'
@@ -25,6 +26,9 @@ const server = Bun.serve({
         GET: getTravelHandler,
         PATCH: updateTravelHandler,
         DELETE: deleteTravelHandler
+      },
+      '/api/v1/travels/:travelId/archive': {
+        PATCH: toggleTravelArchiveHandler
       },
       '/api/v1/photos/travels/:travelId': {
         POST: uploadTravelPhotoHandler

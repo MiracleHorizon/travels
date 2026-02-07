@@ -26,6 +26,7 @@ interface ExpenseCardProps {
   locale: string
   size?: 'default' | 'sm'
   actions?: DropdownAction[]
+  showCategoryBadge?: boolean
 }
 
 export const ExpenseCard = ({
@@ -37,7 +38,8 @@ export const ExpenseCard = ({
   description,
   locale,
   size = 'default',
-  actions
+  actions,
+  showCategoryBadge = false
 }: ExpenseCardProps) => {
   const formattedDate = date
     ? new Date(date).toLocaleDateString(locale, {
@@ -66,7 +68,7 @@ export const ExpenseCard = ({
       <ItemContent>
         <ItemTitle>
           {title}
-          <ExpenseBadge category={category} />
+          {showCategoryBadge && <ExpenseBadge category={category} />}
 
           {formattedDate && (
             <>

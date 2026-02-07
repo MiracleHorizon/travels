@@ -1,4 +1,9 @@
-import { ExpenseCard, useExpensesQuery, ExpenseBarChart } from '@/entities/expense'
+import {
+  useExpensesQuery,
+  ExpenseBarChart,
+  ExpenseCard,
+  ExpenseCategorySection
+} from '@/entities/expense'
 import {
   Card,
   CardContent,
@@ -9,11 +14,13 @@ import {
   Empty,
   EmptyContent,
   EmptyHeader,
-  EmptyDescription
+  EmptyDescription,
+  Separator
 } from '@/shared/ui'
 import { Plus, RefreshCcw } from 'lucide-react'
 import { ExpensesListEmpty } from './ExpensesListEmpty'
 import { useExpenseActions } from '../model/useExpenseActions'
+import { useExpensesByCategory } from '../model/useExpensesByCategory'
 import { formatCurrency } from '@/shared/lib/format'
 import { useCreateExpenseAction } from '@/features/expense/create'
 
@@ -27,6 +34,7 @@ const currency = 'RUB'
 
 export const ExpensesList = ({ travelId }: ExpensesListProps) => {
   const { data: expenses, isLoading, isSuccess, error, refetch } = useExpensesQuery({ travelId })
+  const { groups, categoriesWithExpenses } = useExpensesByCategory({ expenses })
 
   const { createExpense } = useCreateExpenseAction({ travelId })
   const actions = useExpenseActions({ travelId })
@@ -77,18 +85,31 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
           </Button>
         </div>
 
-        {!isEmpty ? (
-          <div className='flex flex-col p-4 space-y-6'>
+        {isEmpty ? (
+          <ExpensesListEmpty onAddExpense={createExpense} />
+        ) : (
+          <div className='flex flex-col'>
             <ExpenseBarChart expenses={expenses} />
 
-            <div className='space-y-4'>
-              {expenses.map(expense => (
-                <ExpenseCard
-                  {...expense}
-                  key={expense.id}
-                  actions={actions(expense)}
+            <Separator className='mt-6' />
+
+            <div className='space-y-1 my-4 -mx-1'>
+              {categoriesWithExpenses.map((category, index) => (
+                <ExpenseCategorySection
+                  key={category}
                   locale={locale}
-                  size='sm'
+                  category={category}
+                  currency={currency}
+                  expenses={groups.get(category)}
+                  defaultOpen={index === 0}
+                  renderItem={expense => (
+                    <ExpenseCard
+                      {...expense}
+                      size='sm'
+                      locale={locale}
+                      actions={actions(expense)}
+                    />
+                  )}
                 />
               ))}
             </div>
@@ -97,8 +118,6 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
               <TotalAmount amount={formatCurrency(total, currency)} />
             </div>
           </div>
-        ) : (
-          <ExpensesListEmpty onAddExpense={createExpense} />
         )}
       </CardContent>
     </Card>

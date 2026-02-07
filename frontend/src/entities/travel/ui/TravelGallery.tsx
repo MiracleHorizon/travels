@@ -22,7 +22,7 @@ export const TravelGallery = memo(({ images, travelName, ...props }: TravelGalle
   return (
     <Carousel {...props} className={cn('group', props.onClick && 'cursor-pointer')}>
       <CarouselContent>
-        {images.map((image, index) => (
+        {images.slice(0, 10).map((image, index) => (
           <CarouselItem key={index}>
             <div className='h-[400px] w-full'>
               <img
@@ -35,8 +35,14 @@ export const TravelGallery = memo(({ images, travelName, ...props }: TravelGalle
         ))}
       </CarouselContent>
 
-      <CarouselPrevious variant='secondary' className='left-4 h-11 opacity-0 transition-opacity group-hover:opacity-100' />
-      <CarouselNext variant='secondary' className='right-4 h-11 opacity-0 transition-opacity group-hover:opacity-100' />
+      <CarouselPrevious
+        variant='secondary'
+        className='left-4 h-11 opacity-0 transition-opacity group-hover:opacity-100'
+      />
+      <CarouselNext
+        variant='secondary'
+        className='right-4 h-11 opacity-0 transition-opacity group-hover:opacity-100'
+      />
 
       {images.length > 1 && <CarouselDots />}
     </Carousel>

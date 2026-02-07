@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { API_BASE_URL } from '@/shared/api'
-import type { Travel } from '../model/types'
+import type { TravelDetailed } from '../model/types'
 
 export const TRAVELS_QUERY_KEY = 'travels'
 
@@ -31,7 +31,7 @@ export const useTravelsQuery = () => {
 }
 
 export const useTravelQuery = (travelId: string) => {
-  return useQuery<Travel>({
+  return useQuery<TravelDetailed>({
     queryKey: [TRAVELS_QUERY_KEY, travelId],
     queryFn: async () => {
       const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`)

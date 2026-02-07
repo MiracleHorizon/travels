@@ -9,19 +9,6 @@ import AutoplayPlugin from 'embla-carousel-autoplay'
 import FadePlugin from 'embla-carousel-fade'
 import { Upload } from 'lucide-react'
 
-const MOCK_IMAGES: string[] = [
-  'https://avatar.vercel.sh/shadcn1',
-  'https://avatar.vercel.sh/shadcn2',
-  'https://avatar.vercel.sh/shadcn3',
-  'https://avatar.vercel.sh/shadcn4',
-  'https://avatar.vercel.sh/shadcn5',
-  'https://avatar.vercel.sh/shadcn6',
-  'https://avatar.vercel.sh/shadcn7',
-  'https://avatar.vercel.sh/shadcn8',
-  'https://avatar.vercel.sh/shadcn9',
-  'https://avatar.vercel.sh/shadcn10'
-] as const
-
 export const TravelDetailPage = () => {
   const { travelId } = useParams<{ travelId: string }>()
   const { data: travel, isLoading, error } = useTravelQuery(travelId)
@@ -48,7 +35,7 @@ export const TravelDetailPage = () => {
         isPast={travel.status === 'past'}
         renderGallery={() => (
           <TravelGallery
-            images={MOCK_IMAGES}
+            images={travel.photos.map(photo => photo.url)}
             travelName={travel.name}
             plugins={[
               AutoplayPlugin({

@@ -13,6 +13,7 @@ interface GetGeoCoderLocationBody {
   kinds: GeocoderKind[]
 }
 
+// https://yandex.ru/maps-api/docs/geocoder-api/quickstart.html
 export const getGeoCoderLocationHandler = async (req: BunRequest) => {
   try {
     const body = (await req.json()) as GetGeoCoderLocationBody

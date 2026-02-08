@@ -30,7 +30,7 @@ export * from './collapsible'
 export * from './avatar'
 
 // Собственные компоненты
-export * from './FullscreanLoader'
+export * from './FullscreenLoader'
 export * from './FilePreviewItem'
 export * from './DateRangePicker'
 export * from './FileDropzone'

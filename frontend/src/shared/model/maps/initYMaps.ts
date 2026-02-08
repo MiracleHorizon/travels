@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import { YMaps3Type } from '../context/YmapsContext'
+import { YMapsType } from './YmapsContext'
 
 const createNewScript = (src: string) => {
   const script = document.createElement('script')
@@ -15,7 +15,9 @@ const createNewScript = (src: string) => {
   return script
 }
 
-export const initYmaps3 = async (apiKey: string): Promise<YMaps3Type> =>
+// TODO: Комментарии
+// TODO: Вынести в пакет
+export const initYMaps = async (apiKey: string): Promise<YMapsType> =>
   new Promise((resolve, reject) => {
     if (window.ymaps3) {
       const ymaps = window.ymaps3

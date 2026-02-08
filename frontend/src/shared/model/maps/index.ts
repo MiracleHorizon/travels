@@ -5,4 +5,4 @@ declare global {
 }
 
 // TODO: Вынести код в пакет
-export { YandexMap } from './components/YandexMap'
+export { YMap } from './YMap'

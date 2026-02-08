@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 
-import { YMaps3Context } from './YmapsContext'
+import { YMapsContext } from './YmapsContext'
 
-export const useYmaps3 = () => {
-  const { reactify, ymaps, controlsModule } = useContext(YMaps3Context)
+export const useYMaps = () => {
+  const { reactify, ymaps, controlsModule } = useContext(YMapsContext)
 
   if (!reactify || !ymaps || !controlsModule) {
     const {

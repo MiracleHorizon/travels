@@ -23,7 +23,8 @@ export const useCreateExpenseMutation = ({
     mutationFn: async (data: CreateExpenseDto) => {
       const response = await fetch(`${API_BASE_URL}/v1/expenses/${travelId}`, {
         method: 'POST',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       })
 
       if (!response.ok) {

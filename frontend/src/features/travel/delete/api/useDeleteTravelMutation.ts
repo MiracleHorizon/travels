@@ -11,7 +11,8 @@ export const useDeleteTravelMutation = ({
   return useMutation({
     mutationFn: async (travelId: string) => {
       await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       })
     },
     onSuccess,

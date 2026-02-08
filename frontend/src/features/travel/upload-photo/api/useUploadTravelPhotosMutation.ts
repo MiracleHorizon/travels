@@ -27,7 +27,8 @@ export const useUploadTravelPhotosMutation = ({
 
       await fetch(`${API_BASE_URL}/v1/photos/travels/${travelId}`, {
         method: 'POST',
-        body: formData
+        body: formData,
+        credentials: 'include'
       })
     },
     onSuccess,

@@ -1,15 +1,27 @@
-import { randomUUIDv7, type BunRequest } from 'bun'
+import { randomUUIDv7 } from 'bun'
 import { postgres } from '../../database'
 import { uploadTravelPhoto } from '../../s3'
+import { withAuth } from '../../middlewares/with_auth'
 
-export const uploadTravelPhotoHandler = async (req: BunRequest) => {
+export const uploadTravelPhotoHandler = withAuth(async req => {
+  const userId = req.userId
+
   try {
     const { travelId } = req.params
 
-    // Проверяем наличие путешествия в базе.
-    const result = await postgres`SELECT * FROM travels WHERE id = ${travelId}`
+    // Проверяем наличие путешествия в базе и что оно принадлежит пользователю
+    const result = await postgres`
+      SELECT * FROM travels 
+      WHERE id = ${travelId} AND user_id = ${userId}
+    `
+
     if (result.rowCount === 0) {
-      return new Response(JSON.stringify({ error: 'Travel not found' }), { status: 404 })
+      return new Response(JSON.stringify({ error: 'Travel not found or access denied' }), {
+        status: 404,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
     }
 
     // TODO: fastify/busboy
@@ -41,4 +53,4 @@ export const uploadTravelPhotoHandler = async (req: BunRequest) => {
       status: 500
     })
   }
-}
+})

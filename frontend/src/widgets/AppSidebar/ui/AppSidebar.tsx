@@ -16,6 +16,7 @@ import {
 import { Plus } from 'lucide-react'
 import { ComponentPropsWithoutRef } from 'react'
 import { useCreateTravelAction } from '@/features/travel/create'
+import { UserMenu } from './UserMenu'
 
 export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
   const { createTravel } = useCreateTravelAction()
@@ -63,6 +64,7 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
 
       <SidebarFooter>
         <ThemeToggle />
+        <UserMenu />
       </SidebarFooter>
     </Sidebar>
   )

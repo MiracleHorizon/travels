@@ -1,0 +1,20 @@
+import { toast } from 'sonner'
+import { useLoginMutation } from '../api/useLoginMutation'
+import { useNavigate } from 'react-router-dom'
+
+export const useLogin = () => {
+  const navigate = useNavigate()
+
+  return useLoginMutation({
+    onSuccess: () => {
+      navigate('/travels/planned', {
+        replace: true
+      })
+    },
+    onError: () => {
+      toast.error('Не удалось войти', {
+        description: 'Пожалуйста, попробуйте еще раз'
+      })
+    }
+  })
+}

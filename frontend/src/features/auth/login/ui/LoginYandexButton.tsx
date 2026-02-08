@@ -1,0 +1,23 @@
+import { Button } from '@/shared/ui'
+import { buildOAuthLoginUrl } from '../model/buildOAuthLoginUrl'
+import { OAUTH_PROVIDER } from '../model/consts'
+
+export const LoginYandexButton = () => {
+  const handleYandexAuth = () => {
+    window.open(buildOAuthLoginUrl(OAUTH_PROVIDER.YANDEX), '_self')
+  }
+
+  return (
+    <Button variant='outline' size='lg' className='gap-3' onClick={handleYandexAuth}>
+      <svg width='16' height='16' fill='none' viewBox='0 0 16 16' className='size-5 shrink-0'>
+        <path
+          fill='currentColor'
+          fillRule='evenodd'
+          d='M13.5 8a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0M15 8A7 7 0 1 1 1 8a7 7 0 0 1 14 0M6.136 5.103a.75.75 0 0 0-1.272.795l2.044 3.27c.223.357.342.77.342 1.192v1.14a.75.75 0 0 0 1.5 0v-1.14a3.75 3.75 0 0 0-.57-1.987zm5 .795a.75.75 0 1 0-1.272-.795L8.77 6.853a.75.75 0 0 0 1.272.795z'
+          clipRule='evenodd'
+        />
+      </svg>
+      Войти через Яндекс
+    </Button>
+  )
+}

@@ -1,3 +1,4 @@
 export const enum OAUTH_PROVIDER {
-  YANDEX = 'yandex'
+  YANDEX = 'yandex',
+  GOOGLE = 'google'
 }

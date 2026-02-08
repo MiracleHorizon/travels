@@ -4,3 +4,4 @@ export { OAUTH_PROVIDER } from './model/consts'
 
 // UI
 export { LoginYandexButton } from './ui/LoginYandexButton'
+export { LoginGoogleButton } from './ui/LoginGoogleButton'

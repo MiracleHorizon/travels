@@ -9,7 +9,7 @@ export const LoginYandexButton = () => {
   }
 
   return (
-    <Button variant='secondary' size='lg' className='gap-3' onClick={handleYandexAuth}>
+    <Button variant='secondary' size='lg' className='gap-2 w-full' onClick={handleYandexAuth}>
       <LogoYandex />
       Войти с Яндекс ID
     </Button>

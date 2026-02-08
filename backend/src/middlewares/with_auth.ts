@@ -1,6 +1,13 @@
 import { postgres } from '../database'
 import type { BunRequest } from 'bun'
-import { YANDEX_OAUTH_CONFIG, type YandexProfile, type YandexTokensResponse } from '../domains/auth'
+import {
+  YANDEX_OAUTH_CONFIG,
+  type YandexProfile,
+  type YandexTokensResponse,
+  GOOGLE_OAUTH_CONFIG,
+  type GoogleProfile,
+  type GoogleTokensResponse
+} from '../domains/auth'
 
 export interface AuthenticatedRequest extends BunRequest {
   userId: string
@@ -22,12 +29,7 @@ export const withAuth = (handler: Handler) => {
     // Если токен протух, пытаемся обновить
     if (!userId) {
       // Получаем старый токен из cookie
-      const cookie = req.headers
-        .get('cookie')
-        ?.split('; ')
-        .find(cookie => cookie.startsWith('access_token='))
-
-      const oldAccessToken = cookie?.split('=')[1]
+      const oldAccessToken = getAccessToken(req)
 
       if (!oldAccessToken) {
         return new Response(JSON.stringify({ error: 'Unauthorized' }), {
@@ -112,23 +114,10 @@ export const authenticateUser = async (req: BunRequest): Promise<string | null> 
   }
 
   try {
-    // Проверяем токен через Яндекс API
-    const response = await fetch('https://login.yandex.ru/info?format=json', {
-      headers: {
-        Authorization: `OAuth ${accessToken}`
-      }
-    })
-
-    if (response.ok) {
-      const userInfo = (await response.json()) as YandexProfile
-      return userInfo.id
-    }
-
-    // Токен протух - пытаемся обновить через refresh_token
-    // Сначала находим пользователя по старому access_token
+    // Сначала находим пользователя по токену, чтобы узнать провайдера
     const userResult = await postgres`
-      SELECT id FROM users 
-      WHERE access_token = ${accessToken} AND provider = 'yandex'
+      SELECT id, provider FROM users 
+      WHERE access_token = ${accessToken}
     `
 
     if (userResult.length === 0) {
@@ -136,7 +125,35 @@ export const authenticateUser = async (req: BunRequest): Promise<string | null> 
     }
 
     const userId = userResult[0].id as string
-    const newAccessToken = await refreshAccessToken(userId, 'yandex')
+    const provider = userResult[0].provider as string
+
+    // Проверяем токен через API провайдера
+    if (provider === 'yandex') {
+      const response = await fetch('https://login.yandex.ru/info?format=json', {
+        headers: {
+          Authorization: `OAuth ${accessToken}`
+        }
+      })
+
+      if (response.ok) {
+        const userInfo = (await response.json()) as YandexProfile
+        return userInfo.id
+      }
+    } else if (provider === 'google') {
+      const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (response.ok) {
+        const userInfo = (await response.json()) as GoogleProfile
+        return userInfo.id
+      }
+    }
+
+    // Токен протух - пытаемся обновить через refresh_token
+    const newAccessToken = await refreshAccessToken(userId, provider)
 
     if (newAccessToken) {
       return userId
@@ -180,32 +197,63 @@ export const refreshAccessToken = async (
 
     const refreshToken = result[0].refresh_token as string
 
-    // Обновляем токен через Яндекс API
-    const response = await fetch('https://oauth.yandex.ru/token', {
-      method: 'POST',
-      body: new URLSearchParams({
-        grant_type: 'refresh_token',
-        refresh_token: refreshToken,
-        client_id: YANDEX_OAUTH_CONFIG.clientId,
-        client_secret: YANDEX_OAUTH_CONFIG.clientSecret
-      }),
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
+    let accessToken: string
+    let newRefreshToken: string | undefined
 
-    if (!response.ok) {
+    if (provider === 'yandex') {
+      // Обновляем токен через Яндекс API
+      const response = await fetch('https://oauth.yandex.ru/token', {
+        method: 'POST',
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+          client_id: YANDEX_OAUTH_CONFIG.clientId,
+          client_secret: YANDEX_OAUTH_CONFIG.clientSecret
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+
+      if (!response.ok) {
+        return null
+      }
+
+      const tokens = (await response.json()) as YandexTokensResponse
+      accessToken = tokens.access_token
+      newRefreshToken = tokens.refresh_token
+    } else if (provider === 'google') {
+      // Обновляем токен через Google API
+      const response = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        body: new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: refreshToken,
+          client_id: GOOGLE_OAUTH_CONFIG.clientId,
+          client_secret: GOOGLE_OAUTH_CONFIG.clientSecret
+        }),
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+
+      if (!response.ok) {
+        return null
+      }
+
+      const tokens = (await response.json()) as GoogleTokensResponse
+      accessToken = tokens.access_token
+      newRefreshToken = tokens.refresh_token
+    } else {
       return null
     }
-
-    const tokens = (await response.json()) as YandexTokensResponse
 
     // Обновляем токены в БД
     const updateResult = await postgres`
       UPDATE users 
       SET 
-        access_token = ${tokens.access_token},
-        refresh_token = ${tokens.refresh_token || refreshToken},
+        access_token = ${accessToken},
+        refresh_token = ${newRefreshToken || refreshToken},
         updated_at = NOW()
       WHERE id = ${userId} AND provider = ${provider}
     `
@@ -214,7 +262,7 @@ export const refreshAccessToken = async (
       return null
     }
 
-    return tokens.access_token
+    return accessToken
   } catch (error) {
     console.error('Failed to refresh token:', error)
     return null

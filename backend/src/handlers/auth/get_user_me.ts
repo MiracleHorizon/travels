@@ -1,11 +1,65 @@
 import { postgres } from '../../database'
 import { authenticateUser, getAccessToken, refreshAccessToken } from '../../middlewares/with_auth'
 import type { BunRequest } from 'bun'
-import type { YandexProfile } from '../../domains/auth'
+import type { YandexProfile, GoogleProfile } from '../../domains/auth'
 
 const DEFAULT_AVATAR_ID = '131652443'
 const getYandexUserAvatarUrl = (avatarId: string | undefined) => {
   return `https://avatars.yandex.net/get-yapic/${avatarId ?? DEFAULT_AVATAR_ID}/islands-200`
+}
+
+/**
+ * Получает информацию о пользователе от провайдера
+ */
+const fetchUserProfile = async (
+  accessToken: string,
+  provider: string
+): Promise<{ id: string; displayName: string; email?: string; avatar?: string } | null> => {
+  try {
+    if (provider === 'yandex') {
+      const response = await fetch('https://login.yandex.ru/info?format=json', {
+        headers: {
+          Authorization: `OAuth ${accessToken}`
+        }
+      })
+
+      if (!response.ok) {
+        return null
+      }
+
+      const profile = (await response.json()) as YandexProfile
+
+      return {
+        id: profile.id,
+        displayName: profile.display_name ?? profile.real_name ?? profile.login,
+        email: profile.default_email,
+        avatar: getYandexUserAvatarUrl(profile.default_avatar_id)
+      }
+    } else if (provider === 'google') {
+      const response = await fetch('https://www.googleapis.com/oauth2/v2/userinfo', {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      })
+
+      if (!response.ok) {
+        return null
+      }
+
+      const profile = (await response.json()) as GoogleProfile
+
+      return {
+        id: profile.id,
+        displayName: profile.name ?? profile.email,
+        email: profile.email,
+        avatar: profile.picture
+      }
+    }
+
+    return null
+  } catch {
+    return null
+  }
 }
 
 /**
@@ -56,20 +110,14 @@ export const getUserMeHandler = async (req: BunRequest): Promise<Response> => {
       }
 
       // Получаем информацию о пользователе с новым токеном
-      const response = await fetch('https://login.yandex.ru/info?format=json', {
-        headers: {
-          Authorization: `OAuth ${newAccessToken}`
-        }
-      })
+      const profile = await fetchUserProfile(newAccessToken, provider)
 
-      if (!response.ok) {
+      if (!profile) {
         return new Response(JSON.stringify({ error: 'Failed to get user info' }), {
           status: 401,
           headers: { 'Content-Type': 'application/json' }
         })
       }
-
-      const profile = (await response.json()) as YandexProfile
 
       // Устанавливаем новый cookie
       const setCookieValue = `access_token=${newAccessToken}; Path=/; Max-Age=${60 * 60 * 24 * 365}; SameSite=Lax; HttpOnly; Secure`
@@ -77,9 +125,9 @@ export const getUserMeHandler = async (req: BunRequest): Promise<Response> => {
       return new Response(
         JSON.stringify({
           id: profile.id,
-          displayName: profile.display_name ?? profile.real_name ?? profile.login,
-          email: profile.default_email,
-          avatar: getYandexUserAvatarUrl(profile.default_avatar_id)
+          displayName: profile.displayName,
+          email: profile.email,
+          avatar: profile.avatar
         }),
         {
           status: 200,
@@ -101,27 +149,37 @@ export const getUserMeHandler = async (req: BunRequest): Promise<Response> => {
       })
     }
 
-    const response = await fetch('https://login.yandex.ru/info?format=json', {
-      headers: {
-        Authorization: `OAuth ${accessToken}`
-      }
-    })
+    // Получаем провайдера из БД
+    const userResult = await postgres`
+      SELECT provider FROM users 
+      WHERE id = ${userId}
+    `
 
-    if (!response.ok) {
+    if (userResult.length === 0) {
+      return new Response(JSON.stringify({ error: 'User not found' }), {
+        status: 404,
+        headers: { 'Content-Type': 'application/json' }
+      })
+    }
+
+    const provider = userResult[0].provider as string
+
+    // Получаем профиль пользователя
+    const profile = await fetchUserProfile(accessToken, provider)
+
+    if (!profile) {
       return new Response(JSON.stringify({ error: 'Failed to get user info' }), {
         status: 401,
         headers: { 'Content-Type': 'application/json' }
       })
     }
 
-    const profile = (await response.json()) as YandexProfile
-
     return new Response(
       JSON.stringify({
         id: profile.id,
-        displayName: profile.display_name ?? profile.real_name ?? profile.login,
-        email: profile.default_email,
-        avatar: getYandexUserAvatarUrl(profile.default_avatar_id)
+        displayName: profile.displayName,
+        email: profile.email,
+        avatar: profile.avatar
       }),
       {
         status: 200,

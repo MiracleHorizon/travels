@@ -1,5 +1,5 @@
 import { useUser } from '@/entities/user'
-import { LoginYandexButton } from '@/features/auth/login'
+import { LoginYandexButton, LoginGoogleButton } from '@/features/auth/login'
 import { FullscreanLoader } from '@/shared/ui'
 import { Navigate } from 'react-router-dom'
 
@@ -18,8 +18,9 @@ export const LoginPage = () => {
 
   return (
     <div className='min-h-screen w-full flex items-center justify-center'>
-      <div className='container flex flex-col items-center gap-6'>
+      <div className='container flex flex-col items-center gap-2 w-[190px]'>
         <LoginYandexButton />
+        <LoginGoogleButton />
       </div>
     </div>
   )

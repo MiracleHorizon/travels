@@ -1,5 +1,5 @@
 import { useLogin, OAUTH_PROVIDER } from '@/features/auth/login'
-import { LogoYandex } from '@/shared/ui'
+import { LogoYandex, LogoGoogle } from '@/shared/ui'
 import { useEffect } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -36,15 +36,33 @@ export const LoginCallbackPage = () => {
     )
   }
 
-  return (
-    <div className='min-h-screen flex items-center justify-center'>
-      {/* TODO: Входим через разных провайдеров */}
-      <div className='min-h-screen flex items-center justify-center'>
-        <span className='text-muted-foreground'>Входим через</span>
+  const renderProviderLogo = () => {
+    if (provider === OAUTH_PROVIDER.YANDEX) {
+      return (
         <div className='ml-1 flex items-center gap-0.5'>
           <LogoYandex className='size-5' />
           <span className='leading-5 text-md font-medium mb-0.5'>ндекс</span>
         </div>
+      )
+    }
+
+    if (provider === OAUTH_PROVIDER.GOOGLE) {
+      return (
+        <div className='ml-1 flex items-center gap-2'>
+          <LogoGoogle className='size-5' />
+          <span className='leading-5 text-md font-medium'>Google</span>
+        </div>
+      )
+    }
+
+    return null
+  }
+
+  return (
+    <div className='min-h-screen flex items-center justify-center'>
+      <div className='flex items-center'>
+        <span className='text-muted-foreground'>Входим через</span>
+        {renderProviderLogo()}
         <span className='text-muted-foreground'>…</span>
       </div>
     </div>

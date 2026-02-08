@@ -44,8 +44,7 @@ const YMapComponent = ({
 
       <YMapListener layer='any' onClick={(_object, event) => onClick?.(event)} />
 
-      <YMapControls orientation='vertical' position='bottom right'>
-        {/* <YMapGeolocationControl /> */}
+      <YMapControls orientation='vertical' position='right'>
         <YMapZoomControl />
       </YMapControls>
     </YMap>

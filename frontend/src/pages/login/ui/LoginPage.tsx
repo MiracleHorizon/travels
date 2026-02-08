@@ -1,6 +1,6 @@
 import { useUser } from '@/entities/user'
 import { LoginYandexButton, LoginGoogleButton } from '@/features/auth/login'
-import { FullscreanLoader } from '@/shared/ui'
+import { FullscreenLoader } from '@/shared/ui'
 import { Navigate } from 'react-router-dom'
 
 export const LoginPage = () => {
@@ -9,7 +9,7 @@ export const LoginPage = () => {
   })
 
   if (isPending) {
-    return <FullscreanLoader />
+    return <FullscreenLoader />
   }
 
   if (user) {

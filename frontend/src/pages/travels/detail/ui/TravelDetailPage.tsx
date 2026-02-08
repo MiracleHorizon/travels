@@ -1,13 +1,14 @@
 import { useParams } from 'react-router-dom'
+import { MapPin, Upload } from 'lucide-react'
+
+import AutoplayPlugin from 'embla-carousel-autoplay'
+import FadePlugin from 'embla-carousel-fade'
+
 import { useTravelQuery, TravelCover, TravelGallery } from '@/entities/travel'
 import { Spinner, Badge, Card, CardContent, CardTitle, Button } from '@/shared/ui'
 import { ExpensesList } from '@/widgets/ExpensesList'
 import { TravelDetailPageEmpty } from './TravelDetailPageEmpty'
 import { useUploadTravelPhotoAction } from '@/features/travel/upload-photo'
-
-import AutoplayPlugin from 'embla-carousel-autoplay'
-import FadePlugin from 'embla-carousel-fade'
-import { Upload } from 'lucide-react'
 
 export const TravelDetailPage = () => {
   const { travelId } = useParams<{ travelId: string }>()
@@ -51,8 +52,13 @@ export const TravelDetailPage = () => {
         )}
       />
 
-      <div className='flex justify-end'>
-        <Button onClick={() => uploadTravelPhoto(travelId)}>
+      <div className='flex justify-end gap-2'>
+        <Button variant='secondary' size='sm'>
+          <MapPin className='h-5 w-5' aria-hidden={true} />
+          Показать на карте
+        </Button>
+
+        <Button size='sm' onClick={() => uploadTravelPhoto(travelId)}>
           <Upload className='h-5 w-5' aria-hidden={true} />
           Загрузить фотографию
         </Button>

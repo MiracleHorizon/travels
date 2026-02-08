@@ -14,6 +14,7 @@ import {
   updateExpenseHandler
 } from './handlers/expense'
 import { getUserByCodeHandler, getUserMeHandler, logoutHandler } from './handlers/auth'
+import { getGeoCoderCoordsHandler, getGeoCoderLocationHandler } from './handlers/geo'
 import { corsHeaders, injectCORS } from './cors'
 
 // TODO: Механизм мидлваров
@@ -30,6 +31,13 @@ const server = Bun.serve({
       },
       '/api/auth/logout': {
         POST: logoutHandler
+      },
+      // Геокодер
+      '/api/v1/geo/coords': {
+        POST: getGeoCoderCoordsHandler
+      },
+      '/api/v1/geo/location': {
+        POST: getGeoCoderLocationHandler
       },
       // Путешествие
       '/api/v1/travels': {

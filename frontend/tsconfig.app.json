@@ -1,7 +1,9 @@
 {
-  "include": ["env.d.ts", "src/**/*", "src/**/*.tsx"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.tsx", "vite-env.d.ts"],
   "compilerOptions": {
     "typeRoots": ["./node_modules/@types", "./node_modules/@yandex/ymaps3-types"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "baseUrl": ".",
     "esModuleInterop": true,

@@ -1,12 +1,18 @@
 import { useParams } from 'react-router-dom'
-import { useTravelQuery, TravelCover } from '@/entities/travel'
-import { Spinner, Badge, Card, CardContent, CardTitle } from '@/shared/ui'
+import { useTravelQuery, TravelCover, TravelGallery } from '@/entities/travel'
+import { Spinner, Badge, Card, CardContent, CardTitle, Button } from '@/shared/ui'
 import { ExpensesList } from '@/widgets/ExpensesList'
 import { TravelDetailPageEmpty } from './TravelDetailPageEmpty'
+import { useUploadTravelPhotoAction } from '@/features/travel/upload-photo'
+
+import AutoplayPlugin from 'embla-carousel-autoplay'
+import FadePlugin from 'embla-carousel-fade'
+import { Upload } from 'lucide-react'
 
 export const TravelDetailPage = () => {
-  const { id } = useParams<{ id: string }>()
-  const { data: travel, isLoading, error } = useTravelQuery(id)
+  const { travelId } = useParams<{ travelId: string }>()
+  const { data: travel, isLoading, error } = useTravelQuery(travelId)
+  const { uploadTravelPhoto } = useUploadTravelPhotoAction()
 
   if (isLoading) {
     return (
@@ -27,7 +33,30 @@ export const TravelDetailPage = () => {
         startDate={travel.start_date}
         endDate={travel.end_date}
         isPast={travel.status === 'past'}
+        renderGallery={() => (
+          <TravelGallery
+            images={travel.photos.map(photo => photo.url)}
+            travelName={travel.name}
+            plugins={[
+              AutoplayPlugin({
+                delay: 6000,
+                active: true,
+                stopOnFocusIn: false,
+                stopOnLastSnap: false,
+                stopOnInteraction: false
+              }),
+              FadePlugin()
+            ]}
+          />
+        )}
       />
+
+      <div className='flex justify-end'>
+        <Button onClick={() => uploadTravelPhoto(travelId)}>
+          <Upload className='h-5 w-5' aria-hidden={true} />
+          Загрузить фотографию
+        </Button>
+      </div>
 
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
         <div className='lg:col-span-2 space-y-6'>

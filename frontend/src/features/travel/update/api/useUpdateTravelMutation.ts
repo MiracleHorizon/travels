@@ -24,7 +24,8 @@ export const useUpdateTravelMutation = ({
     mutationFn: async (data: UpdateTravelDto) => {
       await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
         method: 'PATCH',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       })
     },
     onSuccess,

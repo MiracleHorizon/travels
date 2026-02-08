@@ -9,7 +9,8 @@ import {
   FieldDescription,
   TagsInput,
   DateRangePicker,
-  Textarea
+  Textarea,
+  FieldContent
 } from '@/shared/ui'
 import { ChangeEvent } from 'react'
 
@@ -21,37 +22,37 @@ interface TravelFormData {
 }
 
 interface TravelFormProps {
-  value: TravelFormData
+  values: TravelFormData
   onChange: (value: TravelFormData) => void
   onSubmit: () => void
   disabled?: boolean
 }
 
-export const TravelForm = ({ value, onChange, disabled = false, onSubmit }: TravelFormProps) => {
+export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: TravelFormProps) => {
   const handleDestinationChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange({
-      ...value,
+      ...values,
       name: ev.target.value
     })
   }
 
   const handleDescriptionChange = (ev: ChangeEvent<HTMLTextAreaElement>) => {
     onChange({
-      ...value,
+      ...values,
       description: ev.target.value
     })
   }
 
   const handleDateRangeChange = (range: DateRange | undefined) => {
     onChange({
-      ...value,
+      ...values,
       dateRange: range
     })
   }
 
   const handleTagsChange = (tags: string[]) => {
     onChange({
-      ...value,
+      ...values,
       tags
     })
   }
@@ -65,39 +66,46 @@ export const TravelForm = ({ value, onChange, disabled = false, onSubmit }: Trav
     >
       <FieldGroup>
         <Field>
-          <FieldLabel htmlFor='name'>Название</FieldLabel>
-          <Input
-            id='name'
-            type='text'
-            placeholder='Пхукет, 2026'
-            value={value.name}
-            onChange={handleDestinationChange}
-            disabled={disabled}
-          />
+          <FieldContent>
+            <FieldLabel htmlFor='name'>Название</FieldLabel>
+            <Input
+              id='name'
+              type='text'
+              autoComplete='off'
+              placeholder='Пхукет, 2026'
+              value={values.name}
+              onChange={handleDestinationChange}
+              disabled={disabled}
+            />
+          </FieldContent>
         </Field>
 
         <Field>
-          <FieldLabel htmlFor='dateRange'>Временные рамки</FieldLabel>
-          <DateRangePicker
-            id='dateRange'
-            value={value.dateRange}
-            onChange={handleDateRangeChange}
-            disabled={disabled}
-            placeholder='Выберите даты'
-            captionLayout='dropdown'
-          />
+          <FieldContent>
+            <FieldLabel htmlFor='dateRange'>Временные рамки</FieldLabel>
+            <DateRangePicker
+              id='dateRange'
+              value={values.dateRange}
+              onChange={handleDateRangeChange}
+              disabled={disabled}
+              placeholder='Выберите даты'
+              captionLayout='dropdown'
+            />
+          </FieldContent>
         </Field>
 
         <Field>
-          <FieldLabel htmlFor='description'>Описание</FieldLabel>
-          <Textarea
-            id='description'
-            placeholder='Опишите ваше путешествие...'
-            value={value.description}
-            onChange={handleDescriptionChange}
-            disabled={disabled}
-            rows={6}
-          />
+          <FieldContent>
+            <FieldLabel htmlFor='description'>Описание</FieldLabel>
+            <Textarea
+              id='description'
+              placeholder='Опишите ваше путешествие...'
+              value={values.description}
+              onChange={handleDescriptionChange}
+              disabled={disabled}
+              rows={6}
+            />
+          </FieldContent>
         </Field>
 
         <Field>
@@ -106,11 +114,11 @@ export const TravelForm = ({ value, onChange, disabled = false, onSubmit }: Trav
             Теги
           </FieldLabel>
 
-          <FieldDescription className='mb-2'>
+          <FieldDescription>
             Добавьте теги для категоризации путешествия (например: пляж, горы, культура)
           </FieldDescription>
 
-          <TagsInput value={value.tags} onChange={handleTagsChange} disabled={disabled} />
+          <TagsInput value={values.tags} onChange={handleTagsChange} disabled={disabled} />
         </Field>
       </FieldGroup>
     </form>

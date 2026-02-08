@@ -1,4 +1,9 @@
-import { ExpenseCard, useExpensesQuery } from '@/entities/expense'
+import {
+  useExpensesQuery,
+  ExpenseBarChart,
+  ExpenseCard,
+  ExpenseCategorySection
+} from '@/entities/expense'
 import {
   Card,
   CardContent,
@@ -9,11 +14,13 @@ import {
   Empty,
   EmptyContent,
   EmptyHeader,
-  EmptyDescription
+  EmptyDescription,
+  Separator
 } from '@/shared/ui'
 import { Plus, RefreshCcw } from 'lucide-react'
 import { ExpensesListEmpty } from './ExpensesListEmpty'
 import { useExpenseActions } from '../model/useExpenseActions'
+import { useExpensesByCategory } from '../model/useExpensesByCategory'
 import { formatCurrency } from '@/shared/lib/format'
 import { useCreateExpenseAction } from '@/features/expense/create'
 
@@ -26,10 +33,11 @@ const locale = 'ru-RU'
 const currency = 'RUB'
 
 export const ExpensesList = ({ travelId }: ExpensesListProps) => {
-  const { data: expenses, isLoading, error, refetch } = useExpensesQuery({ travelId })
+  const { data: expenses, isLoading, isSuccess, error, refetch } = useExpensesQuery({ travelId })
+  const { groups, categoriesWithExpenses } = useExpensesByCategory({ expenses })
 
   const { createExpense } = useCreateExpenseAction({ travelId })
-  const actions = useExpenseActions()
+  const actions = useExpenseActions({ travelId })
 
   if (isLoading) {
     return (
@@ -59,6 +67,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
     )
   }
 
+  const isEmpty = isSuccess && expenses && expenses.length === 0
   const total =
     expenses && expenses.length > 0
       ? expenses.reduce((total, expense) => total + +expense.amount, 0)
@@ -66,36 +75,49 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
 
   return (
     <Card>
-      <CardContent className='space-y-8'>
-        <div className='flex justify-between items-center'>
+      <CardContent>
+        <div className='flex justify-between items-center pb-5'>
           <CardTitle className='text-xl font-semibold'>Расходы</CardTitle>
 
-          <Button onClick={createExpense} size='sm'>
+          <Button variant='outline' onClick={createExpense} size='sm'>
             <Plus />
             Добавить
           </Button>
         </div>
 
-        {expenses && expenses.length > 0 ? (
-          <>
-            <div className='space-y-4'>
-              {expenses.map(expense => (
-                <ExpenseCard
-                  {...expense}
-                  key={expense.id}
-                  actions={actions(expense.id)}
+        {isEmpty ? (
+          <ExpensesListEmpty onAddExpense={createExpense} />
+        ) : (
+          <div className='flex flex-col'>
+            <ExpenseBarChart expenses={expenses} />
+
+            <Separator className='mt-6' />
+
+            <div className='space-y-1 my-4 -mx-1'>
+              {categoriesWithExpenses.map((category, index) => (
+                <ExpenseCategorySection
+                  key={category}
                   locale={locale}
-                  size='sm'
+                  category={category}
+                  currency={currency}
+                  expenses={groups.get(category)}
+                  defaultOpen={index === 0}
+                  renderItem={expense => (
+                    <ExpenseCard
+                      {...expense}
+                      size='sm'
+                      locale={locale}
+                      actions={actions(expense)}
+                    />
+                  )}
                 />
               ))}
             </div>
 
-            <div className='pt-4 border-t'>
+            <div className='pt-6 border-t'>
               <TotalAmount amount={formatCurrency(total, currency)} />
             </div>
-          </>
-        ) : (
-          <ExpensesListEmpty onAddExpense={createExpense} />
+          </div>
         )}
       </CardContent>
     </Card>

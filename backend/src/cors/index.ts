@@ -2,6 +2,8 @@ type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'OPTIONS'
 
 interface CorsOptions {
   origin?: string
+  /** При credentials: true браузер не допускает '*'; перечисляем разрешённые origins */
+  allowedOrigins?: string[]
   methods?: HttpMethod[]
   headers?: string[]
   credentials?: boolean
@@ -22,17 +24,45 @@ type Routes = {
 
 const allowedMethods = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'] as const)
 
+const CLIENT_URL = process.env.CLIENT_URL ?? 'http://localhost:3000'
+
+const defaultAllowedOrigins = [CLIENT_URL]
+
 export const corsHeaders: CorsOptions = {
-  origin: '*',
+  allowedOrigins: defaultAllowedOrigins,
   methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   headers: ['Content-Type'],
   credentials: true
 }
 
+const getCorsHeadersForRequest = (
+  req: Bun.BunRequest<string>,
+  options: CorsOptions
+): Record<string, string> => {
+  const origins =
+    options.allowedOrigins ??
+    (options.origin === '*' ? [] : options.origin ? [options.origin] : defaultAllowedOrigins)
+  const credentials = options.credentials ?? true
+  const requestOrigin = req.headers.get('origin') ?? ''
+  const allowOrigin =
+    credentials && origins.length > 0
+      ? origins.includes(requestOrigin)
+        ? requestOrigin
+        : origins[0]
+      : (options.origin ?? '*')
+
+  return {
+    'Access-Control-Allow-Origin': allowOrigin,
+    'Access-Control-Allow-Methods': String(options.methods ?? '*'),
+    'Access-Control-Allow-Headers': String(options.headers ?? '*'),
+    'Access-Control-Allow-Credentials': String(credentials)
+  }
+}
+
 // TODO: Улучшить
 export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes => {
-  const corsHeaders = {
-    'Access-Control-Allow-Origin': options.origin ?? '*',
+  const staticCorsHeaders = {
+    'Access-Control-Allow-Origin': options.allowedOrigins?.[0] ?? options.origin ?? '*',
     'Access-Control-Allow-Methods': String(options.methods ?? '*'),
     'Access-Control-Allow-Headers': String(options.headers ?? '*'),
     'Access-Control-Allow-Credentials': String(options.credentials ?? true)
@@ -43,6 +73,7 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
   for (const [path, body] of Object.entries(routes)) {
     if (typeof body === 'function') {
       wrappedRoutes[path] = async (req: Bun.BunRequest<string>) => {
+        const headers = getCorsHeadersForRequest(req, options)
         if (
           options.methods &&
           req.method !== 'OPTIONS' &&
@@ -50,7 +81,7 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
         ) {
           return new Response('Method Not Allowed', {
             status: 405,
-            headers: corsHeaders
+            headers
           })
         }
 
@@ -69,14 +100,14 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
           if (hasDisallowedHeader) {
             return new Response('Forbidden Headers', {
               status: 403,
-              headers: corsHeaders
+              headers
             })
           }
         }
 
         const res = await body(req)
         if (!res) throw new Error('Response not specified')
-        for (const [key, value] of Object.entries(corsHeaders)) {
+        for (const [key, value] of Object.entries(headers)) {
           res.headers.set(key, value)
         }
         return res
@@ -89,7 +120,7 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
           headers: new Headers(body.headers)
         })
 
-        for (const [key, value] of Object.entries(corsHeaders)) {
+        for (const [key, value] of Object.entries(staticCorsHeaders)) {
           newRes.headers.set(key, value)
         }
 
@@ -102,6 +133,7 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
         if (allowedMethods.has(method as HttpMethod)) {
           const typedMethod = method as HttpMethod
           wrappedRoutes[path][typedMethod] = async (req: Bun.BunRequest<string>) => {
+            const headers = getCorsHeadersForRequest(req, options)
             if (
               options.methods &&
               typedMethod !== 'OPTIONS' &&
@@ -109,7 +141,7 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
             ) {
               return new Response('Method Not Allowed', {
                 status: 405,
-                headers: corsHeaders
+                headers
               })
             }
 
@@ -128,14 +160,14 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
               if (hasDisallowedHeader) {
                 return new Response('Forbidden Headers', {
                   status: 403,
-                  headers: corsHeaders
+                  headers
                 })
               }
             }
 
             const res = await handler!(req)
             if (!res) throw new Error('Response not specified')
-            for (const [key, value] of Object.entries(corsHeaders)) {
+            for (const [key, value] of Object.entries(headers)) {
               res.headers.set(key, value)
             }
             return res
@@ -145,10 +177,10 @@ export const injectCORS = (routes: Routes, options: CorsOptions = {}): Routes =>
 
       const route = wrappedRoutes[path]
       if (typeof route === 'object' && route !== null && !route['OPTIONS']) {
-        route['OPTIONS'] = async () =>
+        route['OPTIONS'] = async (req: Bun.BunRequest<string>) =>
           new Response(null, {
             status: 204,
-            headers: corsHeaders
+            headers: getCorsHeadersForRequest(req, options)
           })
       }
     }

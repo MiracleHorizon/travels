@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
+import { createContext, useContext, useState, ReactNode } from 'react'
 import { ModalDefinition, ModalInstance } from './types'
 
 interface ModalContextValue {
@@ -16,22 +16,19 @@ interface ModalProviderProps {
 export const ModalProvider = ({ children }: ModalProviderProps) => {
   const [modals, setModals] = useState<ModalInstance[]>([])
 
-  const showModal = useCallback(
-    <TProps = any,>(definition: ModalDefinition<TProps>, props?: TProps) => {
-      const id = `${definition.name}-${Date.now()}-${Math.random()}`
-      const newModal: ModalInstance<TProps> = {
-        id,
-        definition,
-        props
-      }
-      setModals(prev => [...prev, newModal])
-    },
-    []
-  )
+  const showModal = <TProps = object,>(definition: ModalDefinition<TProps>, props?: TProps) => {
+    const id = `${definition.name}-${Date.now()}-${Math.random()}`
+    const newModal: ModalInstance<TProps> = {
+      id,
+      definition,
+      props
+    }
+    setModals(prev => [...prev, newModal])
+  }
 
-  const hideModal = useCallback(() => {
+  const hideModal = () => {
     setModals(prev => prev.slice(0, -1))
-  }, [])
+  }
 
   return (
     <ModalContext.Provider value={{ modals, showModal, hideModal }}>

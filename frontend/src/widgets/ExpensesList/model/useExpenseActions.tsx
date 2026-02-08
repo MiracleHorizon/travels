@@ -1,20 +1,25 @@
 import { DropdownAction } from '@/shared/ui'
 import { Pencil, Trash } from 'lucide-react'
+import { useDeleteExpenseAction } from '@/features/expense/delete'
+import { useUpdateExpenseAction } from '@/features/expense/update'
+import type { Expense } from '@/entities/expense'
 
-export const useExpenseActions = (): ((expenseId: string) => DropdownAction[]) => {
-  const editExpense = (expenseId: string) => {
-    console.log('editExpense', expenseId)
-  }
-  const deleteExpense = (expenseId: string) => {
-    console.log('deleteExpense', expenseId)
-  }
+interface UseExpenseActionsParams {
+  travelId: string
+}
 
-  return (expenseId: string) => [
+export const useExpenseActions = ({
+  travelId
+}: UseExpenseActionsParams): ((expense: Expense) => DropdownAction[]) => {
+  const deleteExpenseAction = useDeleteExpenseAction()
+  const updateExpenseAction = useUpdateExpenseAction()
+
+  return (expense: Expense) => [
     {
       type: 'item',
       label: 'Редактировать',
       icon: <Pencil />,
-      onClick: () => editExpense(expenseId)
+      onClick: () => updateExpenseAction(expense)
     },
     {
       type: 'separator'
@@ -24,7 +29,7 @@ export const useExpenseActions = (): ((expenseId: string) => DropdownAction[]) =
       label: 'Удалить',
       icon: <Trash />,
       variant: 'destructive',
-      onClick: () => deleteExpense(expenseId)
+      onClick: () => deleteExpenseAction(travelId, expense.id, expense.title)
     }
   ]
 }

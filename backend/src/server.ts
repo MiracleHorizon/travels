@@ -3,30 +3,58 @@ import {
   deleteTravelHandler,
   getTravelHandler,
   getTravelsListHandler,
-  updateTravelHandler
+  toggleTravelArchiveHandler,
+  updateTravelHandler,
+  uploadTravelPhotoHandler
 } from './handlers/travel'
+import {
+  createExpenseHandler,
+  getExpensesListHandler,
+  deleteExpenseHandler,
+  updateExpenseHandler
+} from './handlers/expense'
+import { getUserByCodeHandler, getUserMeHandler, logoutHandler } from './handlers/auth'
 import { corsHeaders, injectCORS } from './cors'
-import { createExpenseHandler } from './handlers/expense/create_expense'
-import { getExpensesListHandler } from './handlers/expense/get_expenses_list'
 
+// TODO: Механизм мидлваров
 const server = Bun.serve({
   port: 4200,
   routes: injectCORS(
     {
+      // Авторизация
+      '/api/auth/code/:provider': {
+        POST: getUserByCodeHandler
+      },
+      '/api/user/me': {
+        GET: getUserMeHandler
+      },
+      '/api/auth/logout': {
+        POST: logoutHandler
+      },
       // Путешествие
       '/api/v1/travels': {
         POST: createTravelHandler,
         GET: getTravelsListHandler
       },
-      '/api/v1/travels/:id': {
+      '/api/v1/travels/:travelId': {
         GET: getTravelHandler,
         PATCH: updateTravelHandler,
         DELETE: deleteTravelHandler
       },
+      '/api/v1/travels/:travelId/archive': {
+        PATCH: toggleTravelArchiveHandler
+      },
+      '/api/v1/photos/travels/:travelId': {
+        POST: uploadTravelPhotoHandler
+      },
       // Расходы
-      '/api/v1/travels/:travelId/expenses': {
+      '/api/v1/expenses/:travelId': {
         POST: createExpenseHandler,
         GET: getExpensesListHandler
+      },
+      '/api/v1/expenses/:expenseId': {
+        PATCH: updateExpenseHandler,
+        DELETE: deleteExpenseHandler
       }
     },
     corsHeaders

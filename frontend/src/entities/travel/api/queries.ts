@@ -1,25 +1,29 @@
 import { useQuery } from '@tanstack/react-query'
 import { API_BASE_URL } from '@/shared/api'
-import type { Travel } from '../model/types'
+import type { TravelDetailed } from '../model/types'
 
 export const TRAVELS_QUERY_KEY = 'travels'
 
-export const useTravelsQuery = () => {
+interface UseTravelsQueryParams {
+  status?: 'upcoming' | 'past'
+  archived?: boolean
+}
+
+export const useTravelsQuery = ({ status, archived }: UseTravelsQueryParams = {}) => {
   return useQuery({
-    queryKey: [TRAVELS_QUERY_KEY],
+    queryKey: [TRAVELS_QUERY_KEY, status, archived],
     queryFn: async () => {
-      const params = new URLSearchParams()
+      const url = new URL(`${API_BASE_URL}/v1/travels`)
 
-      // if (filter?.status) {
-      //   params.append('status', filter.status)
-      // }
+      if (status !== undefined) {
+        url.searchParams.append('status', status)
+      }
 
-      // if (filter?.archived !== undefined) {
-      //   params.append('archived', String(filter.archived))
-      // }
+      if (archived !== undefined) {
+        url.searchParams.append('archived', String(archived))
+      }
 
-      const url = `${API_BASE_URL}/v1/travels${params.toString() ? `?${params.toString()}` : ''}`
-      const response = await fetch(url)
+      const response = await fetch(url, { credentials: 'include' })
 
       if (!response.ok) {
         throw new Error('Failed to fetch travels')
@@ -31,10 +35,12 @@ export const useTravelsQuery = () => {
 }
 
 export const useTravelQuery = (travelId: string) => {
-  return useQuery<Travel>({
+  return useQuery<TravelDetailed>({
     queryKey: [TRAVELS_QUERY_KEY, travelId],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`)
+      const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
+        credentials: 'include'
+      })
 
       if (!response.ok) {
         throw new Error('Failed to fetch travel')

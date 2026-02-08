@@ -1,5 +1,5 @@
 import { Badge } from '@/shared/ui'
-import { EXPENSE_CATEGORIES, EXPENSE_CATEGORY_ICONS } from '../model/types'
+import { EXPENSE_CATEGORIES, EXPENSE_CATEGORY_ICONS } from '../model/consts'
 import type { ExpenseCategory } from '../model/types'
 
 interface ExpenseBadgeProps {

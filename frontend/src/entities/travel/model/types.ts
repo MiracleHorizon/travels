@@ -10,3 +10,12 @@ export interface Travel {
   created_at: string
   updated_at: string
 }
+
+export interface TravelDetailed extends Travel {
+  photos: TravelPhoto[]
+}
+
+export interface TravelPhoto {
+  url: string
+  description?: string
+}

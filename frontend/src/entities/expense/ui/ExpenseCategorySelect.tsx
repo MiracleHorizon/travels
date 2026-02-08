@@ -6,7 +6,8 @@ import {
   DropdownMenuTrigger
 } from '@/shared/ui/dropdown-menu'
 import { ChevronDown } from 'lucide-react'
-import { EXPENSE_CATEGORIES, EXPENSE_CATEGORY_ICONS, type ExpenseCategory } from '../model/types'
+import { EXPENSE_CATEGORIES, EXPENSE_CATEGORY_ICONS } from '../model/consts'
+import type { ExpenseCategory } from '../model/types'
 
 interface ExpenseCategorySelectProps {
   id?: string

@@ -18,10 +18,19 @@ interface GetGeoCoderCoordsBody {
 export const getGeoCoderCoordsHandler = async (req: BunRequest) => {
   try {
     const body = (await req.json()) as GetGeoCoderCoordsBody
-    const { lng, lat } = body
+    const { lng, lat, kinds } = body
 
     if (!lng || !lat) {
       return new Response(JSON.stringify({ error: 'Lng and lat are required' }), {
+        status: 400,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+    }
+
+    if (!kinds || !kinds.length) {
+      return new Response(JSON.stringify({ error: 'Kinds are required' }), {
         status: 400,
         headers: {
           'Content-Type': 'application/json'
@@ -47,7 +56,7 @@ export const getGeoCoderCoordsHandler = async (req: BunRequest) => {
     }
 
     const data = (await response.json()) as GeocoderResponse
-    const components = extractComponentsFromGeocoderResponse(data, body.kinds)
+    const components = extractComponentsFromGeocoderResponse(data, kinds)
 
     return new Response(
       JSON.stringify({

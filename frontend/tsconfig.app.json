@@ -1,6 +1,8 @@
 {
-  "include": ["env.d.ts", "src/**/*", "src/**/*.tsx"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.tsx", "vite-env.d.ts"],
   "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {

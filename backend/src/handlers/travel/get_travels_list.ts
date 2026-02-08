@@ -1,16 +1,21 @@
-import type { BunRequest } from 'bun'
 import { postgres } from '../../database'
+import { withAuth } from '../../middlewares/with_auth'
 
-export const getTravelsListHandler = async (req: BunRequest) => {
+export const getTravelsListHandler = withAuth(async req => {
+  const userId = req.userId
+
   try {
     const url = new URL(req.url)
     const status = url.searchParams.get('status') ?? undefined
     const archivedParam = url.searchParams.get('archived')
-    const archived =
-      archivedParam === 'true' ? true : archivedParam === 'false' ? false : undefined
+    const archived = archivedParam === 'true' ? true : archivedParam === 'false' ? false : undefined
 
     const conditions: string[] = []
     const params: unknown[] = []
+
+    // Фильтруем только путешествия текущего пользователя
+    conditions.push(`user_id = $${params.length + 1}`)
+    params.push(userId)
 
     if (status === 'past') {
       conditions.push('start_date < CURRENT_DATE')
@@ -33,11 +38,16 @@ export const getTravelsListHandler = async (req: BunRequest) => {
 
     const travels = await postgres.unsafe(query, params)
 
-    return new Response(JSON.stringify(travels))
+    return new Response(JSON.stringify(travels), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
   } catch (error) {
     console.error('Error fetching travels:', error)
     return new Response(JSON.stringify({ error: 'Failed to fetch travels' }), {
       status: 500
     })
   }
-}
+})

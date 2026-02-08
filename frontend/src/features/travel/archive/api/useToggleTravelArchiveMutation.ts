@@ -17,6 +17,7 @@ export const useToggleTravelArchiveMutation = ({
     mutationFn: async ({ travelId, isArchived }: ToggleTravelArchiveParams) => {
       const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}/archive`, {
         method: 'PATCH',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json'
         },

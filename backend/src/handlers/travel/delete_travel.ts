@@ -1,14 +1,24 @@
-import type { BunRequest } from 'bun'
 import { postgres } from '../../database'
+import { withAuth } from '../../middlewares/with_auth'
 
-export const deleteTravelHandler = async (req: BunRequest) => {
+export const deleteTravelHandler = withAuth(async req => {
+  const userId = req.userId
+
   try {
     const { travelId } = req.params
 
-    const result = await postgres`DELETE FROM travels WHERE id = ${travelId}`
+    // Удаляем только если путешествие принадлежит пользователю
+    const result = await postgres`
+      DELETE FROM travels 
+      WHERE id = ${travelId} AND user_id = ${userId}
+    `
+
     if (result.rowCount === 0) {
-      return new Response(JSON.stringify({ error: 'Travel not found' }), {
-        status: 404
+      return new Response(JSON.stringify({ error: 'Travel not found or access denied' }), {
+        status: 404,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
     }
 
@@ -21,4 +31,4 @@ export const deleteTravelHandler = async (req: BunRequest) => {
       status: 500
     })
   }
-}
+})

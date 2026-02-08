@@ -23,7 +23,7 @@ export const useTravelsQuery = ({ status, archived }: UseTravelsQueryParams = {}
         url.searchParams.append('archived', String(archived))
       }
 
-      const response = await fetch(url)
+      const response = await fetch(url, { credentials: 'include' })
 
       if (!response.ok) {
         throw new Error('Failed to fetch travels')
@@ -38,7 +38,9 @@ export const useTravelQuery = (travelId: string) => {
   return useQuery<TravelDetailed>({
     queryKey: [TRAVELS_QUERY_KEY, travelId],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`)
+      const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
+        credentials: 'include'
+      })
 
       if (!response.ok) {
         throw new Error('Failed to fetch travel')

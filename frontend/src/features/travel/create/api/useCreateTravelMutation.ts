@@ -17,7 +17,8 @@ export const useCreateTravelMutation = ({
     mutationFn: async (data: CreateTravelDto) => {
       const response = await fetch(`${API_BASE_URL}/v1/travels`, {
         method: 'POST',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       })
 
       if (!response.ok) {

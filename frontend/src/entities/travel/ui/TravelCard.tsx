@@ -25,6 +25,7 @@ interface TravelCardProps {
 
 const MAX_BADGES_TO_SHOW = 3
 
+// TODO: При наведении цветной анимированный бордер
 export const TravelCard = ({
   name,
   startDate,

@@ -1,5 +1,6 @@
 import { postgres } from '../../database'
-import { randomUUIDv7, type BunRequest } from 'bun'
+import { randomUUIDv7 } from 'bun'
+import { withAuth } from '../../middlewares/with_auth'
 
 interface CreateTravelDto {
   name: string
@@ -9,7 +10,9 @@ interface CreateTravelDto {
   tags?: string[]
 }
 
-export const createTravelHandler = async (req: BunRequest) => {
+export const createTravelHandler = withAuth(async req => {
+  const userId = req.userId
+
   try {
     const body = (await req.json()) as CreateTravelDto
 
@@ -62,16 +65,27 @@ export const createTravelHandler = async (req: BunRequest) => {
       )
     }
 
-    // Создание путешествия
+    // Создание путешествия с привязкой к пользователю
     const travelId = randomUUIDv7()
     const travel = await postgres`
-      INSERT INTO travels (id, name, description, start_date, end_date, tags, created_at, updated_at)
-      VALUES (${travelId}, ${body.name.trim()}, ${body.description?.trim() || null}, ${body.startDate}, ${
-        body.endDate
-      }, ${body.tags || []}, NOW(), NOW()) RETURNING *`
+      INSERT INTO travels (id, user_id, name, description, start_date, end_date, tags, created_at, updated_at)
+      VALUES (
+        ${travelId}, 
+        ${userId}, 
+        ${body.name.trim()}, 
+        ${body.description?.trim() || null}, 
+        ${body.startDate}, 
+        ${body.endDate}, 
+        ${body.tags || []}, 
+        NOW(), 
+        NOW()
+      ) RETURNING *`
 
     return new Response(JSON.stringify(travel[0]), {
-      status: 201
+      status: 201,
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
   } catch (error) {
     console.error('Error creating travel:', error)
@@ -84,4 +98,4 @@ export const createTravelHandler = async (req: BunRequest) => {
       }
     )
   }
-}
+})

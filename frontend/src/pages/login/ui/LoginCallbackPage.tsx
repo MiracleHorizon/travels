@@ -1,0 +1,70 @@
+import { useLogin, OAUTH_PROVIDER } from '@/features/auth/login'
+import { LogoYandex, LogoGoogle } from '@/shared/ui'
+import { useEffect } from 'react'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { toast } from 'sonner'
+
+export const LoginCallbackPage = () => {
+  const { provider } = useParams<{ provider: OAUTH_PROVIDER }>()
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  const { mutate: login, error } = useLogin()
+
+  useEffect(() => {
+    const code = searchParams.get('code')
+
+    if (!code || !provider) {
+      navigate('/login', { replace: true })
+      toast.error('Не удалось авторизоваться', {
+        description: 'Пожалуйста, попробуйте еще раз'
+      })
+      return
+    }
+
+    login({
+      code,
+      provider
+    })
+  }, [searchParams, provider, login, navigate])
+
+  if (error) {
+    return (
+      <div className='min-h-screen flex items-center justify-center'>
+        <div className='text-center text-red-600'>{error.message}</div>
+      </div>
+    )
+  }
+
+  const renderProviderLogo = () => {
+    if (provider === OAUTH_PROVIDER.YANDEX) {
+      return (
+        <div className='ml-1 flex items-center gap-0.5'>
+          <LogoYandex className='size-5' />
+          <span className='leading-5 text-md font-medium mb-0.5'>ндекс</span>
+        </div>
+      )
+    }
+
+    if (provider === OAUTH_PROVIDER.GOOGLE) {
+      return (
+        <div className='ml-1 flex items-center gap-2'>
+          <LogoGoogle className='size-5' />
+          <span className='leading-5 text-md font-medium'>Google</span>
+        </div>
+      )
+    }
+
+    return null
+  }
+
+  return (
+    <div className='min-h-screen flex items-center justify-center'>
+      <div className='flex items-center'>
+        <span className='text-muted-foreground'>Входим через</span>
+        {renderProviderLogo()}
+        <span className='text-muted-foreground'>…</span>
+      </div>
+    </div>
+  )
+}

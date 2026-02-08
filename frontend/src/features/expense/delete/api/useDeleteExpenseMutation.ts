@@ -11,7 +11,8 @@ export const useDeleteExpenseMutation = ({
   return useMutation({
     mutationFn: async (expenseId: string) => {
       await fetch(`${API_BASE_URL}/v1/expenses/${expenseId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'include'
       })
     },
     onSuccess,

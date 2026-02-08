@@ -24,7 +24,8 @@ export const useUpdateExpenseMutation = ({
     mutationFn: async (data: UpdateExpenseDto) => {
       await fetch(`${API_BASE_URL}/v1/expenses/${expenseId}`, {
         method: 'PATCH',
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       })
     },
     onSuccess,

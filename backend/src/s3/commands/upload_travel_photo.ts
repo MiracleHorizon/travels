@@ -9,6 +9,7 @@ interface UploadTravelPhotoCommandInput {
   photo: File
 }
 
+// TODO: Минификация изображений
 export const uploadTravelPhoto = async ({ photo }: UploadTravelPhotoCommandInput) => {
   // Преобразуем файл в буфер для загрузки в S3.
   const fileArrayBuffer = await photo.arrayBuffer()

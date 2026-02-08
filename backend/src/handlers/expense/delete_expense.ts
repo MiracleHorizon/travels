@@ -1,14 +1,27 @@
-import type { BunRequest } from 'bun'
 import { postgres } from '../../database'
+import { withAuth } from '../../middlewares/with_auth'
 
-export const deleteExpenseHandler = async (req: BunRequest) => {
+export const deleteExpenseHandler = withAuth(async req => {
+  const userId = req.userId
+
   try {
     const { expenseId } = req.params
 
-    const result = await postgres`DELETE FROM travel_expenses WHERE id = ${expenseId}`
+    // Удаляем расход только если он принадлежит путешествию пользователя
+    const result = await postgres`
+      DELETE FROM travel_expenses 
+      WHERE id = ${expenseId} 
+        AND travel_id IN (
+          SELECT id FROM travels WHERE user_id = ${userId}
+        )
+    `
+
     if (result.rowCount === 0) {
-      return new Response(JSON.stringify({ error: 'Expense not found' }), {
-        status: 404
+      return new Response(JSON.stringify({ error: 'Expense not found or access denied' }), {
+        status: 404,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       })
     }
 
@@ -21,4 +34,4 @@ export const deleteExpenseHandler = async (req: BunRequest) => {
       status: 500
     })
   }
-}
+})

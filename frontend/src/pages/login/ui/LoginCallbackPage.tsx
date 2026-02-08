@@ -1,10 +1,11 @@
 import { useLogin } from '@/features/auth/login'
 import { useEffect } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export const LoginCallbackPage = () => {
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
 
   const { mutate: login, error } = useLogin()
 
@@ -12,6 +13,7 @@ export const LoginCallbackPage = () => {
     const code = searchParams.get('code')
 
     if (!code) {
+      navigate('/login', { replace: true })
       toast.error('Не удалось авторизоваться', {
         description: 'Пожалуйста, попробуйте еще раз'
       })
@@ -19,7 +21,7 @@ export const LoginCallbackPage = () => {
     }
 
     if (code) login(code)
-  }, [searchParams, login])
+  }, [searchParams, login, navigate])
 
   if (error) {
     return (

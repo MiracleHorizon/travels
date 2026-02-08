@@ -4,7 +4,17 @@ import { User } from '../model/types'
 
 export const USER_QUERY_KEY = 'get-user'
 
-export const useUser = (): UseQueryResult<User, Error> => {
+const RETRY_COUNT = 3
+const RETRY_DELAY = 1000
+
+interface UseUserParams {
+  shouldRetry?: boolean
+}
+
+export const useUser = ({ shouldRetry = true }: UseUserParams = {}): UseQueryResult<
+  User,
+  Error
+> => {
   return useQuery<User>({
     queryKey: [USER_QUERY_KEY],
     queryFn: async () => {
@@ -17,6 +27,10 @@ export const useUser = (): UseQueryResult<User, Error> => {
       }
 
       return response.json()
-    }
+    },
+    ...(shouldRetry && {
+      retry: RETRY_COUNT,
+      retryDelay: RETRY_DELAY
+    })
   })
 }

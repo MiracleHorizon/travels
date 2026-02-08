@@ -1,12 +1,15 @@
 import { useUser } from '@/entities/user'
 import { LoginYandexButton } from '@/features/auth/login'
+import { FullscreanLoader } from '@/shared/ui'
 import { Navigate } from 'react-router-dom'
 
 export const LoginPage = () => {
-  const { data: user, isPending } = useUser()
+  const { data: user, isPending } = useUser({
+    shouldRetry: false
+  })
 
   if (isPending) {
-    return <div>Загрузка…</div>
+    return <FullscreanLoader />
   }
 
   if (user) {

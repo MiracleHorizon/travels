@@ -1,4 +1,5 @@
 import { useLogin } from '@/features/auth/login'
+import { LogoYandex } from '@/shared/ui'
 import { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
@@ -34,7 +35,14 @@ export const LoginCallbackPage = () => {
   return (
     <div className='min-h-screen flex items-center justify-center'>
       {/* TODO: Входим через разных провайдеров */}
-      <div className='text-muted-foreground'>Входим через Яндекс…</div>
+      <div className='min-h-screen flex items-center justify-center'>
+        <span className='text-muted-foreground'>Входим через</span>
+        <div className='ml-1 flex items-center gap-0.5'>
+          <LogoYandex className='size-5' />
+          <span className='leading-5 text-md font-medium mb-0.5'>ндекс</span>
+        </div>
+        <span className='text-muted-foreground'>…</span>
+      </div>
     </div>
   )
 }

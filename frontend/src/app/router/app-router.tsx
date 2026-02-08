@@ -9,6 +9,7 @@ import { LoginPage, LoginCallbackPage } from '@pages/login'
 import { AppLayout } from '../app-layout'
 import { API_BASE_URL } from '@/shared/api'
 import { ProtectedRoute } from './ProtectedRoute'
+import { TravelDetailed } from '@/entities/travel/model/types'
 
 export const router = createBrowserRouter([
   {
@@ -72,7 +73,7 @@ export const router = createBrowserRouter([
                       return response.json()
                     },
                     handle: {
-                      breadcrumb: (data: { name: string }) => data?.name
+                      breadcrumb: (data: TravelDetailed) => data.name
                     }
                   }
                 ]

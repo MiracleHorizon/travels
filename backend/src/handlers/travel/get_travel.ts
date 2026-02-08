@@ -9,7 +9,7 @@ export const getTravelHandler = withAuth(async req => {
 
     // Получаем путешествие только если оно принадлежит пользователю
     const result = await postgres`
-      SELECT id, start_date, end_date, description, is_archived, created_at, updated_at, tags
+      SELECT id, name, start_date, end_date, description, is_archived, created_at, updated_at, tags
       FROM travels 
       WHERE id = ${travelId} AND user_id = ${userId}
     `

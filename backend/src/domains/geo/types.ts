@@ -40,7 +40,9 @@ export interface GeoObject {
 export interface GeocoderResponse {
   response?: {
     GeoObjectCollection?: {
-      featureMember?: Array<{ GeoObject?: GeoObject }>
+      featureMember?: Array<{
+        GeoObject?: GeoObject
+      }>
     }
   }
 }

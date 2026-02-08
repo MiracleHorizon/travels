@@ -9,7 +9,7 @@ export const buildOAuthLoginUrl = (provider: OAUTH_PROVIDER): string => {
         throw new Error('YANDEX_OAUTH_CLIENT_ID is not set')
       }
 
-      return `https://oauth.yandex.ru/authorize?response_type=code&client_id=${YANDEX_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(window.location.origin + '/login/callback')}`
+      return `https://oauth.yandex.ru/authorize?response_type=code&client_id=${YANDEX_OAUTH_CLIENT_ID}&redirect_uri=${encodeURIComponent(`${window.location.origin}/login/callback/${provider}`)}`
     default:
       throw new Error(`Unsupported provider: ${provider}`)
   }

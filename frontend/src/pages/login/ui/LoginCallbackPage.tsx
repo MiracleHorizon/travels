@@ -1,10 +1,11 @@
-import { useLogin } from '@/features/auth/login'
+import { useLogin, OAUTH_PROVIDER } from '@/features/auth/login'
 import { LogoYandex } from '@/shared/ui'
 import { useEffect } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 
 export const LoginCallbackPage = () => {
+  const { provider } = useParams<{ provider: OAUTH_PROVIDER }>()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
 
@@ -13,7 +14,7 @@ export const LoginCallbackPage = () => {
   useEffect(() => {
     const code = searchParams.get('code')
 
-    if (!code) {
+    if (!code || !provider) {
       navigate('/login', { replace: true })
       toast.error('Не удалось авторизоваться', {
         description: 'Пожалуйста, попробуйте еще раз'
@@ -21,8 +22,11 @@ export const LoginCallbackPage = () => {
       return
     }
 
-    if (code) login(code)
-  }, [searchParams, login, navigate])
+    login({
+      code,
+      provider
+    })
+  }, [searchParams, provider, login, navigate])
 
   if (error) {
     return (

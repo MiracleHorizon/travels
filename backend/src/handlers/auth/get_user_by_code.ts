@@ -77,6 +77,8 @@ const fetchYandexUserInfo = async (accessToken: string): Promise<YandexProfile> 
  * Бэк обменивает code на токены и сохраняет их в БД
  */
 export const getUserByCodeHandler = async (req: BunRequest) => {
+  const { provider } = req.params
+
   try {
     const body = (await req.json()) as { code: string; redirect_uri?: string }
 
@@ -101,7 +103,7 @@ export const getUserByCodeHandler = async (req: BunRequest) => {
       INSERT INTO users (id, provider, access_token, refresh_token, created_at, updated_at)
       VALUES (
         ${userInfo.id}, 
-        'yandex', 
+        ${provider}, 
         ${tokens.access_token},
         ${tokens.refresh_token},
         NOW(),

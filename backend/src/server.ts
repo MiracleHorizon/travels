@@ -22,7 +22,7 @@ const server = Bun.serve({
   routes: injectCORS(
     {
       // Авторизация
-      '/api/auth/code': {
+      '/api/auth/code/:provider': {
         POST: getUserByCodeHandler
       },
       '/api/user/me': {

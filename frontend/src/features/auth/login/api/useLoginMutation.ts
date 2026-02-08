@@ -7,17 +7,22 @@ interface UseLoginMutationParams {
   onError?: (error: Error) => void
 }
 
+interface UseLoginMutationPayload {
+  code: string
+  provider: string
+}
+
 const LOGIN_MUTATION_KEY = 'auth-with-code'
 
 export const useLoginMutation = ({
   onSuccess,
   onError
-}: UseLoginMutationParams): UseMutationResult<User, Error, string> => {
+}: UseLoginMutationParams): UseMutationResult<User, Error, UseLoginMutationPayload> => {
   return useMutation({
     mutationKey: [LOGIN_MUTATION_KEY],
-    mutationFn: async (code: string): Promise<User> => {
-      const redirectUri = window.location.origin + '/login/callback'
-      const response = await fetch(`${API_BASE_URL}/auth/code`, {
+    mutationFn: async ({ code, provider }: UseLoginMutationPayload): Promise<User> => {
+      const redirectUri = `${window.location.origin}/login/callback/${provider}`
+      const response = await fetch(`${API_BASE_URL}/auth/code/${provider}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

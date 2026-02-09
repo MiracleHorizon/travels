@@ -32,24 +32,10 @@ export const useUpdateTravel = ({ travel }: UseUpdateTravelParams) => {
   const queryClient = useQueryClient()
   const hideModal = useHideModal()
 
-  const { isPending, error, mutate } = useUpdateTravelMutation({
-    travelId: travel.id,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [TRAVELS_QUERY_KEY]
-      })
-      hideModal()
-      toast.success('Путешествие обновлено')
-    },
-    onError: () => {
-      toast.error('Не удалось обновить путешествие', {
-        description: 'Пожалуйста, попробуйте еще раз'
-      })
-    }
-  })
+  const { isPending, error, mutate } = useUpdateTravelMutation()
 
   // TODO: Нужно сделать валидацию формы
-  const updateTravel = async () => {
+  const updateTravel = () => {
     if (!formFields.name.trim()) {
       return
     }
@@ -58,18 +44,35 @@ export const useUpdateTravel = ({ travel }: UseUpdateTravelParams) => {
       return
     }
 
-    mutate({
-      name: formFields.name,
-      description: formFields.description || undefined,
-      startDate: formFields.dateRange.from.toISOString(),
-      endDate: formFields.dateRange.to.toISOString(),
-      tags: formFields.tags
-    })
+    mutate(
+      {
+        travelId: travel.id,
+        name: formFields.name,
+        description: formFields.description || undefined,
+        startDate: formFields.dateRange.from.toISOString(),
+        endDate: formFields.dateRange.to.toISOString(),
+        tags: formFields.tags
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [TRAVELS_QUERY_KEY]
+          })
+          hideModal()
+          toast.success('Путешествие обновлено')
+        },
+        onError: () => {
+          toast.error('Не удалось обновить путешествие', {
+            description: 'Пожалуйста, попробуйте еще раз'
+          })
+        }
+      }
+    )
   }
 
   return {
     error,
-    isLoading: isPending,
+    isPending,
     formFields,
     setFormFields,
     updateTravel

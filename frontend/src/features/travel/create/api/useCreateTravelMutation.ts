@@ -9,10 +9,7 @@ interface CreateTravelDto {
   tags?: string[]
 }
 
-export const useCreateTravelMutation = ({
-  onSuccess,
-  onError
-}: { onSuccess?: () => void; onError?: () => void } = {}) => {
+export const useCreateTravelMutation = () => {
   return useMutation({
     mutationFn: async (data: CreateTravelDto) => {
       const response = await fetch(`${API_BASE_URL}/v1/travels`, {
@@ -24,10 +21,6 @@ export const useCreateTravelMutation = ({
       if (!response.ok) {
         throw new Error('Failed to create travel')
       }
-
-      return response.json()
-    },
-    onSuccess,
-    onError
+    }
   })
 }

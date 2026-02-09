@@ -2,14 +2,16 @@ import * as React from 'react'
 
 import { cn } from '@/shared/lib/styles/utils'
 
-function Card({ className, ...props }: React.ComponentProps<'div'>) {
+function Card({ className, onClick, ...props }: React.ComponentProps<'div'>) {
   return (
     <div
       data-slot='card'
       className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-2xl border py-6 shadow-xs',
+        'bg-card/80 text-card-foreground flex flex-col gap-6 rounded-2xl border py-6 shadow-xs',
+        onClick && 'hover:bg-card transition-colors',
         className
       )}
+      onClick={onClick}
       {...props}
     />
   )

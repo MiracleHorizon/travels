@@ -1,5 +1,8 @@
 import { TRAVELS_QUERY_KEY } from '@/entities/travel'
-import { useUploadTravelPhotosMutation } from '../api/useUploadTravelPhotosMutation'
+import {
+  UploadTravelPhotosDto,
+  useUploadTravelPhotosMutation
+} from '../api/useUploadTravelPhotosMutation'
 import { useQueryClient } from '@tanstack/react-query'
 import { useHideModal } from '@/shared/lib/modal'
 import { toast } from 'sonner'
@@ -10,11 +13,7 @@ interface TravelPhotoUploadFormFields {
   description: string
 }
 
-interface UseUploadTravelPhotosParams {
-  travelId: string
-}
-
-export const useUploadTravelPhotos = ({ travelId }: UseUploadTravelPhotosParams) => {
+export const useUploadTravelPhotos = () => {
   const [formFields, setFormFields] = useState<TravelPhotoUploadFormFields>({
     photo: null,
     description: ''
@@ -23,24 +22,32 @@ export const useUploadTravelPhotos = ({ travelId }: UseUploadTravelPhotosParams)
   const queryClient = useQueryClient()
   const hideModal = useHideModal()
 
-  const { isPending, mutate: uploadTravelPhotos } = useUploadTravelPhotosMutation({
-    travelId,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [TRAVELS_QUERY_KEY, travelId]
-      })
-      hideModal()
-      toast.success('Фотография загружена')
-    },
-    onError: () => {
-      toast.error('Не удалось загрузить фотографию', {
-        description: 'Пожалуйста, попробуйте еще раз'
-      })
-    }
-  })
+  const { isPending, mutate } = useUploadTravelPhotosMutation()
+
+  const uploadTravelPhotos = ({ travelId, ...data }: UploadTravelPhotosDto) =>
+    mutate(
+      {
+        travelId,
+        ...data
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [TRAVELS_QUERY_KEY, travelId]
+          })
+          hideModal()
+          toast.success('Фотография загружена')
+        },
+        onError: () => {
+          toast.error('Не удалось загрузить фотографию', {
+            description: 'Пожалуйста, попробуйте еще раз'
+          })
+        }
+      }
+    )
 
   return {
-    isLoading: isPending,
+    isPending,
     uploadTravelPhotos,
     formFields,
     setFormFields

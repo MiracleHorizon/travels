@@ -17,7 +17,7 @@ interface UpdateTravelDialogProps {
 }
 
 const UpdateTravelDialog = ({ travel }: UpdateTravelDialogProps) => {
-  const { isLoading, formFields, setFormFields, updateTravel } = useUpdateTravel({ travel })
+  const { isPending, formFields, setFormFields, updateTravel } = useUpdateTravel({ travel })
 
   const hideModal = useHideModal()
 
@@ -38,19 +38,19 @@ const UpdateTravelDialog = ({ travel }: UpdateTravelDialogProps) => {
 
         <TravelForm
           values={formFields}
-          disabled={isLoading}
+          disabled={isPending}
           onChange={setFormFields}
           onSubmit={updateTravel}
         />
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button size='sm' variant='secondary' disabled={isLoading}>
+            <Button size='sm' variant='secondary' disabled={isPending}>
               Отмена
             </Button>
           </DialogClose>
 
-          <Button size='sm' onClick={updateTravel} isLoading={isLoading}>
+          <Button size='sm' onClick={updateTravel} isLoading={isPending}>
             Сохранить
           </Button>
         </DialogFooter>

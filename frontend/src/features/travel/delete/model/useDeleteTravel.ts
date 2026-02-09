@@ -8,25 +8,26 @@ export const useDeleteTravel = (travelId: string) => {
   const queryClient = useQueryClient()
   const hideModal = useHideModal()
 
-  const { isPending, mutate } = useDeleteTravelMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [TRAVELS_QUERY_KEY]
-      })
-      hideModal()
-      toast.success('Путешествие удалено')
-    },
-    onError: () => {
-      toast.error('Не удалось удалить путешествие', {
-        description: 'Пожалуйста, попробуйте еще раз'
-      })
-    }
-  })
+  const { isPending, mutate } = useDeleteTravelMutation()
 
-  const deleteTravel = () => mutate(travelId)
+  const deleteTravel = () =>
+    mutate(travelId, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [TRAVELS_QUERY_KEY]
+        })
+        hideModal()
+        toast.success('Путешествие удалено')
+      },
+      onError: () => {
+        toast.error('Не удалось удалить путешествие', {
+          description: 'Пожалуйста, попробуйте еще раз'
+        })
+      }
+    })
 
   return {
-    isLoading: isPending,
+    isPending,
     deleteTravel
   }
 }

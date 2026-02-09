@@ -11,6 +11,7 @@ interface ExpenseFormFields {
   description: string
   date: Date | undefined
   category: ExpenseCategory | undefined
+  link: string | undefined
 }
 
 interface UseUpdateExpenseParams {
@@ -23,29 +24,18 @@ export const useUpdateExpense = ({ expense }: UseUpdateExpenseParams) => {
     amount: expense.amount.toString(),
     description: expense.description || '',
     date: expense.date ? new Date(expense.date) : undefined,
-    category: expense.category
+    category: expense.category,
+    link: expense.link
   })
 
   const queryClient = useQueryClient()
   const hideModal = useHideModal()
 
   const { isPending, error, mutate } = useUpdateExpenseMutation({
-    expenseId: expense.id,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EXPENSES_QUERY_KEY, expense.travel_id]
-      })
-      hideModal()
-      toast.success('Расход обновлен')
-    },
-    onError: () => {
-      toast.error('Не удалось обновить расход', {
-        description: 'Пожалуйста, попробуйте еще раз'
-      })
-    }
+    expenseId: expense.id
   })
 
-  const updateExpense = async () => {
+  const updateExpense = () => {
     if (!formFields.title.trim() || !formFields.amount.trim() || !formFields.category) {
       return
     }
@@ -55,18 +45,35 @@ export const useUpdateExpense = ({ expense }: UseUpdateExpenseParams) => {
       return
     }
 
-    mutate({
-      title: formFields.title,
-      amount,
-      description: formFields.description || undefined,
-      date: formFields.date ? formFields.date.toISOString() : undefined,
-      category: formFields.category
-    })
+    mutate(
+      {
+        amount,
+        title: formFields.title,
+        description: formFields.description || undefined,
+        date: formFields.date ? formFields.date.toISOString() : undefined,
+        category: formFields.category,
+        link: formFields.link?.trim() || undefined
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [EXPENSES_QUERY_KEY, expense.travel_id]
+          })
+          hideModal()
+          toast.success('Расход обновлен')
+        },
+        onError: () => {
+          toast.error('Не удалось обновить расход', {
+            description: 'Пожалуйста, попробуйте еще раз'
+          })
+        }
+      }
+    )
   }
 
   return {
     error,
-    isLoading: isPending,
+    isPending,
     formFields,
     setFormFields,
     updateExpense

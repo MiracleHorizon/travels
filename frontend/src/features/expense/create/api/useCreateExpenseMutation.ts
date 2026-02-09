@@ -8,17 +8,10 @@ export interface CreateExpenseDto {
   description: string | undefined
   date: string | undefined
   category: ExpenseCategory
+  link: string | undefined
 }
 
-export const useCreateExpenseMutation = ({
-  travelId,
-  onSuccess,
-  onError
-}: {
-  travelId: string
-  onSuccess?: () => void
-  onError?: () => void
-}) => {
+export const useCreateExpenseMutation = ({ travelId }: { travelId: string }) => {
   return useMutation({
     mutationFn: async (data: CreateExpenseDto) => {
       const response = await fetch(`${API_BASE_URL}/v1/expenses/${travelId}`, {
@@ -30,10 +23,6 @@ export const useCreateExpenseMutation = ({
       if (!response.ok) {
         throw new Error('Failed to create expense')
       }
-
-      return response.json()
-    },
-    onSuccess,
-    onError
+    }
   })
 }

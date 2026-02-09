@@ -11,14 +11,16 @@ import { EXPENSE_CHART_CATEGORIES } from '../model/consts'
 import { useBarExpenses } from '../model/useBarExpenses'
 import type { Expense } from '../model/types'
 import { formatCurrency } from '@/shared/lib/format'
+import { cn } from '@/shared/lib/styles/utils'
 
 interface ExpenseBarChartProps {
   expenses: Expense[]
+  className?: string
 }
 
 const chartConfig = EXPENSE_CHART_CATEGORIES
 
-export const ExpenseBarChart = ({ expenses }: ExpenseBarChartProps) => {
+export const ExpenseBarChart = ({ expenses, className }: ExpenseBarChartProps) => {
   const chartData = useBarExpenses(expenses)
 
   if (chartData.length <= 1) {
@@ -26,7 +28,7 @@ export const ExpenseBarChart = ({ expenses }: ExpenseBarChartProps) => {
   }
 
   return (
-    <div className='flex flex-col w-full'>
+    <div className={cn('flex flex-col w-full', className)}>
       <ChartContainer config={chartConfig} className='min-h-[250px] h-[250px] w-full'>
         <BarChart data={chartData}>
           <XAxis dataKey='dayLabel' tickLine={true} axisLine={true} />

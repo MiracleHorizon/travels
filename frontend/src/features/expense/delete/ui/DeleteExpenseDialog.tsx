@@ -18,7 +18,7 @@ interface DeleteExpenseDialogProps {
 }
 
 const DeleteExpenseDialog = ({ travelId, expenseId, expenseTitle }: DeleteExpenseDialogProps) => {
-  const { isLoading, deleteExpense } = useDeleteExpense(travelId, expenseId)
+  const { isPending, deleteExpense } = useDeleteExpense(travelId, expenseId)
   const hideModal = useHideModal()
 
   return (
@@ -33,10 +33,10 @@ const DeleteExpenseDialog = ({ travelId, expenseId, expenseTitle }: DeleteExpens
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading} onClick={hideModal}>
+          <AlertDialogCancel disabled={isPending} onClick={hideModal}>
             Отмена
           </AlertDialogCancel>
-          <AlertDialogAction variant='destructive' onClick={deleteExpense} disabled={isLoading}>
+          <AlertDialogAction variant='destructive' onClick={deleteExpense} disabled={isPending}>
             Удалить
           </AlertDialogAction>
         </AlertDialogFooter>

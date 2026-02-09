@@ -6,36 +6,37 @@ import { useToggleTravelArchiveMutation } from '../api/useToggleTravelArchiveMut
 export const useToggleTravelArchive = () => {
   const queryClient = useQueryClient()
 
-  const { isPending, mutate } = useToggleTravelArchiveMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [TRAVELS_QUERY_KEY]
-      })
-    },
-    onError: () => {
-      toast.error('Не удалось изменить статус архивации', {
-        description: 'Пожалуйста, попробуйте еще раз'
-      })
-    }
-  })
+  const { isPending, mutate } = useToggleTravelArchiveMutation()
 
   const toggleArchive = (travelId: string, isArchived: boolean) => {
     mutate(
-      { travelId, isArchived },
+      {
+        travelId,
+        isArchived
+      },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [TRAVELS_QUERY_KEY]
+          })
+
           if (isArchived) {
-            toast.success(`Путешествие добавлено в архив`)
+            toast.success('Путешествие добавлено в архив')
           } else {
-            toast.success(`Путешествие восстановлено из архива`)
+            toast.success('Путешествие восстановлено из архива')
           }
+        },
+        onError: () => {
+          toast.error('Не удалось изменить статус архивации', {
+            description: 'Пожалуйста, попробуйте еще раз'
+          })
         }
       }
     )
   }
 
   return {
-    isLoading: isPending,
+    isPending,
     toggleArchive
   }
 }

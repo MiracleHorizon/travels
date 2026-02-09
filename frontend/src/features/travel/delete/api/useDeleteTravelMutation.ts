@@ -1,21 +1,17 @@
 import { API_BASE_URL } from '@/shared/api'
 import { useMutation } from '@tanstack/react-query'
 
-export const useDeleteTravelMutation = ({
-  onSuccess,
-  onError
-}: {
-  onSuccess?: () => void
-  onError?: (error: unknown) => void
-} = {}) => {
+export const useDeleteTravelMutation = () => {
   return useMutation({
     mutationFn: async (travelId: string) => {
-      await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
+      const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
         method: 'DELETE',
         credentials: 'include'
       })
-    },
-    onSuccess,
-    onError
+
+      if (!response.ok) {
+        throw new Error('Failed to delete travel')
+      }
+    }
   })
 }

@@ -1,21 +1,17 @@
 import { API_BASE_URL } from '@/shared/api'
 import { useMutation } from '@tanstack/react-query'
 
-export const useDeleteExpenseMutation = ({
-  onSuccess,
-  onError
-}: {
-  onSuccess?: () => void
-  onError?: (error: unknown) => void
-} = {}) => {
+export const useDeleteExpenseMutation = () => {
   return useMutation({
     mutationFn: async (expenseId: string) => {
-      await fetch(`${API_BASE_URL}/v1/expenses/${expenseId}`, {
+      const response = await fetch(`${API_BASE_URL}/v1/expenses/${expenseId}`, {
         method: 'DELETE',
         credentials: 'include'
       })
-    },
-    onSuccess,
-    onError
+
+      if (!response.ok) {
+        throw new Error('Failed to delete expense')
+      }
+    }
   })
 }

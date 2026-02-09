@@ -17,7 +17,7 @@ interface DeleteTravelDialogProps {
 }
 
 const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) => {
-  const { isLoading, deleteTravel } = useDeleteTravel(travelId)
+  const { isPending, deleteTravel } = useDeleteTravel(travelId)
   const hideModal = useHideModal()
 
   return (
@@ -32,10 +32,10 @@ const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) =
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel disabled={isLoading} onClick={hideModal}>
+          <AlertDialogCancel disabled={isPending} onClick={hideModal}>
             Отмена
           </AlertDialogCancel>
-          <AlertDialogAction variant='destructive' onClick={deleteTravel} disabled={isLoading}>
+          <AlertDialogAction variant='destructive' onClick={deleteTravel} disabled={isPending}>
             Удалить
           </AlertDialogAction>
         </AlertDialogFooter>

@@ -13,7 +13,7 @@ import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useCreateTravel } from '../model/useCreateTravel'
 
 const CreateTravelDialog = () => {
-  const { isLoading, formFields, setFormFields, createTravel } = useCreateTravel()
+  const { isPending, formFields, setFormFields, createTravel } = useCreateTravel()
 
   const hideModal = useHideModal()
 
@@ -36,19 +36,19 @@ const CreateTravelDialog = () => {
 
         <TravelForm
           values={formFields}
-          disabled={isLoading}
+          disabled={isPending}
           onChange={setFormFields}
           onSubmit={createTravel}
         />
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button size='sm' variant='secondary' disabled={isLoading}>
+            <Button size='sm' variant='secondary' disabled={isPending}>
               Отмена
             </Button>
           </DialogClose>
 
-          <Button size='sm' onClick={createTravel} isLoading={isLoading}>
+          <Button size='sm' onClick={createTravel} isLoading={isPending}>
             Создать
           </Button>
         </DialogFooter>

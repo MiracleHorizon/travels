@@ -2,6 +2,7 @@ import { API_BASE_URL } from '@/shared/api'
 import { useMutation } from '@tanstack/react-query'
 
 interface UpdateTravelDto {
+  travelId: string
   name: string
   description?: string
   startDate: string
@@ -9,26 +10,18 @@ interface UpdateTravelDto {
   tags?: string[]
 }
 
-interface UseUpdateTravelMutationParams {
-  travelId: string
-  onSuccess?: () => void
-  onError?: () => void
-}
-
-export const useUpdateTravelMutation = ({
-  travelId,
-  onSuccess,
-  onError
-}: UseUpdateTravelMutationParams) => {
+export const useUpdateTravelMutation = () => {
   return useMutation({
-    mutationFn: async (data: UpdateTravelDto) => {
-      await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
+    mutationFn: async ({ travelId, ...data }: UpdateTravelDto) => {
+      const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
         method: 'PATCH',
         body: JSON.stringify(data),
         credentials: 'include'
       })
-    },
-    onSuccess,
-    onError
+
+      if (!response.ok) {
+        throw new Error('Failed to update travel')
+      }
+    }
   })
 }

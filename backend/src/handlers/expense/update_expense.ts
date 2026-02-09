@@ -7,6 +7,7 @@ interface UpdateExpenseDto {
   description?: string
   date?: string
   category?: string
+  currency?: string
   link?: string
 }
 
@@ -17,7 +18,6 @@ export const updateExpenseHandler = withAuth(async req => {
     const { expenseId } = req.params
     const body = (await req.json()) as Partial<UpdateExpenseDto>
 
-    // Обновляем расход только если он принадлежит путешествию пользователя
     const result = await postgres`
       UPDATE travel_expenses 
       SET 
@@ -26,6 +26,7 @@ export const updateExpenseHandler = withAuth(async req => {
         description = ${body.description}, 
         date = ${body.date}, 
         category = ${body.category}, 
+        currency = ${body.currency}, 
         link = ${body.link ?? null}, 
         updated_at = NOW() 
       WHERE id = ${expenseId} 

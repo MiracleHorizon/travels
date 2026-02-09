@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 interface UpdateExpenseDto {
   title: string
   amount: number
+  currency: string
   description?: string
   date?: string
   category: string

@@ -4,11 +4,17 @@ import type { Expense } from '../model/types'
 
 export const EXPENSES_QUERY_KEY = 'expenses-list'
 
-export const useExpensesQuery = ({ travelId }: { travelId: string }) => {
+interface UseExpensesQueryParams {
+  travelId: string
+}
+
+export const useExpensesQuery = ({ travelId }: UseExpensesQueryParams) => {
   return useQuery<Expense[]>({
     queryKey: [EXPENSES_QUERY_KEY, travelId],
     queryFn: async () => {
-      const response = await fetch(`${API_BASE_URL}/v1/expenses/${travelId}`, { credentials: 'include' })
+      const response = await fetch(`${API_BASE_URL}/v1/expenses/${travelId}`, {
+        credentials: 'include'
+      })
 
       if (!response.ok) {
         throw new Error('Failed to fetch expenses')

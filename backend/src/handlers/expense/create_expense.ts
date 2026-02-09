@@ -8,6 +8,7 @@ interface CreateExpenseDto {
   description: string
   date: string
   category: string
+  currency?: string
   link?: string
 }
 
@@ -16,7 +17,8 @@ export const createExpenseHandler = withAuth(async req => {
 
   try {
     const { travelId } = req.params
-    const { title, amount, description, date, category, link } = (await req.json()) as CreateExpenseDto
+    const body = (await req.json()) as CreateExpenseDto
+    const { title, amount, description, date, category, link, currency } = body
 
     // Проверяем что путешествие существует и принадлежит пользователю
     const travel = await postgres`
@@ -32,9 +34,6 @@ export const createExpenseHandler = withAuth(async req => {
         }
       })
     }
-
-    // TODO: Поддержка выбора валюты
-    const currency = 'RUB'
 
     const expenseId = randomUUIDv7()
     const expense =

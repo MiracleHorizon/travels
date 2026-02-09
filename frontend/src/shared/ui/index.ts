@@ -28,6 +28,7 @@ export * from './toggle'
 export * from './carousel'
 export * from './collapsible'
 export * from './avatar'
+export * from './input-group'
 
 // Собственные компоненты
 export * from './FullscreenLoader'

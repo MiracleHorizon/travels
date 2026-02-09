@@ -19,12 +19,14 @@ import {
 } from '@/shared/ui'
 import { cn } from '@/shared/lib/styles/utils'
 import { ExpenseCategorySelect } from './ExpenseCategorySelect'
+import { ExpenseCurrencySelect } from './ExpenseCurrencySelect'
 import { ExpenseCategory } from '../model/types'
 
 interface ExpenseFormData {
   title: string
   amount: string
-  category: ExpenseCategory
+  currency: string
+  category: ExpenseCategory | undefined
   date: Date | undefined
   description: string
   link: string
@@ -49,6 +51,13 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
     onChange({
       ...values,
       amount: ev.target.value
+    })
+  }
+
+  const handleCurrencyChange = (currencyCode: string) => {
+    onChange({
+      ...values,
+      currency: currencyCode
     })
   }
 
@@ -110,7 +119,7 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
               <Input
                 id='amount'
                 type='number'
-                placeholder='156$'
+                placeholder='148'
                 value={values.amount}
                 onChange={handleAmountChange}
                 disabled={disabled}
@@ -122,16 +131,28 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
 
           <Field>
             <FieldContent>
-              <FieldLabel htmlFor='category'>Категория</FieldLabel>
-              <ExpenseCategorySelect
-                id='category'
-                value={values.category}
-                onChange={handleCategoryChange}
+              <FieldLabel htmlFor='currency'>Валюта</FieldLabel>
+              <ExpenseCurrencySelect
+                id='currency'
+                value={values.currency}
+                onChange={handleCurrencyChange}
                 disabled={disabled}
               />
             </FieldContent>
           </Field>
         </div>
+
+        <Field>
+          <FieldContent>
+            <FieldLabel htmlFor='category'>Категория</FieldLabel>
+            <ExpenseCategorySelect
+              id='category'
+              value={values.category}
+              onChange={handleCategoryChange}
+              disabled={disabled}
+            />
+          </FieldContent>
+        </Field>
 
         <Field>
           <FieldContent>

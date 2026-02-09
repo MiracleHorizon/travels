@@ -7,8 +7,21 @@ import {
   Plane,
   UtensilsCrossed
 } from 'lucide-react'
-import { ExpenseCategory } from './types'
+import { countryCodeToFlag } from '@/shared/lib/format'
+import type { ExpenseCategory, CurrencyItem } from './types'
 import { ChartConfig } from '@/shared/ui/chart'
+
+// Используем эти валюты, если запрос к API за списком валют не удался.
+export const DEFAULT_CURRENCIES: CurrencyItem[] = [
+  { code: 'USD', name: 'United States dollar', symbol: '$', flag: countryCodeToFlag('US') },
+  { code: 'EUR', name: 'Euro', symbol: '€', flag: countryCodeToFlag('DE') },
+  { code: 'RUB', name: 'Russian ruble', symbol: '₽', flag: countryCodeToFlag('RU') },
+  { code: 'GBP', name: 'British pound', symbol: '£', flag: countryCodeToFlag('GB') },
+  { code: 'JPY', name: 'Japanese yen', symbol: '¥', flag: countryCodeToFlag('JP') },
+  { code: 'CNY', name: 'Chinese yuan', symbol: '¥', flag: countryCodeToFlag('CN') },
+  { code: 'INR', name: 'Indian rupee', symbol: '₹', flag: countryCodeToFlag('IN') },
+  { code: 'TRY', name: 'Turkish lira', symbol: '₺', flag: countryCodeToFlag('TR') }
+]
 
 export const EXPENSE_CATEGORIES: Record<ExpenseCategory, string> = {
   transport: 'Транспорт',

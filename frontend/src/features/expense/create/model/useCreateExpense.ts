@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 interface ExpenseFormFields {
   title: string
   amount: string
+  currency: string
   description: string
   date: Date | undefined
   category: ExpenseCategory | undefined
@@ -17,6 +18,7 @@ interface ExpenseFormFields {
 const DEFAULT_FORM_FIELDS: ExpenseFormFields = {
   title: '',
   amount: '',
+  currency: '',
   description: '',
   date: undefined,
   category: undefined,
@@ -45,6 +47,7 @@ export const useCreateExpense = ({ travelId }: { travelId: string }) => {
       {
         amount,
         title: formFields.title,
+        currency: formFields.currency,
         description: formFields.description,
         date: formFields.date ? formFields.date.toISOString() : undefined,
         category: formFields.category,

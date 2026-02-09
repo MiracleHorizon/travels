@@ -8,6 +8,7 @@ import { toast } from 'sonner'
 interface ExpenseFormFields {
   title: string
   amount: string
+  currency: string
   description: string
   date: Date | undefined
   category: ExpenseCategory | undefined
@@ -22,6 +23,7 @@ export const useUpdateExpense = ({ expense }: UseUpdateExpenseParams) => {
   const [formFields, setFormFields] = useState<ExpenseFormFields>({
     title: expense.title,
     amount: expense.amount.toString(),
+    currency: expense.currency,
     description: expense.description || '',
     date: expense.date ? new Date(expense.date) : undefined,
     category: expense.category,
@@ -49,6 +51,7 @@ export const useUpdateExpense = ({ expense }: UseUpdateExpenseParams) => {
       {
         amount,
         title: formFields.title,
+        currency: formFields.currency,
         description: formFields.description || undefined,
         date: formFields.date ? formFields.date.toISOString() : undefined,
         category: formFields.category,

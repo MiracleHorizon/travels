@@ -7,18 +7,19 @@ export const useLogout = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
-  const { mutate: logout, isPending } = useLogoutMutation({
-    onSuccess: () => {
-      queryClient.clear()
-      navigate('/login')
-    },
-    onError: () => {
-      toast.error('Не удалось выйти из системы')
-    }
-  })
+  const { mutate, isPending } = useLogoutMutation()
 
   return {
-    logout: () => logout(),
-    isPending
+    isPending,
+    logout: () =>
+      mutate(undefined, {
+        onSuccess: () => {
+          queryClient.clear()
+          navigate('/login')
+        },
+        onError: () => {
+          toast.error('Не удалось выйти из системы')
+        }
+      })
   }
 }

@@ -6,12 +6,13 @@ import {
   ItemActions,
   Separator,
   Button,
-  DropdownActions
+  DropdownActions,
+  TooltipComposer
 } from '@/shared/ui'
 import { ExpenseBadge } from './ExpenseBadge'
 import type { ExpenseCategory } from '../model/types'
 import type { DropdownAction } from '@/shared/ui'
-import { Ellipsis } from 'lucide-react'
+import { Ellipsis, ExternalLinkIcon } from 'lucide-react'
 import { useState } from 'react'
 import { formatCurrency } from '@/shared/lib/format'
 import { cn } from '@/shared/lib'
@@ -24,6 +25,11 @@ interface ExpenseCardProps {
   date?: string
   description?: string
   locale: string
+  /**
+   * Ссылка на внешний ресурс с дополнительной информацией о расходе.
+   * Например, ссылка на отель, музей, ресторан.
+   */
+  link?: string
   size?: 'default' | 'sm'
   actions?: DropdownAction[]
   showCategoryBadge?: boolean
@@ -37,6 +43,7 @@ export const ExpenseCard = ({
   date,
   description,
   locale,
+  link,
   size = 'default',
   actions,
   showCategoryBadge = false
@@ -56,6 +63,11 @@ export const ExpenseCard = ({
   const handleMouseLeave = () => setHovered(false)
 
   const showActions = hovered || dropdownOpen
+
+  const handleOpenLink = () => {
+    if (!link) return
+    window.open(link, '_blank', 'noopener,noreferrer')
+  }
 
   return (
     <Item
@@ -82,16 +94,25 @@ export const ExpenseCard = ({
         <p className='text-lg font-semibold'>{formattedAmount}</p>
       </ItemContent>
 
-      {actions && (
+      {(actions || link) && (
         <ItemActions
           className={cn(
-            'flex-col items-end opacity-0 transition-opacity duration-200',
+            'gap-1 opacity-0 transition-opacity duration-200',
             showActions && 'opacity-100'
           )}
         >
+          {link && (
+            <TooltipComposer content='Дополнительная информация'>
+              <Button variant='outline' size='xs' onClick={handleOpenLink}>
+                <ExternalLinkIcon />
+                Ссылка
+              </Button>
+            </TooltipComposer>
+          )}
+
           <DropdownActions
             trigger={
-              showActions && (
+              actions && (
                 <Button variant='outline' size='icon-xs'>
                   <Ellipsis />
                 </Button>

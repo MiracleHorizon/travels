@@ -1,37 +1,30 @@
 import { API_BASE_URL } from '@/shared/api'
 import { useMutation } from '@tanstack/react-query'
 
-interface UploadTravelPhotosDto {
+export interface UploadTravelPhotosDto {
+  travelId: string
   photo: File
   description: string
 }
 
-interface UseUploadTravelPhotosMutationParams {
-  travelId: string
-  onSuccess?: () => void
-  onError?: () => void
-}
-
 // TODO: Грузить несколько фотографий
-export const useUploadTravelPhotosMutation = ({
-  travelId,
-  onSuccess,
-  onError
-}: UseUploadTravelPhotosMutationParams) => {
+export const useUploadTravelPhotosMutation = () => {
   return useMutation({
-    mutationFn: async ({ photo, description }: UploadTravelPhotosDto) => {
+    mutationFn: async ({ travelId, photo, description }: UploadTravelPhotosDto) => {
       const formData = new FormData()
 
       formData.append('photo', photo)
       formData.append('description', description)
 
-      await fetch(`${API_BASE_URL}/v1/photos/travels/${travelId}`, {
+      const response = await fetch(`${API_BASE_URL}/v1/photos/travels/${travelId}`, {
         method: 'POST',
         body: formData,
         credentials: 'include'
       })
-    },
-    onSuccess,
-    onError
+
+      if (!response.ok) {
+        throw new Error('Failed to upload photo')
+      }
+    }
   })
 }

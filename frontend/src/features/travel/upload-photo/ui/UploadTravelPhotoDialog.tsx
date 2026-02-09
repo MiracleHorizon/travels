@@ -23,12 +23,11 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
   const hideModal = useHideModal()
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
-  const { isLoading, formFields, uploadTravelPhotos, setFormFields } = useUploadTravelPhotos({
-    travelId
-  })
+  const { isPending, formFields, uploadTravelPhotos, setFormFields } = useUploadTravelPhotos()
 
   const handleUpload = () => {
     uploadTravelPhotos({
+      travelId,
       photo: formFields.photo!,
       description: formFields.description
     })
@@ -103,8 +102,8 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
             size='sm'
             onClick={handleUpload}
             // TODO: Валидация формы
-            disabled={!formFields.photo || isLoading}
-            isLoading={isLoading}
+            disabled={!formFields.photo || isPending}
+            isLoading={isPending}
           >
             Загрузить
           </Button>

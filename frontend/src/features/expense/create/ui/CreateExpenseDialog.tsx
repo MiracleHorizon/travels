@@ -17,7 +17,7 @@ interface CreateExpenseDialogProps {
 }
 
 const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
-  const { isLoading, formFields, setFormFields, createExpense } = useCreateExpense({
+  const { isPending, formFields, setFormFields, createExpense } = useCreateExpense({
     travelId
   })
 
@@ -42,19 +42,19 @@ const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
 
         <ExpenseForm
           values={formFields}
-          disabled={isLoading}
+          disabled={isPending}
           onChange={setFormFields}
           onSubmit={createExpense}
         />
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button size='sm' variant='secondary' disabled={isLoading}>
+            <Button size='sm' variant='secondary' disabled={isPending}>
               Отмена
             </Button>
           </DialogClose>
 
-          <Button size='sm' onClick={createExpense} isLoading={isLoading}>
+          <Button size='sm' onClick={createExpense} isLoading={isPending}>
             Добавить
           </Button>
         </DialogFooter>

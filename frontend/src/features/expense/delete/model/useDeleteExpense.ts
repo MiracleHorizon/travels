@@ -9,25 +9,27 @@ export const useDeleteExpense = (travelId: string, expenseId: string) => {
   const queryClient = useQueryClient()
   const hideModal = useHideModal()
 
-  const { isPending, mutate } = useDeleteExpenseMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EXPENSES_QUERY_KEY, travelId]
-      })
-      hideModal()
-      toast.success('Расход удален')
-    },
-    onError: () => {
-      toast.error('Не удалось удалить расход', {
-        description: 'Пожалуйста, попробуйте еще раз'
-      })
-    }
-  })
+  const { isPending, mutate } = useDeleteExpenseMutation()
 
-  const deleteExpense = () => mutate(expenseId)
+  const deleteExpense = () => {
+    mutate(expenseId, {
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [EXPENSES_QUERY_KEY, travelId]
+        })
+        hideModal()
+        toast.success('Расход удален')
+      },
+      onError: () => {
+        toast.error('Не удалось удалить расход', {
+          description: 'Пожалуйста, попробуйте еще раз'
+        })
+      }
+    })
+  }
 
   return {
-    isLoading: isPending,
+    isPending,
     deleteExpense
   }
 }

@@ -14,7 +14,8 @@ import {
   Calendar,
   Popover,
   PopoverContent,
-  PopoverTrigger
+  PopoverTrigger,
+  FieldDescription
 } from '@/shared/ui'
 import { cn } from '@/shared/lib/styles/utils'
 import { ExpenseCategorySelect } from './ExpenseCategorySelect'
@@ -26,6 +27,7 @@ interface ExpenseFormData {
   category: ExpenseCategory
   date: Date | undefined
   description: string
+  link: string
 }
 
 interface ExpenseFormProps {
@@ -68,6 +70,13 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
     onChange({
       ...values,
       description: ev.target.value
+    })
+  }
+
+  const handleLinkChange = (ev: ChangeEvent<HTMLInputElement>) => {
+    onChange({
+      ...values,
+      link: ev.target.value
     })
   }
 
@@ -170,6 +179,24 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
               onChange={handleDescriptionChange}
               disabled={disabled}
               rows={3}
+            />
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldContent>
+            <FieldLabel htmlFor='link'>Ссылка</FieldLabel>
+            <FieldDescription>
+              Вы можете оставить ссылку на отель, музей, ресторан и так далее
+            </FieldDescription>
+            <Input
+              id='link'
+              type='url'
+              placeholder='https://...'
+              autoComplete='off'
+              value={values.link}
+              onChange={handleLinkChange}
+              disabled={disabled}
             />
           </FieldContent>
         </Field>

@@ -11,6 +11,7 @@ interface ExpenseFormFields {
   description: string
   date: Date | undefined
   category: ExpenseCategory | undefined
+  link: string | undefined
 }
 
 const DEFAULT_FORM_FIELDS: ExpenseFormFields = {
@@ -18,7 +19,8 @@ const DEFAULT_FORM_FIELDS: ExpenseFormFields = {
   amount: '',
   description: '',
   date: undefined,
-  category: undefined
+  category: undefined,
+  link: undefined
 } as const
 
 export const useCreateExpense = ({ travelId }: { travelId: string }) => {
@@ -27,23 +29,9 @@ export const useCreateExpense = ({ travelId }: { travelId: string }) => {
   const queryClient = useQueryClient()
   const hideModal = useHideModal()
 
-  const { isPending, error, mutate } = useCreateExpenseMutation({
-    travelId,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [EXPENSES_QUERY_KEY, travelId]
-      })
-      hideModal()
-      toast.success('Расход добавлен')
-    },
-    onError: () => {
-      toast.error('Не удалось добавить расход', {
-        description: 'Пожалуйста, попробуйте еще раз'
-      })
-    }
-  })
+  const { isPending, error, mutate } = useCreateExpenseMutation({ travelId })
 
-  const createExpense = async () => {
+  const createExpense = () => {
     if (!formFields.title.trim() || !formFields.amount.trim() || !formFields.category) {
       return
     }
@@ -53,18 +41,35 @@ export const useCreateExpense = ({ travelId }: { travelId: string }) => {
       return
     }
 
-    mutate({
-      amount,
-      title: formFields.title,
-      description: formFields.description,
-      date: formFields.date ? formFields.date.toISOString() : undefined,
-      category: formFields.category
-    })
+    mutate(
+      {
+        amount,
+        title: formFields.title,
+        description: formFields.description,
+        date: formFields.date ? formFields.date.toISOString() : undefined,
+        category: formFields.category,
+        link: formFields.link?.trim() || undefined
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [EXPENSES_QUERY_KEY, travelId]
+          })
+          hideModal()
+          toast.success('Расход добавлен')
+        },
+        onError: () => {
+          toast.error('Не удалось добавить расход', {
+            description: 'Пожалуйста, попробуйте еще раз'
+          })
+        }
+      }
+    )
   }
 
   return {
     error,
-    isLoading: isPending,
+    isPending,
     formFields,
     setFormFields,
     createExpense

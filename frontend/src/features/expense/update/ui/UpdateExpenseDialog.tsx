@@ -17,7 +17,7 @@ interface UpdateExpenseDialogProps {
 }
 
 const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
-  const { isLoading, formFields, setFormFields, updateExpense } = useUpdateExpense({
+  const { isPending, formFields, setFormFields, updateExpense } = useUpdateExpense({
     expense
   })
 
@@ -40,19 +40,19 @@ const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
 
         <ExpenseForm
           values={formFields}
-          disabled={isLoading}
+          disabled={isPending}
           onChange={setFormFields}
           onSubmit={updateExpense}
         />
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button size='sm' variant='secondary' disabled={isLoading}>
+            <Button size='sm' variant='secondary' disabled={isPending}>
               Отмена
             </Button>
           </DialogClose>
 
-          <Button size='sm' onClick={updateExpense} isLoading={isLoading}>
+          <Button size='sm' onClick={updateExpense} isLoading={isPending}>
             Сохранить
           </Button>
         </DialogFooter>

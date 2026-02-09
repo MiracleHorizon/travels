@@ -8,6 +8,7 @@ interface CreateExpenseDto {
   description: string
   date: string
   category: string
+  link?: string
 }
 
 export const createExpenseHandler = withAuth(async req => {
@@ -15,7 +16,7 @@ export const createExpenseHandler = withAuth(async req => {
 
   try {
     const { travelId } = req.params
-    const { title, amount, description, date, category } = (await req.json()) as CreateExpenseDto
+    const { title, amount, description, date, category, link } = (await req.json()) as CreateExpenseDto
 
     // Проверяем что путешествие существует и принадлежит пользователю
     const travel = await postgres`
@@ -37,7 +38,7 @@ export const createExpenseHandler = withAuth(async req => {
 
     const expenseId = randomUUIDv7()
     const expense =
-      await postgres`INSERT INTO travel_expenses (id, travel_id, title, amount, currency, category, date, description) VALUES (${expenseId}, ${travelId}, ${title}, ${amount}, ${currency}, ${category}, ${date}, ${description}) RETURNING *`
+      await postgres`INSERT INTO travel_expenses (id, travel_id, title, amount, currency, category, date, description, link) VALUES (${expenseId}, ${travelId}, ${title}, ${amount}, ${currency}, ${category}, ${date}, ${description}, ${link ?? null}) RETURNING *`
 
     return new Response(JSON.stringify(expense[0]), {
       status: 201,

@@ -6,13 +6,7 @@ interface ToggleTravelArchiveParams {
   isArchived: boolean
 }
 
-export const useToggleTravelArchiveMutation = ({
-  onSuccess,
-  onError
-}: {
-  onSuccess?: () => void
-  onError?: (error: unknown) => void
-} = {}) => {
+export const useToggleTravelArchiveMutation = () => {
   return useMutation({
     mutationFn: async ({ travelId, isArchived }: ToggleTravelArchiveParams) => {
       const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}/archive`, {
@@ -29,10 +23,6 @@ export const useToggleTravelArchiveMutation = ({
       if (!response.ok) {
         throw new Error('Failed to toggle travel archive')
       }
-
-      return response.json()
-    },
-    onSuccess,
-    onError
+    }
   })
 }

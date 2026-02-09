@@ -27,23 +27,10 @@ export const useCreateTravel = () => {
   const queryClient = useQueryClient()
   const hideModal = useHideModal()
 
-  const { isPending, error, mutate } = useCreateTravelMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [TRAVELS_QUERY_KEY]
-      })
-      hideModal()
-      toast.success('Путешествие создано, можно начать планировать')
-    },
-    onError: () => {
-      toast.error('Не удалось создать путешествие', {
-        description: 'Пожалуйста, попробуйте еще раз'
-      })
-    }
-  })
+  const { isPending, error, mutate } = useCreateTravelMutation()
 
   // TODO: Нужно сделать валидацию формы
-  const createTravel = async () => {
+  const createTravel = () => {
     if (!formFields.name.trim()) {
       return
     }
@@ -52,18 +39,34 @@ export const useCreateTravel = () => {
       return
     }
 
-    mutate({
-      name: formFields.name,
-      description: formFields.description || undefined,
-      startDate: formFields.dateRange.from.toISOString(),
-      endDate: formFields.dateRange.to.toISOString(),
-      tags: formFields.tags
-    })
+    mutate(
+      {
+        name: formFields.name,
+        description: formFields.description || undefined,
+        startDate: formFields.dateRange.from.toISOString(),
+        endDate: formFields.dateRange.to.toISOString(),
+        tags: formFields.tags
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [TRAVELS_QUERY_KEY]
+          })
+          hideModal()
+          toast.success('Путешествие создано, можно начать планировать')
+        },
+        onError: () => {
+          toast.error('Не удалось создать путешествие', {
+            description: 'Пожалуйста, попробуйте еще раз'
+          })
+        }
+      }
+    )
   }
 
   return {
     error,
-    isLoading: isPending,
+    isPending,
     formFields,
     setFormFields,
     createTravel

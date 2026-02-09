@@ -7,28 +7,21 @@ interface UpdateExpenseDto {
   description?: string
   date?: string
   category: string
+  link?: string
 }
 
-interface UseUpdateExpenseMutationParams {
-  expenseId: string | number
-  onSuccess?: () => void
-  onError?: () => void
-}
-
-export const useUpdateExpenseMutation = ({
-  expenseId,
-  onSuccess,
-  onError
-}: UseUpdateExpenseMutationParams) => {
+export const useUpdateExpenseMutation = ({ expenseId }: { expenseId: string | number }) => {
   return useMutation({
     mutationFn: async (data: UpdateExpenseDto) => {
-      await fetch(`${API_BASE_URL}/v1/expenses/${expenseId}`, {
+      const response = await fetch(`${API_BASE_URL}/v1/expenses/${expenseId}`, {
         method: 'PATCH',
         body: JSON.stringify(data),
         credentials: 'include'
       })
-    },
-    onSuccess,
-    onError
+
+      if (!response.ok) {
+        throw new Error('Failed to update expense')
+      }
+    }
   })
 }

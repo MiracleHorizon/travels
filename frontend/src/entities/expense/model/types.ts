@@ -7,6 +7,7 @@ export interface Expense {
   category: ExpenseCategory
   date?: string
   description?: string
+  link?: string
 }
 
 export type ExpenseCategory =

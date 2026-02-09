@@ -76,7 +76,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
   return (
     <Card>
       <CardContent>
-        <div className='flex justify-between items-center pb-5'>
+        <div className='flex justify-between items-center'>
           <CardTitle className='text-xl font-semibold'>Расходы</CardTitle>
 
           <Button variant='outline' onClick={createExpense} size='sm'>
@@ -89,7 +89,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
           <ExpensesListEmpty onAddExpense={createExpense} />
         ) : (
           <div className='flex flex-col'>
-            <ExpenseBarChart expenses={expenses} />
+            <ExpenseBarChart expenses={expenses} className='mt-5' />
 
             <Separator className='mt-6' />
 

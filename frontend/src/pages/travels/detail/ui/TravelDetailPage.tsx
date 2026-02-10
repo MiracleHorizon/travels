@@ -7,6 +7,7 @@ import FadePlugin from 'embla-carousel-fade'
 import { useTravelQuery, TravelCover, TravelGallery } from '@/entities/travel'
 import { Spinner, Badge, Card, CardContent, CardTitle, Button } from '@/shared/ui'
 import { ExpensesList } from '@/widgets/ExpensesList'
+import { TravelChecklist } from '@/widgets/TravelChecklist'
 import { TravelDetailPageEmpty } from './TravelDetailPageEmpty'
 import { useUploadTravelPhotoAction } from '@/features/travel/upload-photo'
 
@@ -52,18 +53,6 @@ export const TravelDetailPage = () => {
         )}
       />
 
-      <div className='flex justify-end gap-2'>
-        <Button variant='secondary' size='sm'>
-          <MapPin className='h-5 w-5' aria-hidden={true} />
-          Показать на карте
-        </Button>
-
-        <Button size='sm' onClick={() => uploadTravelPhoto(travelId)}>
-          <Upload className='h-5 w-5' aria-hidden={true} />
-          Загрузить фотографию
-        </Button>
-      </div>
-
       <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
         <div className='lg:col-span-2 space-y-6'>
           {travel.description && (
@@ -76,6 +65,8 @@ export const TravelDetailPage = () => {
               </CardContent>
             </Card>
           )}
+
+          <TravelChecklist travelId={travel.id} />
 
           <ExpensesList travelId={travel.id} />
         </div>
@@ -93,6 +84,23 @@ export const TravelDetailPage = () => {
               </CardContent>
             </Card>
           )}
+
+          <Card>
+            <CardContent>
+              <CardTitle className='text-lg font-semibold mb-4'>Действия</CardTitle>
+              <div className='flex flex-col gap-3'>
+                <Button variant='secondary' size='sm'>
+                  <MapPin className='h-5 w-5' aria-hidden={true} />
+                  Показать на карте
+                </Button>
+
+                <Button size='sm' onClick={() => uploadTravelPhoto(travelId)}>
+                  <Upload className='h-5 w-5' aria-hidden={true} />
+                  Загрузить фотографию
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

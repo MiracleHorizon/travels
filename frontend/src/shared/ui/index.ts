@@ -28,6 +28,8 @@ export * from './toggle'
 export * from './carousel'
 export * from './collapsible'
 export * from './avatar'
+export * from './checkbox'
+export * from './progress'
 
 // Собственные компоненты
 export * from './FullscreenLoader'
@@ -37,3 +39,4 @@ export * from './FileDropzone'
 export * from './DropdownActions'
 export * from './LogoYandex'
 export * from './LogoGoogle'
+export * from './TotalCount'

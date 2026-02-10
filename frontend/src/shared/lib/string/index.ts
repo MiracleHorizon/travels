@@ -1,0 +1,1 @@
+export { normalizeForSearch } from './normalizeForSearch'

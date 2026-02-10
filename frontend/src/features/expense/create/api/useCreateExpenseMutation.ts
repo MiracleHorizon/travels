@@ -5,6 +5,7 @@ import type { ExpenseCategory } from '@/entities/expense'
 export interface CreateExpenseDto {
   title: string
   amount: number
+  currency: string
   description: string | undefined
   date: string | undefined
   category: ExpenseCategory

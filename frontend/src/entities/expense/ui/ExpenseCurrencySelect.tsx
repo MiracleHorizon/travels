@@ -1,16 +1,20 @@
 import { useState, useRef } from 'react'
-import { Button, InputGroup, InputGroupAddon, InputGroupInput } from '@/shared/ui'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/shared/ui/dropdown-menu'
+  DropdownMenuTrigger,
+  Button,
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+  ScrollArea
+} from '@/shared/ui'
 import { ChevronDown, Search } from 'lucide-react'
 import { useCurrenciesList } from '../model/useCurrenciesList'
 import { filterCurrencies } from '../model/filterCurrencies'
-import { cn } from '@/shared/lib/styles/utils'
 import { CurrencyItem } from '../model/types'
+import { cn } from '@/shared/lib/styles/utils'
 
 interface ExpenseCurrencySelectProps {
   /**
@@ -36,6 +40,7 @@ const renderCurrencyItem = (item: CurrencyItem) => {
   )
 }
 
+// TODO: Попробовать еще раз сделать виртуализацию
 export const ExpenseCurrencySelect = ({
   id,
   value,
@@ -72,7 +77,6 @@ export const ExpenseCurrencySelect = ({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent align='start' className='p-0'>
-        {/* Секция с поиском */}
         <div className='p-1.5 border-b'>
           <InputGroup>
             <InputGroupAddon>
@@ -90,8 +94,12 @@ export const ExpenseCurrencySelect = ({
           </InputGroup>
         </div>
 
-        {/* Список валют */}
-        <div className='max-h-56 overflow-y-auto no-scrollbar space-y-1 p-1.5'>
+        <ScrollArea
+          className={cn(
+            'max-h-50 pl-1.5 pr-3 py-0.5',
+            filteredCurrencies.length > 0 ? 'h-50' : 'h-auto'
+          )}
+        >
           {filteredCurrencies.length === 0 ? (
             <p className='px-2 py-3 text-center text-sm text-muted-foreground'>Ничего не найдено</p>
           ) : (
@@ -99,14 +107,14 @@ export const ExpenseCurrencySelect = ({
               <DropdownMenuItem
                 key={item.code}
                 title={item.name}
-                className={cn(value === item.code && 'bg-accent', 'py-1')}
+                className={cn(value === item.code && 'bg-accent', 'my-1 py-0.5')}
                 onClick={() => handleSelect(item.code)}
               >
                 {renderCurrencyItem(item)}
               </DropdownMenuItem>
             ))
           )}
-        </div>
+        </ScrollArea>
       </DropdownMenuContent>
     </DropdownMenu>
   )

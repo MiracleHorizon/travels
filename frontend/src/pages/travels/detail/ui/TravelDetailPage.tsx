@@ -67,7 +67,6 @@ export const TravelDetailPage = () => {
           )}
 
           <TravelChecklist travelId={travel.id} />
-
           <ExpensesList travelId={travel.id} />
         </div>
 

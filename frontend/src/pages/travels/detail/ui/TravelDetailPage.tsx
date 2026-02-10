@@ -29,7 +29,7 @@ export const TravelDetailPage = () => {
   }
 
   return (
-    <div className='flex flex-col gap-6'>
+    <div className='flex flex-col gap-4'>
       <TravelCover
         name={travel.name}
         startDate={travel.start_date}
@@ -53,8 +53,8 @@ export const TravelDetailPage = () => {
         )}
       />
 
-      <div className='grid grid-cols-1 lg:grid-cols-3 gap-6'>
-        <div className='lg:col-span-2 space-y-6'>
+      <div className='grid grid-cols-1 lg:grid-cols-3 gap-4'>
+        <div className='lg:col-span-2 space-y-4'>
           {travel.description && (
             <Card>
               <CardContent>
@@ -66,24 +66,10 @@ export const TravelDetailPage = () => {
             </Card>
           )}
 
-          <TravelChecklist travelId={travel.id} />
           <ExpensesList travelId={travel.id} />
         </div>
 
-        <div className='space-y-6'>
-          {Boolean(travel.tags.length) && (
-            <Card>
-              <CardContent>
-                <CardTitle className='text-lg font-semibold mb-4'>Теги</CardTitle>
-                <div className='flex flex-wrap gap-2'>
-                  {travel.tags.map((tag, index) => (
-                    <Badge key={index}>{tag}</Badge>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          )}
-
+        <div className='space-y-4'>
           <Card>
             <CardContent>
               <CardTitle className='text-lg font-semibold mb-4'>Действия</CardTitle>
@@ -100,6 +86,21 @@ export const TravelDetailPage = () => {
               </div>
             </CardContent>
           </Card>
+
+          <TravelChecklist travelId={travel.id} />
+
+          {Boolean(travel.tags.length) && (
+            <Card>
+              <CardContent>
+                <CardTitle className='text-lg font-semibold mb-4'>Теги</CardTitle>
+                <div className='flex flex-wrap gap-2'>
+                  {travel.tags.map((tag, index) => (
+                    <Badge key={index}>{tag}</Badge>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </div>
       </div>
     </div>

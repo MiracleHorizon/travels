@@ -11,18 +11,6 @@ import { countryCodeToFlag } from '@/shared/lib/format'
 import type { ExpenseCategory, CurrencyItem } from './types'
 import { ChartConfig } from '@/shared/ui/chart'
 
-// Используем эти валюты, если запрос к API за списком валют не удался.
-export const DEFAULT_CURRENCIES: CurrencyItem[] = [
-  { code: 'USD', name: 'United States dollar', symbol: '$', flag: countryCodeToFlag('US') },
-  { code: 'EUR', name: 'Euro', symbol: '€', flag: countryCodeToFlag('DE') },
-  { code: 'RUB', name: 'Russian ruble', symbol: '₽', flag: countryCodeToFlag('RU') },
-  { code: 'GBP', name: 'British pound', symbol: '£', flag: countryCodeToFlag('GB') },
-  { code: 'JPY', name: 'Japanese yen', symbol: '¥', flag: countryCodeToFlag('JP') },
-  { code: 'CNY', name: 'Chinese yuan', symbol: '¥', flag: countryCodeToFlag('CN') },
-  { code: 'INR', name: 'Indian rupee', symbol: '₹', flag: countryCodeToFlag('IN') },
-  { code: 'TRY', name: 'Turkish lira', symbol: '₺', flag: countryCodeToFlag('TR') }
-]
-
 export const EXPENSE_CATEGORIES: Record<ExpenseCategory, string> = {
   transport: 'Транспорт',
   accommodation: 'Проживание',
@@ -67,3 +55,49 @@ export const EXPENSE_CHART_CATEGORIES = {
     color: 'hsl(220, 9%, 46%)'
   }
 } as const satisfies ChartConfig
+
+// Используем эти валюты, если запрос к API за списком валют не удался.
+export const DEFAULT_CURRENCIES: CurrencyItem[] = [
+  { code: 'USD', name: 'United States dollar', symbol: '$', flag: countryCodeToFlag('US') },
+  { code: 'EUR', name: 'Euro', symbol: '€', flag: countryCodeToFlag('DE') },
+  { code: 'RUB', name: 'Russian ruble', symbol: '₽', flag: countryCodeToFlag('RU') },
+  { code: 'GBP', name: 'British pound', symbol: '£', flag: countryCodeToFlag('GB') },
+  { code: 'JPY', name: 'Japanese yen', symbol: '¥', flag: countryCodeToFlag('JP') },
+  { code: 'CNY', name: 'Chinese yuan', symbol: '¥', flag: countryCodeToFlag('CN') },
+  { code: 'INR', name: 'Indian rupee', symbol: '₹', flag: countryCodeToFlag('IN') },
+  { code: 'TRY', name: 'Turkish lira', symbol: '₺', flag: countryCodeToFlag('TR') }
+]
+
+// [NOTE]: Это костыльное решение, чтобы показывать правильный флаг для валют.
+export const CURRENCY_PRIORITY_COUNTRIES: Record<string, string> = {
+  USD: 'US', // Доллар США
+  EUR: 'EU', // Евро
+  GBP: 'GB', // Фунт стерлингов
+  JPY: 'JP', // Японская иена
+  CNY: 'CN', // Китайский юань
+  CHF: 'CH', // Швейцарский франк
+  CAD: 'CA', // Канадский доллар
+  AUD: 'AU', // Австралийский доллар
+  NZD: 'NZ', // Новозеландский доллар
+  RUB: 'RU', // Российский рубль
+  KRW: 'KR', // Южнокорейская вона
+  INR: 'IN', // Индийская рупия
+  BRL: 'BR', // Бразильский реал
+  MXN: 'MX', // Мексиканское песо
+  ZAR: 'ZA', // Южноафриканский рэнд
+  SGD: 'SG', // Сингапурский доллар
+  HKD: 'HK', // Гонконгский доллар
+  NOK: 'NO', // Норвежская крона
+  SEK: 'SE', // Шведская крона
+  DKK: 'DK', // Датская крона
+  PLN: 'PL', // Польский злотый
+  THB: 'TH', // Тайский бат
+  IDR: 'ID', // Индонезийская рупия
+  MYR: 'MY', // Малайзийский ринггит
+  PHP: 'PH', // Филиппинское песо
+  CZK: 'CZ', // Чешская крона
+  ILS: 'IL', // Израильский шекель
+  AED: 'AE', // Дирхам ОАЭ
+  TRY: 'TR', // Турецкая лира
+  ARS: 'AR' // Аргентинское песо
+} as const

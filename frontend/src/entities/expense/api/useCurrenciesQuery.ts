@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import type { CurrencyItem, RestCountryItem } from '../model/types'
-import { DEFAULT_CURRENCIES } from '../model/consts'
+import { CURRENCY_PRIORITY_COUNTRIES, DEFAULT_CURRENCIES } from '../model/consts'
 import { countryCodeToFlag } from '@/shared/lib/format'
 
 // TODO: Унести на бэк, чтобы были логи запросов
@@ -22,21 +22,29 @@ export const useCurrenciesQuery = () => {
       const data = (await response.json()) as RestCountryItem[]
       const byCode = new Map<string, CurrencyItem>()
 
-      // Это вайбкодинг, каюсь.
+      // Сначала проходим по всем странам и собираем валюты
       for (const country of data) {
         if (!country.currencies || typeof country.currencies !== 'object') continue
         const cca2 = country.cca2 || ''
 
         for (const [code, currencyData] of Object.entries(country.currencies)) {
           if (!currencyData?.name || !currencyData?.symbol) continue
-          if (byCode.has(code)) continue
 
-          byCode.set(code, {
-            code,
-            name: currencyData.name,
-            symbol: currencyData.symbol,
-            flag: countryCodeToFlag(cca2)
-          })
+          // Если валюта уже есть, проверяем приоритет
+          const existing = byCode.get(code)
+          const priorityCountry = CURRENCY_PRIORITY_COUNTRIES[code]
+
+          // Добавляем / обновляем валюту если:
+          // 1. Её еще нет в списке
+          // 2. Текущая страна - приоритетная для этой валюты
+          if (!existing || (priorityCountry && cca2 === priorityCountry)) {
+            byCode.set(code, {
+              code,
+              name: currencyData.name,
+              symbol: currencyData.symbol,
+              flag: countryCodeToFlag(cca2)
+            })
+          }
         }
       }
 

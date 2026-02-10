@@ -76,7 +76,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
 
   return (
     <Card>
-      <CardContent>
+      <CardContent className='group'>
         <div className='flex justify-between items-start'>
           <CardTitle className='text-lg font-semibold flex items-center gap-2'>
             <CreditCard className='size-5' />
@@ -84,7 +84,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
           </CardTitle>
 
           <TooltipComposer content='Добавить расход'>
-            <Button variant='outline' size='icon-sm' onClick={createExpense}>
+            <Button variant='outline' size='icon-sm' onClick={createExpense} className='opacity-0 group-hover:opacity-100 transition-opacity'>
               <Plus />
             </Button>
           </TooltipComposer>

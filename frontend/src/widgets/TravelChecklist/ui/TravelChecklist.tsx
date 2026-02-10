@@ -23,7 +23,7 @@ export const TravelChecklist = ({ travelId }: TravelChecklistProps) => {
 
   return (
     <Card>
-      <CardContent>
+      <CardContent className='group'>
         <div className='flex items-start justify-between'>
           <CardTitle className='text-lg font-semibold flex items-center gap-2'>
             <ListChecks className='size-5' />
@@ -31,7 +31,12 @@ export const TravelChecklist = ({ travelId }: TravelChecklistProps) => {
           </CardTitle>
 
           <TooltipComposer content='Добавить категорию'>
-            <Button variant='outline' size='icon-sm' onClick={addChecklistCategory}>
+            <Button
+              variant='outline'
+              size='icon-sm'
+              onClick={addChecklistCategory}
+              className='opacity-0 group-hover:opacity-100 transition-opacity'
+            >
               <Plus />
             </Button>
           </TooltipComposer>

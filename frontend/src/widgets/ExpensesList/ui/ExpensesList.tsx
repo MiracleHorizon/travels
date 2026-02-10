@@ -2,7 +2,8 @@ import {
   useExpensesQuery,
   ExpenseBarChart,
   ExpenseCard,
-  ExpenseCategorySection
+  ExpenseCategorySection,
+  splitExpensesByCurrency
 } from '@/entities/expense'
 import {
   Card,
@@ -28,9 +29,8 @@ interface ExpensesListProps {
   travelId: string
 }
 
+// TODO: Выбор локали
 const locale = 'ru-RU'
-// TODO: Выбор валюты
-const currency = 'RUB'
 
 export const ExpensesList = ({ travelId }: ExpensesListProps) => {
   const { data: expenses, isLoading, isSuccess, error, refetch } = useExpensesQuery({ travelId })
@@ -73,6 +73,19 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
       ? expenses.reduce((total, expense) => total + +expense.amount, 0)
       : 0
 
+  const isSingleCurrency =
+    expenses && expenses.length > 1
+      ? expenses.every(expense => expense.currency === expenses[0].currency)
+      : true
+
+  const totalsByCurrency =
+    expenses && expenses.length > 0
+      ? splitExpensesByCurrency(expenses).map(({ currency, amount }) => ({
+          currency,
+          amount: formatCurrency(amount, currency, locale)
+        }))
+      : []
+
   return (
     <Card>
       <CardContent>
@@ -99,7 +112,6 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
                   key={category}
                   locale={locale}
                   category={category}
-                  currency={currency}
                   expenses={groups.get(category)}
                   defaultOpen={index === 0}
                   renderItem={expense => (
@@ -115,7 +127,11 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
             </div>
 
             <div className='pt-6 border-t'>
-              <TotalAmount amount={formatCurrency(total, currency)} />
+              {isSingleCurrency ? (
+                <TotalAmount amount={formatCurrency(total, expenses[0].currency, locale)} />
+              ) : (
+                <TotalAmount amounts={totalsByCurrency} />
+              )}
             </div>
           </div>
         )}

@@ -22,8 +22,9 @@ const chartConfig = EXPENSE_CHART_CATEGORIES
 
 export const ExpenseBarChart = ({ expenses, className }: ExpenseBarChartProps) => {
   const chartData = useBarExpenses(expenses)
+  const isSingleCurrency = expenses.every(expense => expense.currency === expenses[0].currency)
 
-  if (chartData.length <= 1) {
+  if (chartData.length <= 1 || !isSingleCurrency) {
     return null
   }
 

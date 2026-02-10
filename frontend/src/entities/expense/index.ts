@@ -11,3 +11,4 @@ export { useExpensesQuery, EXPENSES_QUERY_KEY } from './api/useExpensesQuery'
 
 // Model
 export type { Expense, ExpenseCategory } from './model/types'
+export { splitExpensesByCurrency } from './model/splitExpensesByCurrency'

@@ -13,6 +13,7 @@ import {
   deleteExpenseHandler,
   updateExpenseHandler
 } from './handlers/expense'
+import { getNotesListHandler, createNoteHandler } from './handlers/note'
 import { getUserByCodeHandler, getUserMeHandler, logoutHandler } from './handlers/auth'
 import { getGeoCoderCoordsHandler, getGeoCoderLocationHandler } from './handlers/geo'
 import { corsHeaders, injectCORS } from './cors'
@@ -54,6 +55,10 @@ const server = Bun.serve({
       },
       '/api/v1/photos/travels/:travelId': {
         POST: uploadTravelPhotoHandler
+      },
+      '/api/v1/travels/:travelId/notes': {
+        GET: getNotesListHandler,
+        POST: createNoteHandler
       },
       // Расходы
       '/api/v1/expenses/:travelId': {

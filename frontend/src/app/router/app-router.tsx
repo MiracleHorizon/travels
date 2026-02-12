@@ -3,13 +3,15 @@ import {
   TravelsPlannedPage,
   TravelsPastPage,
   TravelsArchivePage,
-  TravelDetailPage
+  TravelDetailPage,
+  TravelDiaryPage
 } from '@pages/travels'
 import { LoginPage, LoginCallbackPage } from '@pages/login'
-import { AppLayout } from '../app-layout'
+import { AppLayout } from '../layouts/app-layout'
 import { API_BASE_URL } from '@/shared/api'
 import { ProtectedRoute } from './ProtectedRoute'
 import { TravelDetailed } from '@/entities/travel/model/types'
+import { TravelLayout } from '../layouts/TravelLayout'
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +60,7 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: ':travelId',
-                    element: <TravelDetailPage />,
+                    element: <TravelLayout />,
                     loader: async ({ params }) => {
                       // TODO: Вынести это в функцию, а то стыдобища какая-то
                       const response = await fetch(
@@ -74,7 +76,20 @@ export const router = createBrowserRouter([
                     },
                     handle: {
                       breadcrumb: (data: TravelDetailed) => data.name
-                    }
+                    },
+                    children: [
+                      {
+                        index: true,
+                        element: <TravelDetailPage />
+                      },
+                      {
+                        path: 'diary',
+                        element: <TravelDiaryPage />,
+                        handle: {
+                          breadcrumb: 'Дневник'
+                        }
+                      }
+                    ]
                   }
                 ]
               }

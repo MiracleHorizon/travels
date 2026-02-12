@@ -10,6 +10,7 @@ export { TravelCard } from './ui/TravelCard'
 export { TravelCover } from './ui/TravelCover'
 export { TravelGallery } from './ui/TravelGallery'
 export { TravelPhotoUploadForm } from './ui/TravelPhotoUploadForm'
+export { TravelEmptyPlaceholder } from './ui/TravelEmptyPlaceholder'
 
 // Lib
 export { formatTravelDateRange } from './lib/formatters'

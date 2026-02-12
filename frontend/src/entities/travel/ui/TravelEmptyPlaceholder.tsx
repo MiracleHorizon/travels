@@ -8,9 +8,14 @@ import {
   Button
 } from '@/shared/ui'
 import { ArrowLeft, MapPinOff } from 'lucide-react'
+import { ReactNode } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-export const TravelDetailPageEmpty = () => {
+interface TravelEmptyPlaceholderProps {
+  actions?: ReactNode
+}
+
+export const TravelEmptyPlaceholder = ({ actions }: TravelEmptyPlaceholderProps) => {
   const navigate = useNavigate()
   const navigateBack = () => navigate('/travels/planned')
 
@@ -24,10 +29,12 @@ export const TravelDetailPageEmpty = () => {
         <EmptyDescription>Возможно, оно было удалено или не существует</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
-        <Button onClick={navigateBack} variant='outline'>
-          <ArrowLeft />
-          Вернуться к списку
-        </Button>
+        {actions ?? (
+          <Button onClick={navigateBack} variant='outline'>
+            <ArrowLeft />
+            Вернуться к списку
+          </Button>
+        )}
       </EmptyContent>
     </Empty>
   )

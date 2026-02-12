@@ -15,7 +15,8 @@ import {
   EmptyContent,
   EmptyHeader,
   EmptyDescription,
-  Separator
+  Separator,
+  TooltipComposer
 } from '@/shared/ui'
 import { Plus, RefreshCcw } from 'lucide-react'
 import { ExpensesListEmpty } from './ExpensesListEmpty'
@@ -75,14 +76,20 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
 
   return (
     <Card>
-      <CardContent>
+      <CardContent className='group'>
         <div className='flex justify-between items-center'>
           <CardTitle className='text-xl font-semibold'>Расходы</CardTitle>
 
-          <Button variant='outline' onClick={createExpense} size='sm'>
-            <Plus />
-            Добавить
-          </Button>
+          <TooltipComposer content='Добавить расход'>
+            <Button
+              size='icon-sm'
+              variant='outline'
+              className='opacity-0 group-hover:opacity-100 transition-opacity'
+              onClick={createExpense}
+            >
+              <Plus />
+            </Button>
+          </TooltipComposer>
         </div>
 
         {isEmpty ? (

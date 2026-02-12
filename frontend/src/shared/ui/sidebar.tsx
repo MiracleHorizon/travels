@@ -12,8 +12,7 @@ import { Skeleton } from '@/shared/ui/skeleton'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/shared/ui/tooltip'
 import { useMobile } from '@/shared/lib/browser'
 
-const SIDEBAR_COOKIE_NAME = 'sidebar_state'
-const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
+const SIDEBAR_STORAGE_KEY = 'sidebar_state'
 const SIDEBAR_WIDTH = '16rem'
 const SIDEBAR_WIDTH_MOBILE = '18rem'
 const SIDEBAR_WIDTH_ICON = '3rem'
@@ -58,7 +57,10 @@ function SidebarProvider({
 
   // This is the internal state of the sidebar.
   // We use openProp and setOpenProp for control from outside the component.
-  const [_open, _setOpen] = React.useState(defaultOpen)
+  const [_open, _setOpen] = React.useState(() => {
+    const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY)
+    return stored ? JSON.parse(stored) : defaultOpen
+  })
   const open = openProp ?? _open
   const setOpen = (value: boolean | ((value: boolean) => boolean)) => {
     const openState = typeof value === 'function' ? value(open) : value
@@ -68,7 +70,7 @@ function SidebarProvider({
       _setOpen(openState)
     }
 
-    document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`
+    localStorage.setItem(SIDEBAR_STORAGE_KEY, openState.toString())
   }
 
   const toggleSidebar = () => {

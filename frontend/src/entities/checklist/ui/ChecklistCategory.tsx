@@ -1,5 +1,11 @@
-import { ChevronDown, type LucideIcon } from 'lucide-react'
-import { Collapsible, CollapsibleTrigger, CollapsibleContent, TotalCount } from '@/shared/ui'
+import { ChevronDown, Plus, type LucideIcon } from 'lucide-react'
+import {
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent,
+  TotalCount,
+  Button
+} from '@/shared/ui'
 import { cn } from '@/shared/lib'
 import type { ChecklistItemModel } from '../model/types'
 import type { ReactNode } from 'react'
@@ -42,7 +48,23 @@ export const ChecklistCategory = ({
       </CollapsibleTrigger>
 
       <CollapsibleContent>
-        <div className='space-y-1 pl-2 pt-2 pb-3'>{items.map(item => renderItem(item))}</div>
+        {totalCount > 0 && (
+          <div className='space-y-1 pl-2 pt-2 pb-3'>{items.map(item => renderItem(item))}</div>
+        )}
+
+        {totalCount === 0 && (
+          <Button
+            variant='ghost'
+            size='sm'
+            className='wull'
+            onClick={() => {
+              console.log('add item')
+            }}
+          >
+            <Plus className='size-4' />
+            Добавить задачу
+          </Button>
+        )}
       </CollapsibleContent>
     </Collapsible>
   )

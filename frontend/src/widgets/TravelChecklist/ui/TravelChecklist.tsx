@@ -1,24 +1,15 @@
-import { ListChecks, Plus } from 'lucide-react'
-import {
-  Button,
-  Card,
-  CardContent,
-  CardTitle,
-  Progress,
-  Separator,
-  TooltipComposer
-} from '@/shared/ui'
+import { ListChecks } from 'lucide-react'
+import { Card, CardContent, CardTitle, Progress, Separator } from '@/shared/ui'
 import { useChecklistState } from '../model/useChecklistState'
 import { ChecklistCategory, ChecklistItem } from '@/entities/checklist'
-import { useAddChecklistCategoryAction } from '@/features/checklist/add-category'
 
 interface TravelChecklistProps {
   travelId: string
 }
 
+// TODO: Кастомные категории
 export const TravelChecklist = ({ travelId }: TravelChecklistProps) => {
   const { categories, toggleItem, deleteItem, getTotalStats } = useChecklistState(travelId)
-  const { addChecklistCategory } = useAddChecklistCategoryAction()
   const { total, completed } = getTotalStats()
 
   return (
@@ -29,17 +20,6 @@ export const TravelChecklist = ({ travelId }: TravelChecklistProps) => {
             <ListChecks className='size-5' />
             Чеклист
           </CardTitle>
-
-          <TooltipComposer content='Добавить категорию'>
-            <Button
-              variant='outline'
-              size='icon-sm'
-              onClick={addChecklistCategory}
-              className='opacity-0 group-hover:opacity-100 transition-opacity'
-            >
-              <Plus />
-            </Button>
-          </TooltipComposer>
         </div>
 
         {total > 0 && <Progress value={(completed / total) * 100} className='mt-4' />}

@@ -15,9 +15,10 @@ import {
   EmptyContent,
   EmptyHeader,
   EmptyDescription,
-  Separator
+  Separator,
+  TooltipComposer
 } from '@/shared/ui'
-import { Plus, RefreshCcw } from 'lucide-react'
+import { CreditCard, Plus, RefreshCcw } from 'lucide-react'
 import { ExpensesListEmpty } from './ExpensesListEmpty'
 import { useExpenseActions } from '../model/useExpenseActions'
 import { useExpensesByCategory } from '../model/useExpensesByCategory'
@@ -75,14 +76,18 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
 
   return (
     <Card>
-      <CardContent>
-        <div className='flex justify-between items-center'>
-          <CardTitle className='text-xl font-semibold'>Расходы</CardTitle>
+      <CardContent className='group'>
+        <div className='flex justify-between items-start'>
+          <CardTitle className='text-lg font-semibold flex items-center gap-2'>
+            <CreditCard className='size-5' />
+            Расходы
+          </CardTitle>
 
-          <Button variant='outline' onClick={createExpense} size='sm'>
-            <Plus />
-            Добавить
-          </Button>
+          <TooltipComposer content='Добавить расход'>
+            <Button variant='outline' size='icon-sm' onClick={createExpense} className='opacity-0 group-hover:opacity-100 transition-opacity'>
+              <Plus />
+            </Button>
+          </TooltipComposer>
         </div>
 
         {isEmpty ? (

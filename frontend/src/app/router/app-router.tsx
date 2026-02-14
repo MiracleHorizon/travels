@@ -84,10 +84,7 @@ export const router = createBrowserRouter([
                       },
                       {
                         path: 'diary',
-                        element: <TravelDiaryPage />,
-                        handle: {
-                          breadcrumb: 'Дневник'
-                        }
+                        element: <TravelDiaryPage />
                       }
                     ]
                   }

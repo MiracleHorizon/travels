@@ -6,7 +6,8 @@ import {
   type YandexTokensResponse,
   GOOGLE_OAUTH_CONFIG,
   type GoogleProfile,
-  type GoogleTokensResponse
+  type GoogleTokensResponse,
+  buildAuthCookieForRefresh
 } from '../domains/auth'
 
 export interface AuthenticatedRequest extends BunRequest {
@@ -80,8 +81,6 @@ export const withAuth = (handler: Handler) => {
 
     // Если токен был обновлён, устанавливаем новый cookie
     if (newAccessToken) {
-      const newCookie = `access_token=${newAccessToken}; Path=/; Max-Age=${60 * 60 * 24 * 365}; SameSite=Lax; HttpOnly; Secure`
-
       // Создаём новый Response с обновлённым cookie
       const newResponse = new Response(response.body, {
         status: response.status,
@@ -89,7 +88,7 @@ export const withAuth = (handler: Handler) => {
         headers: response.headers
       })
 
-      newResponse.headers.set('Set-Cookie', newCookie)
+      newResponse.headers.set('Set-Cookie', buildAuthCookieForRefresh(newAccessToken))
 
       return newResponse
     }

@@ -1,3 +1,5 @@
+import { GeoCoords } from '@/shared/lib/geo'
+
 export interface Travel {
   id: string
   name: string
@@ -13,6 +15,7 @@ export interface Travel {
 
 export interface TravelDetailed extends Travel {
   photos: TravelPhoto[]
+  coords: GeoCoords
 }
 
 export interface TravelPhoto {

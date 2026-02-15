@@ -1,7 +1,11 @@
 import { postgres } from '../../database'
 import { authenticateUser, getAccessToken, refreshAccessToken } from '../../middlewares/with_auth'
 import type { BunRequest } from 'bun'
-import type { YandexProfile, GoogleProfile } from '../../domains/auth'
+import {
+  type YandexProfile,
+  type GoogleProfile,
+  buildAuthCookieForRefresh
+} from '../../domains/auth'
 
 const DEFAULT_AVATAR_ID = '131652443'
 const getYandexUserAvatarUrl = (avatarId: string | undefined) => {
@@ -119,9 +123,6 @@ export const getUserMeHandler = async (req: BunRequest): Promise<Response> => {
         })
       }
 
-      // Устанавливаем новый cookie
-      const setCookieValue = `access_token=${newAccessToken}; Path=/; Max-Age=${60 * 60 * 24 * 365}; SameSite=Lax; HttpOnly; Secure`
-
       return new Response(
         JSON.stringify({
           id: profile.id,
@@ -133,7 +134,7 @@ export const getUserMeHandler = async (req: BunRequest): Promise<Response> => {
           status: 200,
           headers: {
             'Content-Type': 'application/json',
-            'Set-Cookie': setCookieValue
+            'Set-Cookie': buildAuthCookieForRefresh(newAccessToken)
           }
         }
       )

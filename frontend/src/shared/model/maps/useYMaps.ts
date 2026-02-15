@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { YMapsContext } from './YmapsContext'
+import { YMapsContext } from './YMapsContext'
 
 export const useYMaps = () => {
   const { reactify, ymaps, controlsModule } = useContext(YMapsContext)

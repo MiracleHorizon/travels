@@ -6,7 +6,8 @@ import {
   type YandexTokensResponse,
   GOOGLE_OAUTH_CONFIG,
   type GoogleProfile,
-  type GoogleTokensResponse
+  type GoogleTokensResponse,
+  buildAuthCookieForLogin
 } from '../../domains/auth'
 
 /**
@@ -222,9 +223,6 @@ export const getUserByCodeHandler = async (req: BunRequest) => {
         updated_at = NOW()
     `
 
-    // 4. Устанавливаем access_token в HttpOnly cookie
-    const cookie = `access_token=${accessToken}; Path=/; Max-Age=${expiresIn}; SameSite=Lax; HttpOnly; Secure`
-
     return new Response(
       JSON.stringify({
         user: {
@@ -238,7 +236,7 @@ export const getUserByCodeHandler = async (req: BunRequest) => {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Set-Cookie': cookie
+          'Set-Cookie': buildAuthCookieForLogin(accessToken, expiresIn)
         }
       }
     )

@@ -1,13 +1,13 @@
 import { Navigate, Outlet } from 'react-router-dom'
 
 import { useUser } from '@/entities/user'
-import { FullscreenLoader } from '@/shared/ui'
+import { Loader } from '@/shared/ui'
 
 export const ProtectedRoute = () => {
   const { isPending, data: user, error } = useUser()
 
   if (isPending) {
-    return <FullscreenLoader />
+    return <Loader variant='fullscreen' />
   }
 
   if (error || !user) {

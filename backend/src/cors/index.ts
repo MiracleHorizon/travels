@@ -24,9 +24,17 @@ type Routes = {
 
 const allowedMethods = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'] as const)
 
-const CLIENT_URL = process.env.CLIENT_URL ?? 'http://localhost:3000'
+const CLIENT_URL = process.env.CLIENT_URL ?? 'https://localhost:3000'
 
-const defaultAllowedOrigins = [CLIENT_URL]
+// В dev фронт может быть на https (Vite), бэк на http — разрешаем оба варианта
+const defaultAllowedOrigins =
+  process.env.NODE_ENV === 'production'
+    ? [CLIENT_URL]
+    : [
+        CLIENT_URL,
+        CLIENT_URL.replace(/^http:/, 'https:'),
+        CLIENT_URL.replace(/^https:/, 'http:')
+      ].filter((v, i, a) => a.indexOf(v) === i)
 
 export const corsHeaders: CorsOptions = {
   allowedOrigins: defaultAllowedOrigins,

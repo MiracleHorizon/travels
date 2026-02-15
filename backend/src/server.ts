@@ -1,3 +1,4 @@
+import path from 'path'
 import {
   createTravelHandler,
   deleteTravelHandler,
@@ -18,9 +19,15 @@ import { getUserByCodeHandler, getUserMeHandler, logoutHandler } from './handler
 import { getGeoCoderCoordsHandler, getGeoCoderLocationHandler } from './handlers/geo'
 import { corsHeaders, injectCORS } from './cors'
 
+const certDir = path.resolve(import.meta.dir, '..', 'cert')
+
 // TODO: Механизм мидлваров
 const server = Bun.serve({
   port: 4200,
+  tls: {
+    key: Bun.file(path.join(certDir, 'localhost-key.pem')),
+    cert: Bun.file(path.join(certDir, 'localhost.pem'))
+  },
   routes: injectCORS(
     {
       // Авторизация

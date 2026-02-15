@@ -13,7 +13,7 @@ export const useTravelsQuery = ({ status, archived }: UseTravelsQueryParams = {}
   return useQuery({
     queryKey: [TRAVELS_QUERY_KEY, status, archived],
     queryFn: async () => {
-      const url = new URL(`${API_BASE_URL}/v1/travels`)
+      const url = new URL(`${API_BASE_URL}/v1/travels`, window.location.origin)
 
       if (status !== undefined) {
         url.searchParams.append('status', status)

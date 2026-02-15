@@ -34,9 +34,10 @@ export const useTravelsQuery = ({ status, archived }: UseTravelsQueryParams = {}
   })
 }
 
-export const useTravelQuery = (travelId: string) => {
+export const useTravelQuery = (travelId: string | undefined) => {
   return useQuery<TravelDetailed>({
     queryKey: [TRAVELS_QUERY_KEY, travelId],
+    enabled: !!travelId,
     queryFn: async () => {
       const response = await fetch(`${API_BASE_URL}/v1/travels/${travelId}`, {
         credentials: 'include'

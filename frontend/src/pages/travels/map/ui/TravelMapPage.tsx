@@ -1,21 +1,16 @@
 import { useParams } from 'react-router-dom'
 
-import { useTheme } from '@/entities/theme'
 import { useTravelQuery } from '@/entities/travel'
 import { Card, CardContent, Loader } from '@/shared/ui'
-import { YMap, useMapInitialLocation, YANDEX_MAPS_API_KEY } from '@/shared/model/maps'
-import { MapPinMarker } from '@/shared/ui'
+import { YANDEX_MAPS_API_KEY } from '@/shared/model/maps'
+
+import { TravelMapView } from './TravelMapView'
 
 export const TravelMapPage = () => {
-  const { realTheme } = useTheme()
   const { travelId } = useParams<{ travelId: string }>()
-  const { data: travel, isLoading: isTravelLoading, error } = useTravelQuery(travelId)
+  const { data: travel, isLoading, error } = useTravelQuery(travelId)
 
-  const location = useMapInitialLocation({
-    coords: travel?.coords
-  })
-
-  if (isTravelLoading) {
+  if (isLoading) {
     return (
       <Card className='h-full'>
         <Loader variant='fullsize' />
@@ -44,26 +39,5 @@ export const TravelMapPage = () => {
     )
   }
 
-  if (location.status !== 'ready') {
-    return (
-      <Card className='h-full'>
-        <Loader variant='fullsize' />
-      </Card>
-    )
-  }
-
-  return (
-    <Card className='p-0 h-full rounded-t-2xl overflow-hidden'>
-      <CardContent className='relative p-0 h-full'>
-        <div className='absolute inset-0'>
-          <YMap
-            theme={realTheme}
-            initialLocation={location.coords}
-            point={location.coords}
-            pointPin={<MapPinMarker className='text-red-400' />}
-          />
-        </div>
-      </CardContent>
-    </Card>
-  )
+  return <TravelMapView travel={travel} />
 }

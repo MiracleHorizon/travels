@@ -1,4 +1,5 @@
 import { API_BASE_URL } from '@/shared/api'
+import { GeoCoords } from '@/shared/lib/geo'
 import { useMutation } from '@tanstack/react-query'
 
 interface UpdateTravelDto {
@@ -8,6 +9,7 @@ interface UpdateTravelDto {
   startDate: string
   endDate: string
   tags?: string[]
+  coords?: GeoCoords
 }
 
 export const useUpdateTravelMutation = () => {

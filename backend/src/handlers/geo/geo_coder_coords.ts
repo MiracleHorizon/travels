@@ -68,7 +68,9 @@ export const getGeoCoderCoordsHandler = async (req: BunRequest) => {
       }),
       {
         status: 200,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
     )
   } catch (error) {

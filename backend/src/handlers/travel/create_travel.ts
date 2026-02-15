@@ -1,6 +1,7 @@
 import { postgres } from '../../database'
 import { randomUUIDv7 } from 'bun'
 import { withAuth } from '../../middlewares/with_auth'
+import type { GeoCoords } from '../../domains/geo'
 
 interface CreateTravelDto {
   name: string
@@ -8,6 +9,7 @@ interface CreateTravelDto {
   startDate: string
   endDate: string
   tags?: string[]
+  coords?: GeoCoords
 }
 
 export const createTravelHandler = withAuth(async req => {
@@ -65,10 +67,14 @@ export const createTravelHandler = withAuth(async req => {
       )
     }
 
+    const { lat, lng } = body.coords ?? {}
+    const hasCoords = lat != null && lng != null && !isNaN(lat) && !isNaN(lng)
+
     // Создание путешествия с привязкой к пользователю
     const travelId = randomUUIDv7()
+
     const travel = await postgres`
-      INSERT INTO travels (id, user_id, name, description, start_date, end_date, tags, created_at, updated_at)
+      INSERT INTO travels (id, user_id, name, description, start_date, end_date, tags, lat, lng, created_at, updated_at)
       VALUES (
         ${travelId}, 
         ${userId}, 
@@ -77,6 +83,8 @@ export const createTravelHandler = withAuth(async req => {
         ${body.startDate}, 
         ${body.endDate}, 
         ${body.tags || []}, 
+        ${hasCoords ? lat : null}, 
+        ${hasCoords ? lng : null}, 
         NOW(), 
         NOW()
       ) RETURNING *`

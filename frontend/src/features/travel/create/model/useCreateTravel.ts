@@ -6,19 +6,22 @@ import { useCreateTravelMutation } from '../api/useCreateTravelMutation'
 import { useQueryClient } from '@tanstack/react-query'
 import { TRAVELS_QUERY_KEY } from '@/entities/travel'
 import { toast } from 'sonner'
+import { GeoLocationResult } from '@/shared/api/geo'
 
 interface TravelFormFields {
   name: string
   description: string
   dateRange: DateRange
   tags: string[]
+  destination: GeoLocationResult | null
 }
 
 const DEFAULT_FORM_FIELDS: TravelFormFields = {
   name: '',
   description: '',
   dateRange: { from: undefined, to: undefined },
-  tags: []
+  tags: [],
+  destination: null
 } as const
 
 export const useCreateTravel = () => {
@@ -45,7 +48,8 @@ export const useCreateTravel = () => {
         description: formFields.description || undefined,
         startDate: formFields.dateRange.from.toISOString(),
         endDate: formFields.dateRange.to.toISOString(),
-        tags: formFields.tags
+        tags: formFields.tags,
+        coords: formFields.destination.coords
       },
       {
         onSuccess: () => {

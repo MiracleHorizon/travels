@@ -15,7 +15,7 @@ export interface Travel {
 
 export interface TravelDetailed extends Travel {
   photos: TravelPhoto[]
-  coords: GeoCoords
+  coords?: GeoCoords
 }
 
 export interface TravelPhoto {

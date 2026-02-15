@@ -26,14 +26,19 @@ export interface AddressComponent {
 }
 
 export interface GeocoderMetaData {
-  Address: {
+  text?: string
+  Address?: {
     Components: AddressComponent[]
+    formatted?: string
   }
 }
 
 export interface GeoObject {
   metaDataProperty?: {
-    GeocoderMetaData?: GeocoderMetaData
+    GeocoderMetaData?: GeocoderMetaData & { text?: string }
+  }
+  Point?: {
+    pos: string // "lon lat"
   }
 }
 
@@ -45,4 +50,9 @@ export interface GeocoderResponse {
       }>
     }
   }
+}
+
+export type GeoCoords = {
+  lng: number
+  lat: number
 }

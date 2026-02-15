@@ -19,7 +19,7 @@ export const useTravelActions = (): ((travel: Travel) => DropdownAction[]) => {
         icon: <Pencil />,
         onClick: (ev: MouseEvent<HTMLDivElement>) => {
           ev.stopPropagation()
-          updateTravelAction(travel)
+          updateTravelAction(travel.id)
         }
       },
       {

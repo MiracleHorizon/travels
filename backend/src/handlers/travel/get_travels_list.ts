@@ -34,7 +34,7 @@ export const getTravelsListHandler = withAuth(async req => {
     }
 
     const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
-    const query = `SELECT * FROM travels ${whereClause} ORDER BY created_at ASC`
+    const query = `SELECT id, name, description, start_date, end_date, tags, is_archived, created_at, updated_at FROM travels ${whereClause} ORDER BY created_at ASC`
 
     const travels = await postgres.unsafe(query, params)
 

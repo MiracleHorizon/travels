@@ -79,7 +79,7 @@ export const TravelLayout = () => {
           </div>
 
           <div className='flex gap-2 ml-auto'>
-            <Button variant='secondary' size='sm' onClick={() => updateTravel(travel)}>
+            <Button variant='secondary' size='sm' onClick={() => updateTravel(travelId)}>
               <Pencil className='size-4' aria-hidden={true} />
               Редактировать
             </Button>

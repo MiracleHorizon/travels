@@ -1,19 +1,17 @@
 import { useTheme } from '@/entities/theme'
 import { Card, CardContent, Loader } from '@/shared/ui'
-import { YMap, useMapInitialLocation } from '@/shared/model/maps'
+import { YMap } from '@/shared/model/maps'
 import { MapPinMarker } from '@/shared/ui'
+import { GeoCoords } from '@/shared/lib/geo'
+import { useMapInitialLocation } from '../model/useMapInitialLocation'
 
-import type { TravelDetailed } from '@/entities/travel'
-
-interface TravelMapViewProps {
-  travel: TravelDetailed
+interface TravelMapProps {
+  coords: GeoCoords | undefined
 }
 
-export const TravelMapView = ({ travel }: TravelMapViewProps) => {
+export const TravelMap = ({ coords }: TravelMapProps) => {
   const { realTheme } = useTheme()
-  const location = useMapInitialLocation({
-    coords: travel.coords
-  })
+  const location = useMapInitialLocation({ coords })
 
   if (location.status !== 'ready') {
     return (
@@ -31,7 +29,7 @@ export const TravelMapView = ({ travel }: TravelMapViewProps) => {
             theme={realTheme}
             initialLocation={location.coords}
             point={location.coords}
-            pointPin={<MapPinMarker className='text-red-400' />}
+            pointPin={<MapPinMarker />}
           />
         </div>
       </CardContent>

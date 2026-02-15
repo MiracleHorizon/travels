@@ -6,5 +6,4 @@ declare global {
 
 // TODO: Вынести код в пакет
 export { YMap } from './YMap'
-export { useMapInitialLocation } from './useMapInitialLocation'
 export * from './consts'

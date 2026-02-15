@@ -1,10 +1,9 @@
 import { useParams } from 'react-router-dom'
 
 import { useTravelQuery } from '@/entities/travel'
+import { TravelMap } from '@/widgets/TravelMap'
 import { Card, CardContent, Loader } from '@/shared/ui'
 import { YANDEX_MAPS_API_KEY } from '@/shared/model/maps'
-
-import { TravelMapView } from './TravelMapView'
 
 export const TravelMapPage = () => {
   const { travelId } = useParams<{ travelId: string }>()
@@ -39,5 +38,5 @@ export const TravelMapPage = () => {
     )
   }
 
-  return <TravelMapView travel={travel} />
+  return <TravelMap coords={travel.coords} />
 }

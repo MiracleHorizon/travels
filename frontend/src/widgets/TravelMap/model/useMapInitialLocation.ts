@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 
 import { GeoCoords } from '@/shared/lib/geo'
-import { DEFAULT_MAP_LOCATION } from './consts'
+import { DEFAULT_MAP_LOCATION } from '@/shared/model/maps'
 
 type LocationState =
   | {

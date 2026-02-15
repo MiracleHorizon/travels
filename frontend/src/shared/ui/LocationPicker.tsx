@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { MapPin } from 'lucide-react'
+import { MapPin, X } from 'lucide-react'
 
-import { Input } from '@/shared/ui'
+import { Button, Input } from '@/shared/ui'
 import { searchLocations, type GeoLocationResult } from '@/shared/api/geo'
 import { cn } from '@/shared/lib/styles/utils'
 
@@ -16,6 +16,7 @@ interface LocationPickerProps {
 
 const SEARCH_DEBOUNCE_MS = 300
 
+// TODO: Переписать этот кринж на нормальный компонент
 export const LocationPicker = ({
   value,
   onChange,
@@ -91,7 +92,7 @@ export const LocationPicker = ({
   return (
     <div ref={containerRef} className={cn('relative', className)}>
       <div className='relative'>
-        <MapPin className='text-muted-foreground pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2' />
+        <MapPin className='text-muted-foreground pointer-events-none absolute left-3 top-1/2 size-5 -translate-y-1/2' />
         <Input
           id={id}
           type='text'
@@ -110,21 +111,23 @@ export const LocationPicker = ({
           className='pl-9 pr-9'
         />
         {value && (
-          <button
+          <Button
             type='button'
+            size='icon-xs'
+            variant='ghost'
             onClick={handleClear}
             disabled={disabled}
-            className='text-muted-foreground hover:text-foreground absolute right-2 top-1/2 -translate-y-1/2 rounded p-1 text-xs'
+            className='absolute right-2 top-1/2 -translate-y-1/2'
             aria-label='Очистить'
           >
-            ×
-          </button>
+            <X />
+          </Button>
         )}
       </div>
 
       {showDropdown && (
         <div
-          className='border-input bg-popover text-popover-foreground absolute top-full z-50 mt-1 max-h-60 w-full overflow-auto rounded-md border shadow-md'
+          className='border-input bg-popover text-popover-foreground absolute top-full z-50 mt-1.5 max-h-60 w-full overflow-auto rounded-md border shadow-md'
           role='listbox'
         >
           {isSearching ? (

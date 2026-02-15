@@ -9,7 +9,7 @@ export const getTravelHandler = withAuth(async req => {
 
     // Получаем путешествие только если оно принадлежит пользователю
     const result = await postgres`
-      SELECT id, name, start_date, end_date, description, is_archived, created_at, updated_at, tags
+      SELECT id, name, start_date, end_date, description, is_archived, created_at, updated_at, tags, lat, lng
       FROM travels 
       WHERE id = ${travelId} AND user_id = ${userId}
     `
@@ -26,10 +26,15 @@ export const getTravelHandler = withAuth(async req => {
     const photos =
       await postgres`SELECT url, description FROM travel_photos WHERE travel_id = ${travelId} ORDER BY created_at ASC`
 
+    const row = result[0]
+    const { lat, lng, ...rest } = row
+    const coords = lat != null && lng != null ? { lng, lat } : undefined
+
     const travel = {
-      ...result[0],
-      status: result[0].start_date < new Date() ? 'past' : 'upcoming',
-      photos
+      ...rest,
+      status: row.start_date < new Date() ? 'past' : 'upcoming',
+      photos,
+      coords
     }
 
     return new Response(JSON.stringify(travel), {

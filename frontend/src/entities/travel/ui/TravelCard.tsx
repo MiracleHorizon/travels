@@ -63,8 +63,8 @@ export const TravelCard = ({
       </div>
 
       <div className='flex flex-col h-full justify-center py-7 flex-1 min-w-0'>
-        <CardHeader className='gap-2 pb-3'>
-          <CardTitle title={name} className='truncate'>
+        <CardHeader className='pb-1'>
+          <CardTitle title={name} className='text-lg truncate'>
             {name}
           </CardTitle>
         </CardHeader>

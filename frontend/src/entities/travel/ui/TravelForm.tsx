@@ -10,15 +10,18 @@ import {
   TagsInput,
   DateRangePicker,
   Textarea,
-  FieldContent
+  FieldContent,
+  LocationPicker
 } from '@/shared/ui'
 import { ChangeEvent } from 'react'
+import { GeoLocationResult } from '@/shared/api/geo'
 
 interface TravelFormData {
   name: string
   description: string
   dateRange: DateRange | undefined
   tags: string[]
+  destination: GeoLocationResult | null
 }
 
 interface TravelFormProps {
@@ -29,7 +32,7 @@ interface TravelFormProps {
 }
 
 export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: TravelFormProps) => {
-  const handleDestinationChange = (ev: ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...values,
       name: ev.target.value
@@ -57,6 +60,13 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
     })
   }
 
+  const handleDestinationChange = (destination: GeoLocationResult | null) => {
+    onChange({
+      ...values,
+      destination
+    })
+  }
+
   return (
     <form
       onSubmit={ev => {
@@ -74,7 +84,20 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
               autoComplete='off'
               placeholder='Пхукет, 2026'
               value={values.name}
+              onChange={handleNameChange}
+              disabled={disabled}
+            />
+          </FieldContent>
+        </Field>
+
+        <Field>
+          <FieldContent>
+            <FieldLabel htmlFor='destination'>Точка назначения</FieldLabel>
+            <LocationPicker
+              id='destination'
+              value={values.destination}
               onChange={handleDestinationChange}
+              placeholder='Город или адрес'
               disabled={disabled}
             />
           </FieldContent>

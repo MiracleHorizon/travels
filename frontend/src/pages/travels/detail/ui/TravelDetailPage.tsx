@@ -1,24 +1,11 @@
-import { useParams } from 'react-router-dom'
+import { useOutletContext } from 'react-router-dom'
 
-import { useTravelQuery } from '@/entities/travel'
-import { Spinner, Badge, Card, CardContent, CardTitle, TabsContent } from '@/shared/ui'
 import { ExpensesList } from '@/widgets/ExpensesList'
+import { TravelMapPreview, TravelDetailed } from '@/entities/travel'
+import { Badge, Card, CardContent, CardTitle, TabsContent } from '@/shared/ui'
 
 export const TravelDetailPage = () => {
-  const { travelId } = useParams<{ travelId: string }>()
-  const { data: travel, isLoading, error } = useTravelQuery(travelId)
-
-  if (isLoading) {
-    return (
-      <div className='flex justify-center items-center h-full'>
-        <Spinner className='h-12 w-12' />
-      </div>
-    )
-  }
-
-  if (error || !travel) {
-    return 'Пусто'
-  }
+  const { travel } = useOutletContext<{ travel: TravelDetailed }>()
 
   return (
     <TabsContent value='main'>
@@ -39,6 +26,8 @@ export const TravelDetailPage = () => {
         </div>
 
         <div className='space-y-4'>
+          <TravelMapPreview travelId={travel.id} />
+
           {Boolean(travel.tags.length) && (
             <Card>
               <CardContent>

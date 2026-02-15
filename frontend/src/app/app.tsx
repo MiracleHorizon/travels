@@ -1,8 +1,10 @@
+import { RouterProvider } from 'react-router-dom'
+
+import { router } from './router/AppRouter'
+import { QueryProvider } from './providers/QueryProvider'
+
 import { ThemeProvider } from '@/entities/theme'
 import { ModalProvider, ModalsContainer } from '@/shared/lib/modal'
-import { RouterProvider } from 'react-router-dom'
-import { router } from './router/app-router'
-import { QueryProvider } from './providers/QueryProvider'
 
 export const App = () => {
   return (

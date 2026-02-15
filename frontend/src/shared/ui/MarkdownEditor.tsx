@@ -21,7 +21,6 @@ const MarkdownEditor = ({ onSubmit }: MarkdownEditorProps) => {
 
   useEffect(() => {
     function submitHandler() {
-      // Serialize current content to markdown markup
       const value = editor.getValue()
       onSubmit(value)
     }

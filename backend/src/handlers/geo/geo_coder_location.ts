@@ -5,7 +5,10 @@ import {
   type GeocoderKind,
   type GeocoderResponse
 } from '../../domains/geo'
-import { extractComponentsFromGeocoderResponse } from '../../domains/geo/geocoder'
+import {
+  extractComponentsFromGeocoderResponse,
+  extractLocationsFromGeocoderResponse
+} from '../../domains/geo/geocoder'
 
 interface GetGeoCoderLocationBody {
   location: string
@@ -46,11 +49,18 @@ export const getGeoCoderLocationHandler = async (req: BunRequest) => {
     const response = await fetch(`${YANDEX_GEOCODER_API_URL}/?${searchParams.toString()}`)
     const data = (await response.json()) as GeocoderResponse
     const components = extractComponentsFromGeocoderResponse(data, kinds)
+    const locations = extractLocationsFromGeocoderResponse(data)
 
-    return new Response(JSON.stringify({ components }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    })
+    return new Response(
+      JSON.stringify({
+        components,
+        locations
+      }),
+      {
+        status: 200,
+        headers: { 'Content-Type': 'application/json' }
+      }
+    )
   } catch (error) {
     console.error(error)
     return new Response(JSON.stringify({ error: 'Failed to get geo coder location' }), {

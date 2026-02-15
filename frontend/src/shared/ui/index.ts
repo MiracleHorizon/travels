@@ -31,10 +31,12 @@ export * from './avatar'
 export * from './tabs'
 
 // Собственные компоненты
-export * from './FullscreenLoader'
+export * from './Loader'
 export * from './FilePreviewItem'
 export * from './DateRangePicker'
 export * from './FileDropzone'
 export * from './DropdownActions'
 export * from './LogoYandex'
 export * from './LogoGoogle'
+export * from './MapPinMarker'
+export * from './LocationPicker'

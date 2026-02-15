@@ -1,17 +1,20 @@
 import { createBrowserRouter } from 'react-router-dom'
+
+import { AppLayout } from '../layouts/AppLayout'
+import { TravelLayout } from '../layouts/TravelLayout'
+import { ProtectedRoute } from './ProtectedRoute'
+
 import {
   TravelsPlannedPage,
   TravelsPastPage,
   TravelsArchivePage,
   TravelDetailPage,
-  TravelDiaryPage
-} from '@pages/travels'
-import { LoginPage, LoginCallbackPage } from '@pages/login'
-import { AppLayout } from '../layouts/app-layout'
+  TravelDiaryPage,
+  TravelMapPage
+} from '@/pages/travels'
+import { LoginPage, LoginCallbackPage } from '@/pages/login'
 import { API_BASE_URL } from '@/shared/api'
-import { ProtectedRoute } from './ProtectedRoute'
-import { TravelDetailed } from '@/entities/travel/model/types'
-import { TravelLayout } from '../layouts/TravelLayout'
+import { TravelDetailed } from '@/entities/travel'
 
 export const router = createBrowserRouter([
   {
@@ -60,7 +63,6 @@ export const router = createBrowserRouter([
                   },
                   {
                     path: ':travelId',
-                    element: <TravelLayout />,
                     loader: async ({ params }) => {
                       // TODO: Вынести это в функцию, а то стыдобища какая-то
                       const response = await fetch(
@@ -79,12 +81,25 @@ export const router = createBrowserRouter([
                     },
                     children: [
                       {
-                        index: true,
-                        element: <TravelDetailPage />
+                        path: '',
+                        element: <TravelLayout />,
+                        children: [
+                          {
+                            index: true,
+                            element: <TravelDetailPage />
+                          },
+                          {
+                            path: 'diary',
+                            element: <TravelDiaryPage />
+                          }
+                        ]
                       },
                       {
-                        path: 'diary',
-                        element: <TravelDiaryPage />
+                        path: 'map',
+                        element: <TravelMapPage />,
+                        handle: {
+                          breadcrumb: 'Карта'
+                        }
                       }
                     ]
                   }

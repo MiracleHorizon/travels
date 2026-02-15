@@ -1,24 +1,21 @@
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogDescription,
-  DialogFooter,
-  DialogClose
+  Loader
 } from '@/shared/ui'
-import { TravelForm, Travel } from '@/entities/travel'
+import { useTravelQuery } from '@/entities/travel'
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
-import { useUpdateTravel } from '../model/useUpdateTravel'
+import { UpdateTravelForm } from './UpdateTravelForm'
 
 interface UpdateTravelDialogProps {
-  travel: Travel
+  travelId: string
 }
 
-const UpdateTravelDialog = ({ travel }: UpdateTravelDialogProps) => {
-  const { isPending, formFields, setFormFields, updateTravel } = useUpdateTravel({ travel })
-
+const UpdateTravelDialog = ({ travelId }: UpdateTravelDialogProps) => {
+  const { data: travel, isLoading } = useTravelQuery(travelId)
   const hideModal = useHideModal()
 
   return (
@@ -36,30 +33,14 @@ const UpdateTravelDialog = ({ travel }: UpdateTravelDialogProps) => {
           <DialogDescription>Измените детали путешествия</DialogDescription>
         </DialogHeader>
 
-        <TravelForm
-          values={formFields}
-          disabled={isPending}
-          onChange={setFormFields}
-          onSubmit={updateTravel}
-        />
-
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button size='sm' variant='secondary' disabled={isPending}>
-              Отмена
-            </Button>
-          </DialogClose>
-
-          <Button size='sm' onClick={updateTravel} isLoading={isPending}>
-            Сохранить
-          </Button>
-        </DialogFooter>
+        {/* TODO: Скелетон формы */}
+        {!travel || isLoading ? <Loader /> : <UpdateTravelForm travel={travel} />}
       </DialogContent>
     </Dialog>
   )
 }
 
-export const updateTravelModalDefinition: ModalDefinition = {
+export const updateTravelModalDefinition: ModalDefinition<UpdateTravelDialogProps> = {
   name: 'UpdateTravelModal',
   component: UpdateTravelDialog
 }

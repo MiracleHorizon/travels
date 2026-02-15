@@ -4,18 +4,20 @@ import { DateRange } from 'react-day-picker'
 import { useHideModal } from '@/shared/lib/modal'
 import { useUpdateTravelMutation } from '../api/useUpdateTravelMutation'
 import { useQueryClient } from '@tanstack/react-query'
-import { TRAVELS_QUERY_KEY, Travel } from '@/entities/travel'
+import { TRAVELS_QUERY_KEY, type TravelDetailed } from '@/entities/travel'
 import { toast } from 'sonner'
+import { GeoLocationResult } from '@/shared/api/geo'
 
 interface TravelFormFields {
   name: string
   description: string
   dateRange: DateRange | undefined
   tags: string[]
+  destination: GeoLocationResult | null
 }
 
 interface UseUpdateTravelParams {
-  travel: Travel
+  travel: TravelDetailed
 }
 
 export const useUpdateTravel = ({ travel }: UseUpdateTravelParams) => {
@@ -26,7 +28,13 @@ export const useUpdateTravel = ({ travel }: UseUpdateTravelParams) => {
       from: new Date(travel.start_date),
       to: new Date(travel.end_date)
     },
-    tags: travel.tags || []
+    tags: travel.tags || [],
+    destination: travel.coords
+      ? {
+          text: `${travel.coords.lat.toFixed(4)}, ${travel.coords.lng.toFixed(4)}`,
+          coords: travel.coords
+        }
+      : null
   })
 
   const queryClient = useQueryClient()
@@ -51,7 +59,8 @@ export const useUpdateTravel = ({ travel }: UseUpdateTravelParams) => {
         description: formFields.description || undefined,
         startDate: formFields.dateRange.from.toISOString(),
         endDate: formFields.dateRange.to.toISOString(),
-        tags: formFields.tags
+        tags: formFields.tags,
+        coords: formFields.destination.coords
       },
       {
         onSuccess: () => {

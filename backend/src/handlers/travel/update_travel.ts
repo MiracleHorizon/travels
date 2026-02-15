@@ -1,4 +1,5 @@
 import { postgres } from '../../database'
+import type { GeoCoords } from '../../domains/geo'
 import { withAuth } from '../../middlewares/with_auth'
 
 interface UpdateTravelDto {
@@ -7,6 +8,7 @@ interface UpdateTravelDto {
   startDate?: string
   endDate?: string
   tags?: string[]
+  coords?: GeoCoords
 }
 
 export const updateTravelHandler = withAuth(async req => {
@@ -16,15 +18,19 @@ export const updateTravelHandler = withAuth(async req => {
     const { travelId } = req.params
     const body = (await req.json()) as UpdateTravelDto
 
-    // Обновляем только если путешествие принадлежит пользователю
+    const { lat, lng } = body.coords ?? {}
+    const hasCoords = lat != null && lng != null && !isNaN(lat) && !isNaN(lng)
+
     const result = await postgres`
       UPDATE travels 
       SET 
-        name = ${body.name}, 
-        description = ${body.description}, 
-        start_date = ${body.startDate}, 
-        end_date = ${body.endDate}, 
-        tags = ${body.tags}, 
+        name = COALESCE(${body.name}, name), 
+        description = COALESCE(${body.description}, description), 
+        start_date = COALESCE(${body.startDate}, start_date), 
+        end_date = COALESCE(${body.endDate}, end_date), 
+        tags = COALESCE(${body.tags}, tags),
+        lat = ${hasCoords ? lat : null},
+        lng = ${hasCoords ? lng : null},
         updated_at = NOW() 
       WHERE id = ${travelId} AND user_id = ${userId}
       RETURNING *

@@ -1,13 +1,14 @@
+import { Pencil, Upload } from 'lucide-react'
 import {
   TravelCover,
   TravelEmptyPlaceholder,
   TravelGallery,
   useTravelQuery
 } from '@/entities/travel'
-import { Button, Spinner, Tabs, TabsList, TabsTrigger, TooltipComposer } from '@/shared/ui'
+import { Button, Spinner, Tabs, TabsList, TabsTrigger } from '@/shared/ui'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { MapPin, Upload } from 'lucide-react'
 import { useUploadTravelPhotoAction } from '@/features/travel/upload-photo'
+import { useUpdateTravelAction } from '@/features/travel/update'
 
 import AutoplayPlugin from 'embla-carousel-autoplay'
 import FadePlugin from 'embla-carousel-fade'
@@ -15,7 +16,9 @@ import FadePlugin from 'embla-carousel-fade'
 export const TravelLayout = () => {
   const { travelId } = useParams<{ travelId: string }>()
   const { data: travel, isLoading, error } = useTravelQuery(travelId)
-  const { uploadTravelPhoto } = useUploadTravelPhotoAction()
+
+  const updateTravel = useUpdateTravelAction()
+  const uploadTravelPhoto = useUploadTravelPhotoAction()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -70,28 +73,25 @@ export const TravelLayout = () => {
         <TabsList variant='line' className='w-full mb-2'>
           <div>
             <TabsTrigger value='main'>Основное</TabsTrigger>
-            <TabsTrigger value='diary'>Дневник</TabsTrigger>
+            <TabsTrigger value='diary' disabled>
+              Дневник
+            </TabsTrigger>
           </div>
 
-          <div className='flex gap-1 ml-auto'>
-            <Button variant='secondary' size='sm'>
-              <MapPin className='size-5' aria-hidden={true} />
-              Показать на карте
+          <div className='flex gap-2 ml-auto'>
+            <Button variant='secondary' size='sm' onClick={() => updateTravel(travelId)}>
+              <Pencil className='size-4' aria-hidden={true} />
+              Редактировать
             </Button>
 
-            <TooltipComposer content='Загрузить фотографию'>
-              <Button
-                variant='secondary'
-                size='icon-sm'
-                onClick={() => uploadTravelPhoto(travelId)}
-              >
-                <Upload className='size-5' aria-hidden={true} />
-              </Button>
-            </TooltipComposer>
+            <Button variant='secondary' size='sm' onClick={() => uploadTravelPhoto(travelId)}>
+              <Upload className='size-4' aria-hidden={true} />
+              Загрузить фотографию
+            </Button>
           </div>
         </TabsList>
 
-        <Outlet />
+        <Outlet context={{ travel }} />
       </Tabs>
     </div>
   )

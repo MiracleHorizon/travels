@@ -2,6 +2,7 @@ import { ReactifiedModule, Reactify } from '@yandex/ymaps3-types/reactify'
 import type controlsModule from '@yandex/ymaps3-types/packages/controls'
 import { createContext, PropsWithChildren, useEffect, useState } from 'react'
 
+import { Loader } from '@/shared/ui'
 import { initYMaps } from './initYMaps'
 
 export interface YMapsType {
@@ -35,7 +36,7 @@ export const YMapsProvider = ({
   }
 
   if (!maps.ymaps || !maps.reactify) {
-    return <div>Загрузка карты...</div>
+    return <Loader variant='fullsize' />
   }
 
   return <YMapsContext.Provider value={maps}>{children}</YMapsContext.Provider>

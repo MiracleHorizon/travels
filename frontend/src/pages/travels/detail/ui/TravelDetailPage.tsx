@@ -1,6 +1,7 @@
 import { useOutletContext } from 'react-router-dom'
 
 import { ExpensesList } from '@/widgets/ExpensesList'
+import { WeatherWidget } from '@/widgets/WeatherWidget'
 import { TravelMapPreview, TravelDetailed } from '@/entities/travel'
 import { Badge, Card, CardContent, CardTitle, TabsContent } from '@/shared/ui'
 
@@ -26,6 +27,8 @@ export const TravelDetailPage = () => {
         </div>
 
         <div className='space-y-4'>
+          {travel.coords && <WeatherWidget coords={travel.coords} />}
+
           <TravelMapPreview travelId={travel.id} />
 
           {Boolean(travel.tags.length) && (

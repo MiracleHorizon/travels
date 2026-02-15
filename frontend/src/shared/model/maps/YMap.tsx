@@ -55,14 +55,14 @@ const YMapComponent = ({
       theme={theme}
       location={{
         zoom: initialZoom,
-        center: initialLocation
+        center: [initialLocation.lng, initialLocation.lat]
       }}
     >
       <YMapDefaultSchemeLayer />
       <YMapDefaultFeaturesLayer />
 
       {point && YMapMarker && (
-        <YMapMarker coordinates={point}>
+        <YMapMarker coordinates={[point.lng, point.lat]}>
           {pointPin ?? (
             <div className='flex justify-center items-center w-10 h-10 rounded-full bg-primary text-primary-foreground shadow-lg border-2 border-background -translate-x-1/2 -translate-y-1/2'>
               <MapPin className='size-5' strokeWidth={2.5} />

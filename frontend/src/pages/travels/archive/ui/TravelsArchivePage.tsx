@@ -11,7 +11,7 @@ export const TravelsArchivePage = () => {
   })
 
   return (
-    <div className='container'>
+    <div>
       <div className='mb-6'>
         <h1 className='text-3xl font-bold mb-2'>Архив путешествий</h1>
         <p className='text-muted-foreground'>Архивированные путешествия</p>

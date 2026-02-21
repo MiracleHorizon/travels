@@ -17,6 +17,8 @@ interface WeatherWidgetProps {
   locale?: WeatherLocale
 }
 
+const MAX_DAYS = 5
+
 export const WeatherWidget = ({ coords, locale = DEFAULT_WEATHER_LOCALE }: WeatherWidgetProps) => {
   const { data, isLoading, error } = useWeatherQuery(coords, locale)
   const { data: forecast } = useForecastQuery(coords, locale)
@@ -43,7 +45,7 @@ export const WeatherWidget = ({ coords, locale = DEFAULT_WEATHER_LOCALE }: Weath
     )
   }
 
-  const dayForecasts = forecast?.list ? groupForecastByDay(forecast.list, 5, locale) : []
+  const dayForecasts = forecast?.list ? groupForecastByDay(forecast.list, MAX_DAYS, locale) : []
 
   return (
     <Card className='@container/weather-widget'>
@@ -53,7 +55,9 @@ export const WeatherWidget = ({ coords, locale = DEFAULT_WEATHER_LOCALE }: Weath
           <WeatherDetails data={data} locale={locale} />
         </div>
         {dayForecasts.length > 0 && (
-          <div className='mt-4 flex flex-col gap-2 @[300px]/weather-widget:grid @[300px]/weather-widget:grid-cols-5'>
+          <div
+            className={`mt-4 flex flex-col gap-2 @[300px]/weather-widget:grid @[300px]/weather-widget:grid-cols-${MAX_DAYS}`}
+          >
             {dayForecasts.map(day => (
               <WeatherForecastDay key={day.date} day={day} />
             ))}

@@ -4,6 +4,7 @@ import type { GeoCoords } from '@/shared/lib/geo'
 import { API_BASE_URL } from '@/shared/api'
 import { DEFAULT_WEATHER_LOCALE } from '../config'
 import type { WeatherLocale } from '../config/locales'
+import { isValidCoords } from '../lib/isValidCoords'
 
 const FORECAST_QUERY_KEY = 'forecast'
 
@@ -13,8 +14,9 @@ export const useForecastQuery = (
 ) => {
   return useQuery<OpenWeatherForecastResponse>({
     queryKey: [FORECAST_QUERY_KEY, lat, lng, locale],
+    enabled: isValidCoords({ lat, lng }),
     queryFn: async () => {
-      const url = new URL(`${API_BASE_URL}/v1/weather/forecast`)
+      const url = new URL(`${API_BASE_URL}/v1/weather/forecast`, window.location.origin)
       url.searchParams.set('lat', String(lat))
       url.searchParams.set('lon', String(lng))
       url.searchParams.set('locale', locale)

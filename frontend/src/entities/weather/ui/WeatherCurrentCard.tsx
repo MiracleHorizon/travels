@@ -4,6 +4,7 @@ import type { WeatherLocale } from '../config/locales'
 import { WEATHER_LOCALES } from '../config'
 import { cn } from '@/shared/lib'
 import { OPENWEATHER_ICON_URL } from '../lib/consts'
+import type { Ref } from 'react'
 
 interface WeatherCurrentCardProps {
   temperature: number
@@ -12,6 +13,7 @@ interface WeatherCurrentCardProps {
   icon: string
   locale: WeatherLocale
   hasForecast: boolean
+  ref?: Ref<HTMLDivElement>
   onClick?: () => void
 }
 
@@ -26,46 +28,67 @@ export const WeatherCurrentCard = ({
   feelsLike,
   locale,
   hasForecast,
-  onClick
+  onClick,
+  ref,
+  ...rest
 }: WeatherCurrentCardProps) => {
-  const { today, feelsLike: feelsLikeLabel, forecast } = WEATHER_LOCALES[locale]
+  const {
+    today: todayLabel,
+    feelsLike: feelsLikeLabel,
+    forecast: forecastLabel
+  } = WEATHER_LOCALES[locale]
 
   return (
     <div
+      ref={ref}
       className={cn(
-        'w-full rounded-2xl p-5 text-white shadow-lg min-h-[140px] flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-left',
+        'w-full rounded-2xl text-white shadow-lg text-left',
+        'p-4 min-h-0 sm:p-5 sm:min-h-[140px]',
+        'flex flex-row items-center gap-3 sm:gap-4 sm:justify-between',
         gradient,
         hasForecast && hoverStyles,
         hasForecast && hoverGradient
       )}
       onClick={onClick}
+      {...rest}
     >
-      <div className='min-w-0 flex-1'>
-        <p className='text-sm font-medium opacity-90'>{today}</p>
-        <p className='text-4xl sm:text-5xl font-bold tabular-nums mt-1'>
-          {Math.round(temperature)}°
-        </p>
-
-        <p className='text-sm font-medium mt-1'>{capitalizeFirst(description)}</p>
-        {feelsLike !== undefined && (
-          <p className='text-xs opacity-90 mt-0.5'>
-            {feelsLikeLabel} {Math.round(feelsLike)}°
+      <div className='min-w-0 flex-1 flex flex-col gap-0.5 sm:gap-1'>
+        <p className='text-xs sm:text-sm font-medium opacity-90'>{todayLabel}</p>
+        <div className='flex items-center gap-2'>
+          <p className='text-3xl sm:text-5xl font-bold tabular-nums leading-none'>
+            {Math.round(temperature)}°
           </p>
-        )}
+          <img
+            src={`${OPENWEATHER_ICON_URL}/${icon}@4x.png`}
+            alt=''
+            className='size-12 shrink-0 sm:hidden'
+            aria-hidden
+          />
+        </div>
+        <p className='text-xs sm:text-sm font-medium truncate' title={description}>
+          {capitalizeFirst(description)}
+        </p>
+        <div className='flex items-center gap-2 flex-wrap'>
+          {feelsLike !== undefined && (
+            <span className='text-xs opacity-90'>
+              {feelsLikeLabel} {Math.round(feelsLike)}°
+            </span>
+          )}
+        </div>
       </div>
 
-      <div className='flex flex-col items-end shrink-0 gap-1'>
+      <div className='hidden sm:flex flex-col items-end shrink-0 gap-1'>
         {hasForecast && (
           <span className='text-xs opacity-80 font-medium flex items-center gap-0.5'>
-            {forecast}
+            {forecastLabel}
             <ChevronRight className='size-3.5 mt-0.5' />
           </span>
         )}
-
         <img
           src={`${OPENWEATHER_ICON_URL}/${icon}@4x.png`}
-          alt={`${description} icon`}
+          alt=''
           className='size-20 sm:size-24'
+          aria-hidden
         />
       </div>
     </div>

@@ -29,7 +29,6 @@ export * from './carousel'
 export * from './collapsible'
 export * from './avatar'
 export * from './tabs'
-export * from './hover-card'
 
 // Собственные компоненты
 export * from './Loader'

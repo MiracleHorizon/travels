@@ -2,11 +2,12 @@ import { CloudRain, Cloud, Droplets, Gauge, Wind } from 'lucide-react'
 
 import { getWindDirection } from '../lib/getWindDirection'
 import { getPrecipitation } from '../lib/getPrecipitation'
-import type { OpenWeatherResponse } from '../model/types'
+import type { CurrentWeatherResponse } from '../model/types'
 import type { WeatherLocale } from '../config/locales'
 
 interface WeatherDetailsProps {
-  data: OpenWeatherResponse
+  // TODO: Оторвать от CurrentWeatherResponse
+  data: CurrentWeatherResponse
   locale?: WeatherLocale
 }
 

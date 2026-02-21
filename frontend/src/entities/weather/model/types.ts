@@ -1,4 +1,4 @@
-export interface OpenWeatherResponse {
+export interface CurrentWeatherResponse {
   coord: {
     lon: number
     lat: number
@@ -75,7 +75,7 @@ export interface DayForecast {
   icon: string
 }
 
-export interface OpenWeatherForecastResponse {
+export interface WeatherForecastResponse {
   cod: string
   list?: ForecastItem[]
   city: {

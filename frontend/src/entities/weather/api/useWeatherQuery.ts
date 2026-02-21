@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import type { OpenWeatherResponse } from '../model/types'
+import type { CurrentWeatherResponse } from '../model/types'
 import type { GeoCoords } from '@/shared/lib/geo'
 import { API_BASE_URL } from '@/shared/api'
 import { DEFAULT_WEATHER_LOCALE } from '../config'
@@ -12,7 +12,7 @@ export const useWeatherQuery = (
   { lat, lng }: GeoCoords,
   locale: WeatherLocale = DEFAULT_WEATHER_LOCALE
 ) => {
-  return useQuery<OpenWeatherResponse>({
+  return useQuery<CurrentWeatherResponse>({
     queryKey: [WEATHER_QUERY_KEY, lat, lng, locale],
     enabled: isValidCoords({ lat, lng }),
     queryFn: async () => {

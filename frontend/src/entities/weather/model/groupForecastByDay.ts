@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import type { WeatherLocale } from '../config/locales'
-import { WEATHER_LOCALES } from '../config'
+import { WEATHER_LOCALES, DATE_FNS_LOCALES } from '../config'
 import type { ForecastItem, DayForecast } from './types'
 
 const getLocalDateKey = (dt: number) => format(new Date(dt * 1000), 'yyyy-MM-dd')
@@ -21,13 +21,19 @@ const findNoonSlot = (slots: ForecastItem[]) => {
   return sorted[0]
 }
 
-export const groupForecastByDay = (
-  list: ForecastItem[],
+export const groupForecastByDay = ({
+  list = [],
   maxDays = 5,
-  locale: WeatherLocale = 'ru'
-): DayForecast[] => {
-  const { dayAbbr, today: todayLabel } = WEATHER_LOCALES[locale]
+  locale = 'ru'
+}: {
+  list: ForecastItem[]
+  maxDays?: number
+  locale?: WeatherLocale
+}): DayForecast[] => {
+  const { today: todayLabel } = WEATHER_LOCALES[locale]
+  const dateFnsLocale = DATE_FNS_LOCALES[locale]
   const byDate = new Map<string, ForecastItem[]>()
+
   for (const item of list) {
     const key = getLocalDateKey(item.dt)
     const group = byDate.get(key) ?? []
@@ -39,23 +45,26 @@ export const groupForecastByDay = (
   const sortedDates = [...byDate.keys()].sort().filter(d => d >= today)
 
   return sortedDates.slice(0, maxDays).map(dateKey => {
-    const slots = byDate.get(dateKey)!
+    const slots = byDate.get(dateKey)
     const representative = findNoonSlot(slots)
     const temps = slots.map(s => s.main.temp)
     const date = new Date(dateKey + `T${NOON_HOUR}:00:00`)
-    const dayName = dateKey === today ? todayLabel : dayAbbr[date.getDay()]
-    const maxPop = Math.max(...slots.map(s => s.pop ?? 0), 0)
+
+    const icon = representative.weather[0].icon
+    // "Сб", "Вс", "Пн" и так далее, но на выбранном языке
+    const weekday =
+      dateKey === today
+        ? todayLabel
+        : format(date, 'EEEEEE', {
+            locale: dateFnsLocale
+          })
 
     return {
       date: dateKey,
-      dayName,
-      temp: representative.main.temp,
-      tempMin: Math.min(...temps),
-      tempMax: Math.max(...temps),
-      icon: representative.weather[0].icon,
-      description: representative.weather[0].description,
-      pop: maxPop,
-      slots: slots.sort((a, b) => a.dt - b.dt)
+      weekday,
+      minTemperature: Math.min(...temps),
+      maxTemperature: Math.max(...temps),
+      icon
     }
   })
 }

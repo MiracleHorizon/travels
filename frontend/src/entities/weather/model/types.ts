@@ -69,19 +69,15 @@ export interface ForecastItem {
 
 export interface DayForecast {
   date: string
-  dayName: string
-  temp: number
-  tempMin: number
-  tempMax: number
+  weekday: string
+  minTemperature: number
+  maxTemperature: number
   icon: string
-  description: string
-  pop: number
-  slots: ForecastItem[]
 }
 
 export interface OpenWeatherForecastResponse {
   cod: string
-  list: ForecastItem[]
+  list?: ForecastItem[]
   city: {
     id: number
     name: string

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {
   DEFAULT_WEATHER_LOCALE,
   groupForecastByDay,
@@ -9,7 +8,7 @@ import {
   WeatherForecastList,
   WEATHER_LOCALES
 } from '@/entities/weather'
-import { Dialog, DialogContent, DialogTitle, Spinner } from '@/shared/ui'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger, Spinner } from '@/shared/ui'
 import type { GeoCoords } from '@/shared/lib/geo'
 import type { WeatherLocale } from '@/entities/weather'
 
@@ -21,8 +20,6 @@ interface WeatherWidgetProps {
 const MAX_DAYS = 6
 
 export const WeatherWidget = ({ coords, locale = DEFAULT_WEATHER_LOCALE }: WeatherWidgetProps) => {
-  const [dialogOpen, setDialogOpen] = useState(false)
-
   const { data, isLoading, error } = useWeatherQuery(coords, locale)
   const { data: forecast } = useForecastQuery(coords, locale)
 
@@ -44,29 +41,38 @@ export const WeatherWidget = ({ coords, locale = DEFAULT_WEATHER_LOCALE }: Weath
     )
   }
 
-  const dayForecasts = groupForecastByDay(forecast.list, MAX_DAYS, locale)
+  const dayForecasts = groupForecastByDay({
+    list: forecast?.list,
+    maxDays: MAX_DAYS,
+    locale
+  })
   const weather = data.weather[0]
-  const { today } = WEATHER_LOCALES[locale]
+
+  const { today: todayLabel } = WEATHER_LOCALES[locale]
 
   return (
     <>
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <WeatherCurrentCard
-          data={data}
-          locale={locale}
-          hasForecast={dayForecasts.length > 0}
-          onClick={() => setDialogOpen(true)}
-        />
+      <Dialog>
+        <DialogTrigger asChild>
+          <WeatherCurrentCard
+            temperature={data.main.temp}
+            feelsLike={data.main.feels_like}
+            description={weather.description}
+            icon={weather.icon}
+            locale={locale}
+            hasForecast={dayForecasts.length > 0}
+          />
+        </DialogTrigger>
 
         <DialogContent className='sm:max-w-md'>
-          <DialogTitle className='sr-only'>{today}</DialogTitle>
+          <DialogTitle className='sr-only'>{todayLabel}</DialogTitle>
 
           <WeatherForecastList
             dayForecasts={dayForecasts}
-            currentData={{
-              temp: data.main.temp,
-              icon: weather.icon,
-              description: weather.description
+            currentWeather={{
+              temperature: data.main.temp,
+              description: weather.description,
+              icon: weather.icon
             }}
             locale={locale}
           />

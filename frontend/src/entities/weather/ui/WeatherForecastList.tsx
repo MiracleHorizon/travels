@@ -2,20 +2,21 @@ import { capitalizeFirst } from '@/shared/lib/format'
 import type { DayForecast } from '../model/types'
 import type { WeatherLocale } from '../config/locales'
 import { WEATHER_LOCALES } from '../config'
+import { OPENWEATHER_ICON_URL } from '../lib/consts'
 
 interface WeatherForecastListProps {
   dayForecasts: DayForecast[]
-  currentData: {
-    temp: number
-    icon: string
+  currentWeather: {
+    temperature: number
     description: string
+    icon: string
   }
   locale: WeatherLocale
 }
 
 export const WeatherForecastList = ({
   dayForecasts,
-  currentData,
+  currentWeather,
   locale
 }: WeatherForecastListProps) => {
   const { forecast } = WEATHER_LOCALES[locale]
@@ -24,14 +25,16 @@ export const WeatherForecastList = ({
     <div className='space-y-4'>
       <div className='flex items-center gap-3 pb-3 border-b border-border'>
         <img
-          src={`https://openweathermap.org/img/wn/${currentData.icon}@2x.png`}
-          alt={currentData.description}
+          src={`${OPENWEATHER_ICON_URL}/${currentWeather.icon}@2x.png`}
+          alt={`${currentWeather.description} icon`}
           className='size-12'
         />
         <div>
-          <p className='text-3xl font-bold tabular-nums'>{Math.round(currentData.temp)}°</p>
+          <p className='text-3xl font-bold tabular-nums'>
+            {Math.round(currentWeather.temperature)}°
+          </p>
           <p className='text-sm text-muted-foreground'>
-            {capitalizeFirst(currentData.description)}
+            {capitalizeFirst(currentWeather.description)}
           </p>
         </div>
       </div>
@@ -45,14 +48,16 @@ export const WeatherForecastList = ({
               key={day.date}
               className='flex items-center justify-between gap-4 rounded-lg bg-muted/50 px-3 py-2'
             >
-              <span className='text-sm font-medium min-w-16'>{day.dayName}</span>
+              <span className='text-sm font-medium min-w-16'>{day.weekday}</span>
+
               <img
                 src={`https://openweathermap.org/img/wn/${day.icon}.png`}
-                alt={day.description}
+                alt={`${day.weekday} icon`}
                 className='size-8'
               />
+
               <span className='text-sm font-semibold tabular-nums'>
-                {Math.round(day.tempMin)}° / {Math.round(day.tempMax)}°
+                {Math.round(day.minTemperature)}° / {Math.round(day.maxTemperature)}°
               </span>
             </div>
           ))}

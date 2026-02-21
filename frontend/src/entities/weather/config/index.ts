@@ -1,6 +1,6 @@
 import type { WeatherLocale } from './locales'
 
-export { WEATHER_LOCALES, OPENWEATHER_LANG } from './locales'
+export { WEATHER_LOCALES, OPENWEATHER_LANG, DATE_FNS_LOCALES } from './locales'
 export type { WeatherLocale } from './locales'
 
 // TODO: i18n

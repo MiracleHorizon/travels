@@ -10,7 +10,7 @@ import { useForecastQuery } from '../api/useForecastQuery'
 import { WeatherForecastDialogSkeleton } from './WeatherForecastDialogSkeleton'
 import type { GeoCoords } from '@/shared/lib/geo'
 
-const MAX_DAYS = 6
+const MAX_DAYS = 5
 
 interface WeatherForecastDialogContentProps {
   coords: GeoCoords

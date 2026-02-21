@@ -1,6 +1,9 @@
 // API
 export { useWeatherQuery } from './api/useWeatherQuery'
 
+// Lib
+export { isValidCoords } from './lib/isValidCoords'
+
 // Config
 export type { WeatherLocale } from './config/locales'
 export { DEFAULT_WEATHER_LOCALE, WEATHER_LOCALES } from './config'

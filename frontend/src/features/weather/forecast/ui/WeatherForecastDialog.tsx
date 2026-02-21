@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { lazy, Suspense, useState, type ReactNode } from 'react'
 import {
   WEATHER_LOCALES,
   type CurrentWeatherResponse,
@@ -6,13 +6,15 @@ import {
 } from '@/entities/weather'
 import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/shared/ui'
 import type { GeoCoords } from '@/shared/lib/geo'
-import { WeatherForecastDialogContent } from './WeatherForecastDialogContent'
+import { WeatherForecastDialogSkeleton } from './WeatherForecastDialogSkeleton'
+
+const WeatherForecastDialogContent = lazy(() => import('./WeatherForecastDialogContent'))
 
 interface WeatherForecastDialogProps {
+  trigger: ReactNode
   coords: GeoCoords
   locale: WeatherLocale
   currentWeather: CurrentWeatherResponse
-  trigger: ReactNode
 }
 
 export const WeatherForecastDialog = ({
@@ -30,12 +32,16 @@ export const WeatherForecastDialog = ({
 
       <DialogContent className='sm:max-w-md'>
         <DialogTitle>{todayLabel}</DialogTitle>
-        <WeatherForecastDialogContent
-          coords={coords}
-          locale={locale}
-          currentWeather={currentWeather}
-          enabled={open}
-        />
+
+        {open && (
+          <Suspense fallback={<WeatherForecastDialogSkeleton />}>
+            <WeatherForecastDialogContent
+              coords={coords}
+              locale={locale}
+              currentWeather={currentWeather}
+            />
+          </Suspense>
+        )}
       </DialogContent>
     </Dialog>
   )

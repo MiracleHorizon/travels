@@ -6,8 +6,7 @@ import {
   type CurrentWeatherResponse,
   type WeatherLocale
 } from '@/entities/weather'
-import { useForecastQuery } from '../api/useForecastQuery'
-import { WeatherForecastDialogSkeleton } from './WeatherForecastDialogSkeleton'
+import { useForecastSuspenseQuery } from '../api/useForecastSuspenseQuery'
 import type { GeoCoords } from '@/shared/lib/geo'
 
 const MAX_DAYS = 5
@@ -16,29 +15,19 @@ interface WeatherForecastDialogContentProps {
   coords: GeoCoords
   locale: WeatherLocale
   currentWeather: CurrentWeatherResponse
-  /**
-   * Запрос за прогнозом погоды выполняется только когда true (например, если диалог открыт)
-   */
-  enabled?: boolean
 }
 
-export const WeatherForecastDialogContent = ({
+const WeatherForecastDialogContent = ({
   coords,
   locale,
-  currentWeather,
-  enabled = true
+  currentWeather
 }: WeatherForecastDialogContentProps) => {
-  const { data: forecast, isLoading, error } = useForecastQuery(coords, locale, { enabled })
+  const { data: forecast, error } = useForecastSuspenseQuery({
+    coords,
+    locale
+  })
 
   const weather = currentWeather.weather[0]
-
-  if (!enabled) {
-    return null
-  }
-
-  if (isLoading) {
-    return <WeatherForecastDialogSkeleton />
-  }
 
   if (error || !forecast?.list) {
     return (
@@ -72,3 +61,8 @@ export const WeatherForecastDialogContent = ({
     </>
   )
 }
+
+/**
+ * Экспорт по умолчанию для удобного использования с lazy
+ */
+export default WeatherForecastDialogContent

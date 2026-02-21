@@ -8,9 +8,10 @@ import {
   WeatherForecastList,
   WEATHER_LOCALES
 } from '@/entities/weather'
-import { Dialog, DialogContent, DialogTitle, DialogTrigger, Spinner } from '@/shared/ui'
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from '@/shared/ui'
 import type { GeoCoords } from '@/shared/lib/geo'
 import type { WeatherLocale } from '@/entities/weather'
+import { WeatherWidgetSkeleton } from './WeatherWidgetSkeleton'
 
 interface WeatherWidgetProps {
   coords: GeoCoords
@@ -24,11 +25,7 @@ export const WeatherWidget = ({ coords, locale = DEFAULT_WEATHER_LOCALE }: Weath
   const { data: forecast } = useForecastQuery(coords, locale)
 
   if (isLoading) {
-    return (
-      <div className='rounded-2xl border border-border bg-card/80 p-8 flex justify-center items-center min-h-[140px]'>
-        <Spinner className='h-8 w-8' />
-      </div>
-    )
+    return <WeatherWidgetSkeleton />
   }
 
   if (error || !data) {

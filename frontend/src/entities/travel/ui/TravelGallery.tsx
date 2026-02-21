@@ -18,7 +18,7 @@ interface TravelGalleryProps {
   onClick?: () => void
 }
 
-const FALLBACK_IMAGE = 'https://avatar.vercel.sh/shadcn0'
+const FALLBACK_IMAGE = 'https://avatar.vercel.sh/shadcn4'
 
 export const TravelGallery = ({ images, travelName, ...props }: TravelGalleryProps) => {
   const imagesToShow = images.length > 0 ? images.slice(0, 10) : [FALLBACK_IMAGE]

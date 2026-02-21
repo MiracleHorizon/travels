@@ -16,7 +16,8 @@ export const useForecastQuery = (
     queryKey: [FORECAST_QUERY_KEY, lat, lng, locale],
     enabled: isValidCoords({ lat, lng }),
     queryFn: async () => {
-      const url = new URL(`${API_BASE_URL}/v1/weather/forecast`, window.location.origin)
+      const url = new URL(`${API_BASE_URL}/weather/forecast`, window.location.origin)
+
       url.searchParams.set('lat', String(lat))
       url.searchParams.set('lon', String(lng))
       url.searchParams.set('locale', locale)

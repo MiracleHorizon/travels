@@ -3,7 +3,7 @@ import { fetchCurrentWeather } from '../../domains/weather/openweather'
 import { OPENWEATHER_LANG } from '../../domains/weather/locales'
 import { OPENWEATHER_API_KEY } from '../../domains/weather/consts'
 
-export const getWeatherHandler = withAuth(async req => {
+export const getCurrentWeatherHandler = withAuth(async req => {
   if (!OPENWEATHER_API_KEY) {
     return new Response(JSON.stringify({ error: 'Weather service unavailable' }), {
       status: 503,

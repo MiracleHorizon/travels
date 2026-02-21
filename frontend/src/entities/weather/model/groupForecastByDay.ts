@@ -41,6 +41,7 @@ export const groupForecastByDay = (
   return sortedDates.slice(0, maxDays).map(dateKey => {
     const slots = byDate.get(dateKey)!
     const representative = findNoonSlot(slots)
+    const temps = slots.map(s => s.main.temp)
     const date = new Date(dateKey + `T${NOON_HOUR}:00:00`)
     const dayName = dateKey === today ? todayLabel : dayAbbr[date.getDay()]
     const maxPop = Math.max(...slots.map(s => s.pop ?? 0), 0)
@@ -49,6 +50,8 @@ export const groupForecastByDay = (
       date: dateKey,
       dayName,
       temp: representative.main.temp,
+      tempMin: Math.min(...temps),
+      tempMax: Math.max(...temps),
       icon: representative.weather[0].icon,
       description: representative.weather[0].description,
       pop: maxPop,

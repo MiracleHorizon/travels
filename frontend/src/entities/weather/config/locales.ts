@@ -14,12 +14,16 @@ export const WEATHER_LOCALES = {
     windDirections: ['С', 'СВ', 'В', 'ЮВ', 'Ю', 'ЮЗ', 'З', 'СЗ'] as const,
     dayAbbr: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'] as const,
     today: 'Сегодня',
+    feelsLike: 'ощущается как',
+    forecast: 'Прогноз',
     unavailable: 'Погода недоступна'
   },
   en: {
     windDirections: ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'] as const,
     dayAbbr: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const,
     today: 'Today',
+    feelsLike: 'feels like',
+    forecast: 'Forecast',
     unavailable: 'Weather unavailable'
   }
 } as const

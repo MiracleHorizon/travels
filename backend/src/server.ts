@@ -16,7 +16,7 @@ import {
 } from './handlers/expense'
 import { getUserByCodeHandler, getUserMeHandler, logoutHandler } from './handlers/auth'
 import { getGeoCoderCoordsHandler, getGeoCoderLocationHandler } from './handlers/geo'
-import { getWeatherHandler, getForecastHandler } from './handlers/weather'
+import { getCurrentWeatherHandler, getWeatherForecastHandler } from './handlers/weather'
 import { corsHeaders, injectCORS } from './cors'
 
 const certDir = path.resolve(import.meta.dir, '..', 'cert')
@@ -41,11 +41,11 @@ const server = Bun.serve({
         POST: logoutHandler
       },
       // Погода
-      '/api/v1/weather': {
-        GET: getWeatherHandler
+      '/api/weather': {
+        GET: getCurrentWeatherHandler
       },
-      '/api/v1/weather/forecast': {
-        GET: getForecastHandler
+      '/api/weather/forecast': {
+        GET: getWeatherForecastHandler
       },
       // Геокодер
       '/api/v1/geo/coords': {

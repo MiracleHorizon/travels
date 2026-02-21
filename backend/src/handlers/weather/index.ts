@@ -1,2 +1,2 @@
-export { getWeatherHandler } from './get_weather'
-export { getForecastHandler } from './get_forecast'
+export { getCurrentWeatherHandler } from './get_current_weather'
+export { getWeatherForecastHandler } from './get_weather_forecast'

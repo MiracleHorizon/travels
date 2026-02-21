@@ -11,6 +11,7 @@ export interface OpenWeatherResponse {
   }>
   main: {
     temp: number
+    feels_like?: number
     humidity: number
     pressure?: number
   }
@@ -70,6 +71,8 @@ export interface DayForecast {
   date: string
   dayName: string
   temp: number
+  tempMin: number
+  tempMax: number
   icon: string
   description: string
   pop: number

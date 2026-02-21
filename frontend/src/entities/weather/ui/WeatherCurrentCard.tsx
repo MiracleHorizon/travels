@@ -18,8 +18,6 @@ interface WeatherCurrentCardProps {
 }
 
 const gradient = 'bg-gradient-to-br from-sky-700/80 via-blue-700/75 to-indigo-700/80'
-const hoverGradient = 'hover:to-indigo-700/60 hover:from-sky-700/70 hover:via-blue-600/75'
-const hoverStyles = 'cursor-pointer transition-colors'
 
 export const WeatherCurrentCard = ({
   temperature,
@@ -27,7 +25,6 @@ export const WeatherCurrentCard = ({
   icon,
   feelsLike,
   locale,
-  hasForecast,
   onClick,
   ref,
   ...rest
@@ -44,10 +41,8 @@ export const WeatherCurrentCard = ({
       className={cn(
         'w-full rounded-2xl text-white shadow-lg text-left',
         'p-4 min-h-0 sm:p-5 sm:min-h-[140px]',
-        'flex flex-row items-center gap-3 sm:gap-4 sm:justify-between',
-        gradient,
-        hasForecast && hoverStyles,
-        hasForecast && hoverGradient
+        'flex flex-row items-center gap-3 sm:gap-4 sm:justify-between hover:to-indigo-700/60 hover:from-sky-700/70 hover:via-blue-600/75 cursor-pointer transition-colors',
+        gradient
       )}
       onClick={onClick}
       {...rest}
@@ -78,12 +73,12 @@ export const WeatherCurrentCard = ({
       </div>
 
       <div className='hidden sm:flex flex-col items-end shrink-0 gap-1'>
-        {hasForecast && (
-          <span className='text-xs opacity-80 font-medium flex items-center gap-0.5'>
-            {forecastLabel}
-            <ChevronRight className='size-3.5 mt-0.5' />
-          </span>
-        )}
+        {/* TODO: А почему сущность знает про какой-то там "прогноз"? */}
+        <span className='text-xs opacity-80 font-medium flex items-center gap-0.5'>
+          {forecastLabel}
+          <ChevronRight className='size-3.5 mt-0.5' />
+        </span>
+
         <img
           src={`${OPENWEATHER_ICON_URL}/${icon}@4x.png`}
           alt=''

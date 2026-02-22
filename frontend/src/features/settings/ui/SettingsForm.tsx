@@ -26,69 +26,71 @@ interface SettingsFormProps {
 
 export const SettingsForm = ({ value, onChange }: SettingsFormProps) => (
   <FieldGroup>
-    <Field>
+    <Field orientation='responsive'>
       <FieldContent>
         <FieldLabel htmlFor='measurementUnit'>Единицы измерения</FieldLabel>
-        <Select
-          value={value.measurementUnit}
-          onValueChange={(v: MeasurementUnit) =>
-            onChange({
-              ...value,
-              measurementUnit: v
-            })
-          }
-        >
-          <SelectTrigger id='measurementUnit' className='w-full!'>
-            <SelectValue />
-          </SelectTrigger>
-
-          <SelectContent position='popper'>
-            <SelectGroup>
-              {MEASUREMENT_OPTIONS.map(({ value: optValue, label }) => (
-                <SelectItem key={optValue} value={optValue}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
       </FieldContent>
+      <Select
+        value={value.measurementUnit}
+        onValueChange={(v: MeasurementUnit) =>
+          onChange({
+            ...value,
+            measurementUnit: v
+          })
+        }
+      >
+        <SelectTrigger id='measurementUnit' size='sm' className='min-w-[150px]'>
+          <SelectValue />
+        </SelectTrigger>
+
+        <SelectContent position='popper'>
+          <SelectGroup>
+            {MEASUREMENT_OPTIONS.map(({ value: optValue, label }) => (
+              <SelectItem key={optValue} value={optValue}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </Field>
 
-    <Field>
+    <Field orientation='responsive'>
       <FieldContent>
         <FieldLabel htmlFor='timeFormat'>Формат времени</FieldLabel>
-        <Select
-          value={value.timeFormat}
-          onValueChange={(v: TimeFormat) =>
-            onChange({
-              ...value,
-              timeFormat: v
-            })
-          }
-        >
-          <SelectTrigger id='timeFormat' className='w-full!'>
-            <SelectValue />
-          </SelectTrigger>
-
-          <SelectContent position='popper'>
-            <SelectGroup>
-              {TIME_FORMAT_OPTIONS.map(({ value: optValue, label }) => (
-                <SelectItem key={optValue} value={optValue}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select>
       </FieldContent>
+
+      <Select
+        value={value.timeFormat}
+        onValueChange={(v: TimeFormat) =>
+          onChange({
+            ...value,
+            timeFormat: v
+          })
+        }
+      >
+        <SelectTrigger id='timeFormat' size='sm' className='min-w-[150px]'>
+          <SelectValue />
+        </SelectTrigger>
+
+        <SelectContent position='popper'>
+          <SelectGroup>
+            {TIME_FORMAT_OPTIONS.map(({ value: optValue, label }) => (
+              <SelectItem key={optValue} value={optValue}>
+                {label}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
     </Field>
 
-    <Field>
+    <Field orientation='responsive'>
       <FieldContent>
         <FieldLabel>Тема</FieldLabel>
       </FieldContent>
-      <ThemeToggle withLabel />
+
+      <ThemeToggle className='min-w-[150px]' />
     </Field>
   </FieldGroup>
 )

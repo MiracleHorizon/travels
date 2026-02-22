@@ -3,10 +3,10 @@ import { useTheme } from '../model/useTheme'
 import { THEME_OPTIONS } from '../model/options'
 
 interface ThemeToggleProps {
-  withLabel?: boolean
+  className?: string
 }
 
-export const ThemeToggle = ({ withLabel = false }: ThemeToggleProps) => {
+export const ThemeToggle = ({ className }: ThemeToggleProps) => {
   const { theme, changeTheme } = useTheme()
 
   const handleChangeTheme = value => {
@@ -22,11 +22,11 @@ export const ThemeToggle = ({ withLabel = false }: ThemeToggleProps) => {
       variant='outline'
       value={theme}
       onValueChange={handleChangeTheme}
+      className={className}
     >
       {THEME_OPTIONS.map(({ value, label, icon: Icon }) => (
-        <ToggleGroupItem key={value} value={value} aria-label={label}>
+        <ToggleGroupItem key={value} value={value} aria-label={label} className='flex-1'>
           <Icon />
-          {withLabel && <span className='hidden sm:inline'>{label}</span>}
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

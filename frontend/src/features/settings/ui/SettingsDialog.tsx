@@ -47,7 +47,7 @@ const SettingsDialog = () => {
         <DialogHeader>
           <DialogTitle>Настройки</DialogTitle>
           <DialogDescription>
-            Подстройте приложение под себя — как вам удобнее видеть данные и интерфейс
+            Подстройте приложение под себя - как вам удобнее видеть данные и интерфейс
           </DialogDescription>
         </DialogHeader>
 

@@ -23,6 +23,6 @@ export const TIME_FORMAT_OPTIONS: SettingsOption<TimeFormat>[] = [
   },
   {
     value: '12h',
-    label: '12 часов (AM/PM)'
+    label: '12 часов'
   }
 ] as const

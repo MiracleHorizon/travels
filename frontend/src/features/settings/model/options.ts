@@ -1,3 +1,4 @@
+import { AppLocale } from '@/shared/lib/i18n'
 import type { MeasurementUnit, TimeFormat } from './types'
 
 interface SettingsOption<T extends string> {
@@ -24,5 +25,16 @@ export const TIME_FORMAT_OPTIONS: SettingsOption<TimeFormat>[] = [
   {
     value: '12h',
     label: '12 часов'
+  }
+] as const
+
+export const LOCALE_OPTIONS: SettingsOption<AppLocale>[] = [
+  {
+    value: AppLocale.RU,
+    label: 'Русский'
+  },
+  {
+    value: AppLocale.EN,
+    label: 'English'
   }
 ] as const

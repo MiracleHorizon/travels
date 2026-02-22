@@ -1,3 +1,5 @@
+import { AppLocale } from '../i18n'
+
 const currencySymbols: Record<string, string> = {
   USD: '$',
   EUR: '€',
@@ -5,11 +7,13 @@ const currencySymbols: Record<string, string> = {
   GBP: '£'
 }
 
-export const formatCurrency = (
-  amount: number,
-  currency: string,
-  locale: string = 'ru-RU'
-): string => {
+interface FormatCurrencyParams {
+  amount: number
+  currency: string
+  locale: AppLocale
+}
+
+export const formatCurrency = ({ amount, currency, locale }: FormatCurrencyParams): string => {
   const symbol = currencySymbols[currency] || currency
 
   const formattedAmount = new Intl.NumberFormat(locale, {

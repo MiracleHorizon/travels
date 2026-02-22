@@ -9,4 +9,4 @@ export { ExpenseCategorySection } from './ui/ExpenseCategorySection'
 export { useExpensesQuery, EXPENSES_QUERY_KEY } from './api/queries'
 
 // Model
-export type { Expense, ExpenseCategory } from './model/types'
+export { type Expense, ExpenseCategory } from './model/types'

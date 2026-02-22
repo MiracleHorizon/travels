@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useHideModal } from '@/shared/lib/modal'
 import { useUpdateExpenseMutation } from '../api/useUpdateExpenseMutation'
 import { useQueryClient } from '@tanstack/react-query'
@@ -19,6 +20,7 @@ interface UseUpdateExpenseParams {
 }
 
 export const useUpdateExpense = ({ expense }: UseUpdateExpenseParams) => {
+  const { t } = useTranslation()
   const [formFields, setFormFields] = useState<ExpenseFormFields>({
     title: expense.title,
     amount: expense.amount.toString(),
@@ -60,11 +62,11 @@ export const useUpdateExpense = ({ expense }: UseUpdateExpenseParams) => {
             queryKey: [EXPENSES_QUERY_KEY, expense.travel_id]
           })
           hideModal()
-          toast.success('Расход обновлен')
+          toast.success(t('toast.expense.updated'))
         },
         onError: () => {
-          toast.error('Не удалось обновить расход', {
-            description: 'Пожалуйста, попробуйте еще раз'
+          toast.error(t('toast.expense.updateError'), {
+            description: t('toast.tryAgain')
           })
         }
       }

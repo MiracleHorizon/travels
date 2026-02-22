@@ -9,6 +9,7 @@ import {
 } from '@/shared/ui'
 import { Link, useMatches } from 'react-router-dom'
 import { ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 
 interface BreadcrumbHandle {
   breadcrumb: string | ((data: unknown) => string)
@@ -19,6 +20,7 @@ interface AppToolbarProps {
 }
 
 export const AppToolbar = ({ sidebarTrigger }: AppToolbarProps) => {
+  const { t } = useTranslation()
   const matches = useMatches()
 
   const breadcrumbs = matches
@@ -27,7 +29,8 @@ export const AppToolbar = ({ sidebarTrigger }: AppToolbarProps) => {
       const handle = match.handle as BreadcrumbHandle
       const breadcrumb = handle.breadcrumb
 
-      const label = typeof breadcrumb === 'function' ? breadcrumb(match.data) : breadcrumb
+      const rawLabel = typeof breadcrumb === 'function' ? breadcrumb(match.data) : breadcrumb
+      const label = typeof breadcrumb === 'function' ? rawLabel : t(rawLabel)
 
       return {
         label,

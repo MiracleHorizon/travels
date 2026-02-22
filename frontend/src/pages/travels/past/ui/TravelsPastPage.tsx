@@ -1,7 +1,9 @@
 import { useTravelsQuery } from '@/entities/travel'
+import { useTranslation } from 'react-i18next'
 import { TravelsList } from '@/widgets/TravelsList'
 
 export const TravelsPastPage = () => {
+  const { t } = useTranslation()
   const {
     data: travels = [],
     isLoading,
@@ -13,13 +15,13 @@ export const TravelsPastPage = () => {
   return (
     <div>
       <div className='mb-6'>
-        <h1 className='text-3xl font-bold mb-2'>Прошедшие путешествия</h1>
-        <p className='text-muted-foreground'>Воспоминания о ваших путешествиях</p>
+        <h1 className='text-3xl font-bold mb-2'>{t('travelsList.pastTitle')}</h1>
+        <p className='text-muted-foreground'>{t('travelsList.pastDescription')}</p>
       </div>
 
       <TravelsList
         travels={travels}
-        emptyMessage='У вас пока нет прошедших путешествий'
+        emptyMessage={t('travelsList.pastEmpty')}
         isLoading={isLoading}
         error={error}
       />

@@ -1,4 +1,5 @@
 import { useOutletContext } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 import { ExpensesList } from '@/widgets/ExpensesList'
 import { WeatherWidget } from '@/widgets/WeatherWidget'
@@ -6,6 +7,7 @@ import { TravelMapPreview, TravelDetailed } from '@/entities/travel'
 import { Badge, Card, CardContent, CardTitle, TabsContent } from '@/shared/ui'
 
 export const TravelDetailPage = () => {
+  const { t } = useTranslation()
   const { travel } = useOutletContext<{ travel: TravelDetailed }>()
 
   return (
@@ -15,7 +17,7 @@ export const TravelDetailPage = () => {
           {travel.description && (
             <Card>
               <CardContent>
-                <CardTitle className='text-lg mb-2'>Описание</CardTitle>
+                <CardTitle className='text-lg mb-2'>{t('travelPage.description')}</CardTitle>
                 <p className='text-muted-foreground text-sm leading-relaxed whitespace-pre-wrap'>
                   {travel.description}
                 </p>
@@ -34,7 +36,7 @@ export const TravelDetailPage = () => {
           {Boolean(travel.tags.length) && (
             <Card>
               <CardContent>
-                <CardTitle className='text-lg mb-2'>Теги</CardTitle>
+                <CardTitle className='text-lg mb-2'>{t('travelPage.tags')}</CardTitle>
                 <div className='flex flex-wrap gap-2'>
                   {travel.tags.map((tag, index) => (
                     <Badge key={index}>{tag}</Badge>

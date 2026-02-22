@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { MapPin, X } from 'lucide-react'
 
 import { Button, Input } from '@/shared/ui'
@@ -20,11 +21,13 @@ const SEARCH_DEBOUNCE_MS = 300
 export const LocationPicker = ({
   value,
   onChange,
-  placeholder = 'Введите город или адрес...',
+  placeholder,
   disabled = false,
   id,
   className
 }: LocationPickerProps) => {
+  const { t, i18n } = useTranslation()
+  const resolvedPlaceholder = placeholder ?? t('locationPicker.placeholder')
   const [query, setQuery] = useState(value?.text ?? '')
   const [results, setResults] = useState<GeoLocationResult[]>([])
   const [isSearching, setIsSearching] = useState(false)
@@ -32,19 +35,22 @@ export const LocationPicker = ({
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
 
-  const performSearch = useCallback(async (q: string) => {
-    if (!q.trim()) {
-      setResults([])
-      return
-    }
-    setIsSearching(true)
-    try {
-      const locations = await searchLocations(q)
-      setResults(locations)
-    } finally {
-      setIsSearching(false)
-    }
-  }, [])
+  const performSearch = useCallback(
+    async (q: string) => {
+      if (!q.trim()) {
+        setResults([])
+        return
+      }
+      setIsSearching(true)
+      try {
+        const locations = await searchLocations(q, i18n.language)
+        setResults(locations)
+      } finally {
+        setIsSearching(false)
+      }
+    },
+    [i18n.language]
+  )
 
   useEffect(() => {
     if (value) {
@@ -97,7 +103,7 @@ export const LocationPicker = ({
           id={id}
           type='text'
           autoComplete='off'
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           value={query}
           onChange={ev => {
             setQuery(ev.target.value)
@@ -118,7 +124,7 @@ export const LocationPicker = ({
             onClick={handleClear}
             disabled={disabled}
             className='absolute right-2 top-1/2 -translate-y-1/2'
-            aria-label='Очистить'
+            aria-label={t('nav.clear')}
           >
             <X />
           </Button>
@@ -131,7 +137,7 @@ export const LocationPicker = ({
           role='listbox'
         >
           {isSearching ? (
-            <div className='p-3 text-center text-sm text-muted-foreground'>Поиск...</div>
+            <div className='p-3 text-center text-sm text-muted-foreground'>{t('locationPicker.searching')}</div>
           ) : (
             results.map((location, index) => (
               <button

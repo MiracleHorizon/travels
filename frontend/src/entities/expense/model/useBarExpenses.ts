@@ -1,6 +1,8 @@
 import type { Expense } from './types'
 import { format } from 'date-fns'
-import { ru } from 'date-fns/locale'
+import { useTranslation } from 'react-i18next'
+
+import { AppLocale, getDateFnsLocale } from '@/shared/lib/i18n'
 
 const NO_DATE_FLAG = 'no_date'
 
@@ -14,7 +16,16 @@ interface DayTotal {
   other: number
 }
 
-export const useBarExpenses = (expenses: Expense[]) => {
+interface UseBarExpensesProps {
+  expenses: Expense[]
+  locale: AppLocale
+}
+
+export const useBarExpenses = ({ expenses, locale }: UseBarExpensesProps) => {
+  const { t } = useTranslation()
+
+  const dateFnsLocale = getDateFnsLocale(locale)
+
   // Группируем расходы по дням и категориям
   const dayTotals = expenses.reduce(
     (acc, expense) => {
@@ -52,12 +63,14 @@ export const useBarExpenses = (expenses: Expense[]) => {
     if (item.day === NO_DATE_FLAG) {
       return {
         ...item,
-        dayLabel: 'Без даты'
+        dayLabel: t('form.expense.noDate')
       }
     }
 
     const date = new Date(item.day)
-    const formattedDate = format(date, 'dd.MM.yyyy', { locale: ru })
+    const formattedDate = format(date, 'dd.MM.yyyy', {
+      locale: dateFnsLocale
+    })
 
     return {
       ...item,

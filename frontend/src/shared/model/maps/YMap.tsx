@@ -19,6 +19,7 @@ interface YMapComponentProps {
   initialLocation?: GeoCoords
   point?: GeoCoords
   pointPin?: ReactNode
+  lang?: string
   onClick?: (event: DomEvent) => void
 }
 
@@ -84,10 +85,14 @@ YMapComponent.displayName = 'YMapComponent'
 
 // -------------------------------------------------------------------------------------
 
-export const YMap = (props: YMapComponentProps) => (
-  <YMapsProvider apiKey={YANDEX_MAPS_API_KEY}>
-    <YMapComponent {...props} />
-  </YMapsProvider>
-)
+export const YMap = (props: YMapComponentProps) => {
+  const { lang, ...componentProps } = props
+
+  return (
+    <YMapsProvider apiKey={YANDEX_MAPS_API_KEY} lang={lang}>
+      <YMapComponent {...componentProps} />
+    </YMapsProvider>
+  )
+}
 
 YMap.displayName = 'YMap'

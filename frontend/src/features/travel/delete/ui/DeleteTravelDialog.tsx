@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +18,7 @@ interface DeleteTravelDialogProps {
 }
 
 const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) => {
+  const { t } = useTranslation()
   const { isPending, deleteTravel } = useDeleteTravel(travelId)
   const hideModal = useHideModal()
 
@@ -24,19 +26,19 @@ const DeleteTravelDialog = ({ travelId, travelName }: DeleteTravelDialogProps) =
     <AlertDialog open>
       <AlertDialogContent size='sm'>
         <AlertDialogHeader>
-          <AlertDialogTitle>Удалить путешествие?</AlertDialogTitle>
+          <AlertDialogTitle>{t('form.travel.deleteConfirm')}</AlertDialogTitle>
 
           <AlertDialogDescription>
-            Вы уверены, что хотите удалить путешествие <strong>«{travelName}»</strong>?
+            {t('form.travel.deleteDescription', { name: travelName })}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending} onClick={hideModal}>
-            Отмена
+            {t('form.cancel')}
           </AlertDialogCancel>
           <AlertDialogAction variant='destructive' onClick={deleteTravel} disabled={isPending}>
-            Удалить
+            {t('form.delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

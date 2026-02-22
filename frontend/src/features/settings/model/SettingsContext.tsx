@@ -1,6 +1,7 @@
-import { createContext, useContext, useCallback, ReactNode, useMemo } from 'react'
+import { createContext, useContext, useCallback, useEffect, ReactNode, useMemo } from 'react'
 import { useSettingsQuery } from '../api/useSettingsQuery'
 import type { UserSettings } from './types'
+import i18n from '@/shared/config/i18n'
 
 interface SettingsContextValue {
   getSetting: <K extends keyof UserSettings>(key: K) => UserSettings[K]
@@ -14,6 +15,12 @@ const SettingsContext = createContext<SettingsContextValue | null>(null)
 
 export const SettingsProvider = ({ children }: SettingsProviderProps) => {
   const { data: settings } = useSettingsQuery()
+
+  useEffect(() => {
+    if (settings?.locale) {
+      i18n.changeLanguage(settings.locale)
+    }
+  }, [settings?.locale])
 
   const getSetting = useCallback(
     <K extends keyof UserSettings>(key: K) => {

@@ -43,28 +43,28 @@ export const router = createBrowserRouter([
               {
                 path: '/travels',
                 handle: {
-                  breadcrumb: 'Путешествия'
+                  breadcrumb: 'nav.travels'
                 },
                 children: [
                   {
                     path: 'planned',
                     element: <TravelsPlannedPage />,
                     handle: {
-                      breadcrumb: 'Запланированные'
+                      breadcrumb: 'nav.planned'
                     }
                   },
                   {
                     path: 'past',
                     element: <TravelsPastPage />,
                     handle: {
-                      breadcrumb: 'Прошедшие'
+                      breadcrumb: 'nav.past'
                     }
                   },
                   {
                     path: 'archive',
                     element: <TravelsArchivePage />,
                     handle: {
-                      breadcrumb: 'Архив'
+                      breadcrumb: 'nav.archive'
                     }
                   },
                   {
@@ -104,7 +104,7 @@ export const router = createBrowserRouter([
                         path: 'map',
                         element: <TravelMapPage />,
                         handle: {
-                          breadcrumb: 'Карта'
+                          breadcrumb: 'nav.map'
                         }
                       }
                     ]

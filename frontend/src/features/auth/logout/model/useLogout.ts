@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { useLogoutMutation } from '../api/useLogoutMutation'
 import { toast } from 'sonner'
 import { useQueryClient } from '@tanstack/react-query'
 
 export const useLogout = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
@@ -18,7 +20,7 @@ export const useLogout = () => {
           navigate('/login')
         },
         onError: () => {
-          toast.error('Не удалось выйти из системы')
+          toast.error(t('toast.auth.logoutError'))
         }
       })
   }

@@ -1,5 +1,6 @@
 import { Tag } from 'lucide-react'
 import { DateRange } from 'react-day-picker'
+import { useTranslation } from 'react-i18next'
 
 import {
   Input,
@@ -15,6 +16,7 @@ import {
 } from '@/shared/ui'
 import { ChangeEvent } from 'react'
 import { GeoLocationResult } from '@/shared/api/geo'
+import { AppLocale } from '@/shared/lib/i18n'
 
 interface TravelFormData {
   name: string
@@ -29,9 +31,18 @@ interface TravelFormProps {
   onChange: (value: TravelFormData) => void
   onSubmit: () => void
   disabled?: boolean
+  locale: AppLocale
 }
 
-export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: TravelFormProps) => {
+export const TravelForm = ({
+  values,
+  disabled = false,
+  locale,
+  onChange,
+  onSubmit
+}: TravelFormProps) => {
+  const { t } = useTranslation()
+
   const handleNameChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...values,
@@ -77,12 +88,12 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
       <FieldGroup>
         <Field>
           <FieldContent>
-            <FieldLabel htmlFor='name'>Название</FieldLabel>
+            <FieldLabel htmlFor='name'>{t('form.travel.name')}</FieldLabel>
             <Input
               id='name'
               type='text'
               autoComplete='off'
-              placeholder='Пхукет, 2026'
+              placeholder={t('form.travel.namePlaceholder')}
               value={values.name}
               onChange={handleNameChange}
               disabled={disabled}
@@ -92,12 +103,12 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
 
         <Field>
           <FieldContent>
-            <FieldLabel htmlFor='destination'>Точка назначения</FieldLabel>
+            <FieldLabel htmlFor='destination'>{t('form.travel.destination')}</FieldLabel>
             <LocationPicker
               id='destination'
               value={values.destination}
               onChange={handleDestinationChange}
-              placeholder='Город или адрес'
+              placeholder={t('form.travel.destinationPlaceholder')}
               disabled={disabled}
             />
           </FieldContent>
@@ -105,24 +116,25 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
 
         <Field>
           <FieldContent>
-            <FieldLabel htmlFor='dateRange'>Временные рамки</FieldLabel>
+            <FieldLabel htmlFor='dateRange'>{t('form.travel.dateRange')}</FieldLabel>
             <DateRangePicker
               id='dateRange'
               value={values.dateRange}
               onChange={handleDateRangeChange}
               disabled={disabled}
-              placeholder='Выберите даты'
+              placeholder={t('form.travel.dateRangePlaceholder')}
               captionLayout='dropdown'
+              locale={locale}
             />
           </FieldContent>
         </Field>
 
         <Field>
           <FieldContent>
-            <FieldLabel htmlFor='description'>Описание</FieldLabel>
+            <FieldLabel htmlFor='description'>{t('form.travel.description')}</FieldLabel>
             <Textarea
               id='description'
-              placeholder='Опишите ваше путешествие...'
+              placeholder={t('form.travel.descriptionPlaceholder')}
               value={values.description}
               onChange={handleDescriptionChange}
               disabled={disabled}
@@ -134,14 +146,17 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
         <Field>
           <FieldLabel className='flex items-center gap-2'>
             <Tag className='w-4 h-4' />
-            Теги
+            {t('form.travel.tags')}
           </FieldLabel>
 
-          <FieldDescription>
-            Добавьте теги для категоризации путешествия (например: пляж, горы, культура)
-          </FieldDescription>
+          <FieldDescription>{t('form.travel.tagsHint')}</FieldDescription>
 
-          <TagsInput value={values.tags} onChange={handleTagsChange} disabled={disabled} />
+          <TagsInput
+            value={values.tags}
+            onChange={handleTagsChange}
+            disabled={disabled}
+            placeholder={t('form.travel.tagsPlaceholder')}
+          />
         </Field>
       </FieldGroup>
     </form>

@@ -1,26 +1,30 @@
 import { CloudRain, Cloud, Droplets, Gauge, Wind } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { getWindDirection } from '../lib/getWindDirection'
 import { getPrecipitation } from '../lib/getPrecipitation'
 import type { CurrentWeatherResponse } from '../model/types'
-import type { WeatherLocale } from '../config/locales'
 
 interface WeatherDetailsProps {
   // TODO: Оторвать от CurrentWeatherResponse
   data: CurrentWeatherResponse
-  locale?: WeatherLocale
 }
 
-export const WeatherDetails = ({ data, locale = 'ru' }: WeatherDetailsProps) => {
+export const WeatherDetails = ({ data }: WeatherDetailsProps) => {
+  const { t } = useTranslation()
+  const windDirections = t('weather.windDirections', {
+    returnObjects: true
+  }) as string[]
+
   const precipitation = getPrecipitation(data)
-  const windDirection = getWindDirection(data.wind.deg, locale)
+  const windDirection = getWindDirection(data.wind.deg, windDirections)
 
   return (
     <div className='flex flex-wrap gap-x-4 gap-y-2 text-sm text-muted-foreground'>
       {precipitation != null && (
         <span className='flex items-center gap-1.5'>
           <CloudRain className='size-4 shrink-0' aria-hidden />
-          {precipitation} мм/ч
+          {precipitation} {t('weather.precipitationUnit')}
         </span>
       )}
 
@@ -31,14 +35,14 @@ export const WeatherDetails = ({ data, locale = 'ru' }: WeatherDetailsProps) => 
 
       <span className='flex items-center gap-1.5'>
         <Wind className='size-4 shrink-0' aria-hidden />
-        {data.wind.speed} м/с
+        {data.wind.speed} {t('weather.windSpeedUnit')}
         {windDirection && ` ${windDirection}`}
       </span>
 
       {data.main.pressure != null && (
         <span className='hidden @[260px]/weather-widget:inline-flex items-center gap-1.5'>
           <Gauge className='size-4 shrink-0' aria-hidden />
-          {data.main.pressure} гПа
+          {data.main.pressure} {t('weather.pressureUnit')}
         </span>
       )}
 

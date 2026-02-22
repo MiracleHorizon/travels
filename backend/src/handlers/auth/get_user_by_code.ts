@@ -225,8 +225,8 @@ export const getUserByCodeHandler = async (req: BunRequest) => {
 
     // 4. Создаём запись настроек по умолчанию, если её ещё нет
     await postgres`
-      INSERT INTO user_settings (user_id, measurement_unit, time_format, created_at, updated_at)
-      VALUES (${userId}, 'metric', '24h', NOW(), NOW())
+      INSERT INTO user_settings (user_id, measurement_unit, time_format, locale, created_at, updated_at)
+      VALUES (${userId}, 'metric', '24h', 'en', NOW(), NOW())
       ON CONFLICT (user_id) DO NOTHING
     `
 

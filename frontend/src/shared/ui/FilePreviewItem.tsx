@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Button } from './button'
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from './item'
 import { TooltipComposer } from './tooltip'
@@ -10,27 +11,31 @@ interface FilePreviewItemProps {
   onRemove?: () => void
 }
 
-const FilePreviewItem = ({ file, previewUrl, onRemove }: FilePreviewItemProps) => (
-  <Item size='sm' variant='outline' className='px-3 pt-2.5 pb-3 rounded-xl'>
-    <ItemMedia className='h-14 rounded-sm overflow-hidden'>
-      <img src={previewUrl} alt={file.name} className='w-full h-full object-cover' />
-    </ItemMedia>
+const FilePreviewItem = ({ file, previewUrl, onRemove }: FilePreviewItemProps) => {
+  const { t } = useTranslation()
 
-    <ItemContent>
-      <ItemTitle className='truncate max-w-[250px]'>{file.name}</ItemTitle>
-      <ItemDescription className='whitespace-nowrap'>{formatFileSize(file.size)}</ItemDescription>
-    </ItemContent>
+  return (
+    <Item size='sm' variant='outline' className='px-3 pt-2.5 pb-3 rounded-xl'>
+      <ItemMedia className='h-14 rounded-sm overflow-hidden'>
+        <img src={previewUrl} alt={file.name} className='w-full h-full object-cover' />
+      </ItemMedia>
 
-    {onRemove && (
-      <ItemActions>
-        <TooltipComposer content='Удалить фотографию'>
+      <ItemContent>
+        <ItemTitle className='truncate max-w-[250px]'>{file.name}</ItemTitle>
+        <ItemDescription className='whitespace-nowrap'>{formatFileSize(file.size)}</ItemDescription>
+      </ItemContent>
+
+      {onRemove && (
+        <ItemActions>
+          <TooltipComposer content={t('upload.removePhoto')}>
           <Button variant='ghost' size='icon-sm' onClick={onRemove}>
             <Trash2 />
           </Button>
         </TooltipComposer>
       </ItemActions>
     )}
-  </Item>
-)
+    </Item>
+  )
+}
 
 export { FilePreviewItem }

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Button, Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyTitle } from '@/shared/ui'
 import { Plus } from 'lucide-react'
 
@@ -6,18 +7,18 @@ interface ExpensesListEmptyProps {
 }
 
 export const ExpensesListEmpty = ({ onAddExpense }: ExpensesListEmptyProps) => {
+  const { t } = useTranslation()
+
   return (
     <Empty>
       <EmptyHeader>
-        <EmptyTitle>Пока расходов нет</EmptyTitle>
-        <EmptyDescription>
-          Добавьте информацию о них, чтобы узнать, сколько вы потратили на путешествие
-        </EmptyDescription>
+        <EmptyTitle>{t('travelPage.noExpenses')}</EmptyTitle>
+        <EmptyDescription>{t('travelPage.noExpensesDescription')}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         <Button variant='outline' onClick={onAddExpense}>
           <Plus />
-          Учесть расходы
+          {t('travelPage.trackExpenses')}
         </Button>
       </EmptyContent>
     </Empty>

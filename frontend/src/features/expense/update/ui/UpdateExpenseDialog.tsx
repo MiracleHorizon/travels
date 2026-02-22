@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -11,16 +12,21 @@ import {
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useUpdateExpense } from '../model/useUpdateExpense'
 import { ExpenseForm, Expense } from '@/entities/expense'
+import { useSettings } from '@/features/settings'
 
 interface UpdateExpenseDialogProps {
   expense: Expense
 }
 
 const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
+  const { t } = useTranslation()
+
+  const { getSetting } = useSettings()
+  const locale = getSetting('locale')
+
   const { isPending, formFields, setFormFields, updateExpense } = useUpdateExpense({
     expense
   })
-
   const hideModal = useHideModal()
 
   return (
@@ -34,13 +40,14 @@ const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Редактирование расхода</DialogTitle>
-          <DialogDescription>Измените детали</DialogDescription>
+          <DialogTitle>{t('form.expense.editTitle')}</DialogTitle>
+          <DialogDescription>{t('form.expense.editDescription')}</DialogDescription>
         </DialogHeader>
 
         <ExpenseForm
           values={formFields}
           disabled={isPending}
+          locale={locale}
           onChange={setFormFields}
           onSubmit={updateExpense}
         />
@@ -48,12 +55,12 @@ const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
         <DialogFooter>
           <DialogClose asChild>
             <Button size='sm' variant='secondary' disabled={isPending}>
-              Отмена
+              {t('form.cancel')}
             </Button>
           </DialogClose>
 
           <Button size='sm' onClick={updateExpense} isLoading={isPending}>
-            Сохранить
+            {t('form.save')}
           </Button>
         </DialogFooter>
       </DialogContent>

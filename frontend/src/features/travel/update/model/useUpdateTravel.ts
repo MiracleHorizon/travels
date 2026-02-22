@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { DateRange } from 'react-day-picker'
 
 import { useHideModal } from '@/shared/lib/modal'
@@ -16,11 +17,12 @@ interface TravelFormFields {
   destination: GeoLocationResult | null
 }
 
-interface UseUpdateTravelParams {
+interface UseUpdateTravelProps {
   travel: TravelDetailed
 }
 
-export const useUpdateTravel = ({ travel }: UseUpdateTravelParams) => {
+export const useUpdateTravel = ({ travel }: UseUpdateTravelProps) => {
+  const { t } = useTranslation()
   const [formFields, setFormFields] = useState<TravelFormFields>({
     name: travel.name,
     description: travel.description || '',
@@ -68,11 +70,11 @@ export const useUpdateTravel = ({ travel }: UseUpdateTravelParams) => {
             queryKey: [TRAVELS_QUERY_KEY]
           })
           hideModal()
-          toast.success('Путешествие обновлено')
+          toast.success(t('toast.travel.updated'))
         },
         onError: () => {
-          toast.error('Не удалось обновить путешествие', {
-            description: 'Пожалуйста, попробуйте еще раз'
+          toast.error(t('toast.travel.updateError'), {
+            description: t('toast.tryAgain')
           })
         }
       }

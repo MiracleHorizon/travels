@@ -1,6 +1,8 @@
 import * as React from 'react'
 import * as RechartsPrimitive from 'recharts'
+import { useTranslation } from 'react-i18next'
 
+import { getLocaleString, type AppLocale } from '@/shared/lib/i18n'
 import { cn } from '@/shared/lib/styles/utils'
 
 // Format: { THEME_NAME: CSS_SELECTOR }
@@ -117,6 +119,8 @@ function ChartTooltipContent({
     labelKey?: string
   }) {
   const { config } = useChart()
+  const { i18n } = useTranslation()
+  const localeString = getLocaleString((i18n.language as AppLocale) || 'ru')
 
   let tooltipLabel: React.ReactNode = null
   if (!hideLabel && payload?.length) {
@@ -210,7 +214,7 @@ function ChartTooltipContent({
 
                       {item.value && (
                         <span className='text-foreground font-mono font-medium tabular-nums'>
-                          {item.value.toLocaleString()}
+                          {item.value.toLocaleString(localeString)}
                         </span>
                       )}
                     </div>

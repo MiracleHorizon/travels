@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {
   Button,
@@ -17,6 +18,7 @@ import { useUpdateSettingsMutation } from '../api/useUpdateSettingsMutation'
 import { SettingsForm } from './SettingsForm'
 
 const SettingsDialog = () => {
+  const { t, i18n } = useTranslation()
   const hideModal = useHideModal()
 
   const { getSetting } = useSettings()
@@ -24,12 +26,16 @@ const SettingsDialog = () => {
 
   const [draft, setDraft] = useState(() => ({
     measurementUnit: getSetting('measurementUnit'),
-    timeFormat: getSetting('timeFormat')
+    timeFormat: getSetting('timeFormat'),
+    locale: getSetting('locale')
   }))
 
   const handleSave = () => {
     saveSettings(draft, {
-      onSuccess: () => {
+      onSuccess: data => {
+        if (data.locale) {
+          i18n.changeLanguage(data.locale)
+        }
         hideModal()
       }
     })
@@ -47,8 +53,8 @@ const SettingsDialog = () => {
       <DialogContent className='px-0 pb-4'>
         <div className='px-6'>
           <DialogHeader>
-            <DialogTitle>Настройки</DialogTitle>
-            <DialogDescription>Подстройте приложение под себя</DialogDescription>
+            <DialogTitle>{t('settings.title')}</DialogTitle>
+            <DialogDescription>{t('settings.description')}</DialogDescription>
           </DialogHeader>
         </div>
 
@@ -61,13 +67,12 @@ const SettingsDialog = () => {
         <DialogFooter className='px-6 pb-0'>
           <DialogClose asChild>
             <Button size='sm' variant='secondary'>
-              Закрыть
+              {t('settings.close')}
             </Button>
           </DialogClose>
 
-          {/* TODO: при добавлении rhf можно будет обновить только если форма isDirty */}
           <Button size='sm' onClick={handleSave} isLoading={isPending}>
-            Сохранить
+            {t('settings.save')}
           </Button>
         </DialogFooter>
       </DialogContent>

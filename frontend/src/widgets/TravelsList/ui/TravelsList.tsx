@@ -1,5 +1,7 @@
+import { useTranslation } from 'react-i18next'
 import { Plane } from 'lucide-react'
 import { Travel, TravelCard } from '@/entities/travel'
+import { useSettings } from '@/features/settings'
 import { cn } from '@/shared/lib'
 import {
   Empty,
@@ -27,13 +29,19 @@ interface TravelsListProps {
 export const TravelsList = ({
   travels,
   className,
-  emptyMessage = 'Нет путешествий',
+  emptyMessage,
   allowCreate = true,
   isLoading = false,
   error
 }: TravelsListProps) => {
+  const { t } = useTranslation()
+
+  const { getSetting } = useSettings()
+  const locale = getSetting('locale')
+
   const { createTravel } = useCreateTravelAction()
   const actions = useTravelActions()
+  const resolvedEmptyMessage = emptyMessage ?? t('travelsList.noTravels')
 
   const navigate = useNavigate()
   const navigateToTravel = (travelId: string) => navigate(`/travels/${travelId}`)
@@ -52,7 +60,7 @@ export const TravelsList = ({
     return (
       <div className={cn('flex gap-4 flex-wrap', className)}>
         <div className='rounded-lg border border-destructive bg-destructive/10 p-4 text-destructive'>
-          Не удалось загрузить путешествия
+          {t('travelsList.loadError')}
         </div>
       </div>
     )
@@ -65,14 +73,12 @@ export const TravelsList = ({
           <EmptyMedia className='rounded-full bg-muted/50 p-4'>
             <Plane className='h-12 w-12 text-muted-foreground/50' />
           </EmptyMedia>
-          <EmptyTitle>{emptyMessage}</EmptyTitle>
-          <EmptyDescription>
-            Создайте своё первое путешествие, чтобы начать планирование
-          </EmptyDescription>
+          <EmptyTitle>{resolvedEmptyMessage}</EmptyTitle>
+          <EmptyDescription>{t('travelsList.emptyDescription')}</EmptyDescription>
         </EmptyHeader>
         {allowCreate && (
           <EmptyContent>
-            <Button onClick={createTravel}>Новое путешествие</Button>
+            <Button onClick={createTravel}>{t('nav.newTravel')}</Button>
           </EmptyContent>
         )}
       </Empty>
@@ -90,6 +96,7 @@ export const TravelsList = ({
           endDate={travel.end_date}
           actions={actions(travel)}
           onClick={() => navigateToTravel(travel.id)}
+          locale={locale}
         />
       ))}
     </div>

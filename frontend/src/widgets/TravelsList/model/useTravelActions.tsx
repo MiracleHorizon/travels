@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { DropdownAction } from '@/shared/ui'
 import { Archive, ArchiveRestore, Pencil, Trash } from 'lucide-react'
 import type { MouseEvent } from 'react'
@@ -7,6 +8,8 @@ import { useToggleTravelArchiveAction } from '@/features/travel/archive'
 import { Travel } from '@/entities/travel'
 
 export const useTravelActions = (): ((travel: Travel) => DropdownAction[]) => {
+  const { t } = useTranslation()
+
   const deleteTravelAction = useDeleteTravelAction()
   const updateTravelAction = useUpdateTravelAction()
   const toggleArchiveAction = useToggleTravelArchiveAction()
@@ -15,7 +18,7 @@ export const useTravelActions = (): ((travel: Travel) => DropdownAction[]) => {
     return [
       {
         type: 'item',
-        label: 'Редактировать',
+        label: t('nav.edit'),
         icon: <Pencil />,
         onClick: (ev: MouseEvent<HTMLDivElement>) => {
           ev.stopPropagation()
@@ -24,7 +27,7 @@ export const useTravelActions = (): ((travel: Travel) => DropdownAction[]) => {
       },
       {
         type: 'item',
-        label: travel.is_archived ? 'Восстановить' : 'Архивировать',
+        label: travel.is_archived ? t('travelsList.restore') : t('travelsList.archive'),
         icon: travel.is_archived ? <ArchiveRestore /> : <Archive />,
         onClick: (ev: MouseEvent<HTMLDivElement>) => {
           ev.stopPropagation()
@@ -36,7 +39,7 @@ export const useTravelActions = (): ((travel: Travel) => DropdownAction[]) => {
       },
       {
         type: 'item',
-        label: 'Удалить',
+        label: t('form.delete'),
         icon: <Trash />,
         variant: 'destructive',
         onClick: (ev: MouseEvent<HTMLDivElement>) => {

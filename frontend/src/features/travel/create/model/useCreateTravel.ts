@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { DateRange } from 'react-day-picker'
 
 import { useHideModal } from '@/shared/lib/modal'
@@ -25,6 +26,7 @@ const DEFAULT_FORM_FIELDS: TravelFormFields = {
 } as const
 
 export const useCreateTravel = () => {
+  const { t } = useTranslation()
   const [formFields, setFormFields] = useState<TravelFormFields>(DEFAULT_FORM_FIELDS)
 
   const queryClient = useQueryClient()
@@ -57,11 +59,11 @@ export const useCreateTravel = () => {
             queryKey: [TRAVELS_QUERY_KEY]
           })
           hideModal()
-          toast.success('Путешествие создано, можно начать планировать')
+          toast.success(t('toast.travel.created'))
         },
         onError: () => {
-          toast.error('Не удалось создать путешествие', {
-            description: 'Пожалуйста, попробуйте еще раз'
+          toast.error(t('toast.travel.createError'), {
+            description: t('toast.tryAgain')
           })
         }
       }

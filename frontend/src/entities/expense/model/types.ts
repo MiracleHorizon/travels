@@ -10,10 +10,11 @@ export interface Expense {
   link?: string
 }
 
-export type ExpenseCategory =
-  | 'transport'
-  | 'accommodation'
-  | 'food'
-  | 'entertainment'
-  | 'shopping'
-  | 'other'
+export enum ExpenseCategory {
+  TRANSPORT = 'transport',
+  ACCOMMODATION = 'accommodation',
+  FOOD = 'food',
+  ENTERTAINMENT = 'entertainment',
+  SHOPPING = 'shopping',
+  OTHER = 'other'
+}

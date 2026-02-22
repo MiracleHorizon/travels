@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -11,10 +12,15 @@ import {
 import { TravelForm } from '@/entities/travel'
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useCreateTravel } from '../model/useCreateTravel'
+import { useSettings } from '@/features/settings'
 
 const CreateTravelDialog = () => {
-  const { isPending, formFields, setFormFields, createTravel } = useCreateTravel()
+  const { t } = useTranslation()
 
+  const { getSetting } = useSettings()
+  const locale = getSetting('locale')
+
+  const { isPending, formFields, setFormFields, createTravel } = useCreateTravel()
   const hideModal = useHideModal()
 
   return (
@@ -28,13 +34,12 @@ const CreateTravelDialog = () => {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Новое путешествие</DialogTitle>
-          <DialogDescription>
-            Спланируйте незабываемое путешествие или сохраните память о прошедшем
-          </DialogDescription>
+          <DialogTitle>{t('form.travel.newTitle')}</DialogTitle>
+          <DialogDescription>{t('form.travel.newDescription')}</DialogDescription>
         </DialogHeader>
 
         <TravelForm
+          locale={locale}
           values={formFields}
           disabled={isPending}
           onChange={setFormFields}
@@ -44,12 +49,12 @@ const CreateTravelDialog = () => {
         <DialogFooter>
           <DialogClose asChild>
             <Button size='sm' variant='secondary' disabled={isPending}>
-              Отмена
+              {t('form.cancel')}
             </Button>
           </DialogClose>
 
           <Button size='sm' onClick={createTravel} isLoading={isPending}>
-            Создать
+            {t('form.create')}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -58,6 +63,6 @@ const CreateTravelDialog = () => {
 }
 
 export const createTravelModalDefinition: ModalDefinition = {
-  name: 'createTravelModal',
+  name: 'CreateTravelDialog',
   component: CreateTravelDialog
 }

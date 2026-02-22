@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ChartContainer,
   ChartTooltip,
@@ -7,21 +9,40 @@ import {
 } from '@/shared/ui/chart'
 import { Bar, BarChart, XAxis } from 'recharts'
 import type { TooltipProps } from 'recharts'
-import { EXPENSE_CHART_CATEGORIES } from '../model/consts'
+import { EXPENSE_CHART_COLORS } from '../model/consts'
 import { useBarExpenses } from '../model/useBarExpenses'
-import type { Expense } from '../model/types'
 import { formatCurrency } from '@/shared/lib/format'
-import { cn } from '@/shared/lib/styles/utils'
+import { cn } from '@/shared/lib'
+import { AppLocale } from '@/shared/lib/i18n'
+import type { Expense } from '../model/types'
 
 interface ExpenseBarChartProps {
   expenses: Expense[]
   className?: string
+  locale: AppLocale
 }
 
-const chartConfig = EXPENSE_CHART_CATEGORIES
+export const ExpenseBarChart = ({ expenses, className, locale }: ExpenseBarChartProps) => {
+  const { t } = useTranslation()
 
-export const ExpenseBarChart = ({ expenses, className }: ExpenseBarChartProps) => {
-  const chartData = useBarExpenses(expenses)
+  const chartData = useBarExpenses({
+    expenses,
+    locale
+  })
+
+  const chartConfig = useMemo(
+    () =>
+      Object.fromEntries(
+        Object.entries(EXPENSE_CHART_COLORS).map(([key, color]) => [
+          key,
+          {
+            label: t(`form.expense.categories.${key}`),
+            color
+          }
+        ])
+      ),
+    [t]
+  )
 
   if (chartData.length <= 1) {
     return null
@@ -33,7 +54,7 @@ export const ExpenseBarChart = ({ expenses, className }: ExpenseBarChartProps) =
         <BarChart data={chartData}>
           <XAxis dataKey='dayLabel' tickLine={true} axisLine={true} />
 
-          <ChartTooltip content={<CustomTooltip />} />
+          <ChartTooltip content={<CustomTooltip locale={locale} />} />
           <ChartLegend content={<ChartLegendContent />} />
 
           <Bar
@@ -63,14 +84,23 @@ export const ExpenseBarChart = ({ expenses, className }: ExpenseBarChartProps) =
   )
 }
 
-const CustomTooltip = (props: TooltipProps<number, string>) => {
+const CustomTooltip = ({
+  locale,
+  ...props
+}: TooltipProps<number, string> & {
+  locale: AppLocale
+}) => {
   const payload = !props.payload
     ? []
     : props.payload
         .filter(category => category.value && category.value > 0)
         .map(category => ({
           ...category,
-          value: formatCurrency(category.value, 'RUB')
+          value: formatCurrency({
+            amount: category.value,
+            currency: 'RUB',
+            locale
+          })
         }))
 
   // @ts-expect-error - проблема типизация тултипа.

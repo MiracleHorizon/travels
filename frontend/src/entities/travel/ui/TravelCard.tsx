@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Calendar, Ellipsis, Tag } from 'lucide-react'
 import {
   Badge,
@@ -9,7 +10,8 @@ import {
   DropdownAction,
   DropdownActions
 } from '@/shared/ui'
-import { cn } from '@/shared/lib/styles/utils'
+import { cn } from '@/shared/lib'
+import type { AppLocale } from '@/shared/lib/i18n'
 import { formatTravelDateRange } from '../lib/formatters'
 import { useState } from 'react'
 
@@ -18,6 +20,7 @@ interface TravelCardProps {
   startDate: string
   endDate: string
   tags: string[]
+  locale: AppLocale
   className?: string
   actions?: DropdownAction[]
   onClick?: () => void
@@ -25,7 +28,7 @@ interface TravelCardProps {
 
 const MAX_BADGES_TO_SHOW = 3
 
-// TODO: При наведении цветной анимированный бордер
+// TODO: При наведении цветной анимированный бордер?
 export const TravelCard = ({
   name,
   startDate,
@@ -33,8 +36,10 @@ export const TravelCard = ({
   tags,
   className,
   actions,
+  locale,
   onClick
 }: TravelCardProps) => {
+  const { t } = useTranslation()
   const [hovered, setHovered] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
@@ -57,7 +62,7 @@ export const TravelCard = ({
       <div className='relative w-36 shrink-0 overflow-hidden hidden @[600px]/travel-card:block'>
         <img
           src='https://avatar.vercel.sh/shadcn3'
-          alt='Travel cover'
+          alt={t('travelsList.coverAlt')}
           className='h-full w-full object-cover group-hover:scale-105 transition-transform duration-500 ease-out'
         />
       </div>
@@ -72,7 +77,13 @@ export const TravelCard = ({
         <CardContent className='gap-3 flex flex-col pt-0'>
           <div className='flex items-center gap-2 text-sm text-muted-foreground'>
             <Calendar className='h-4 w-4 shrink-0' />
-            <span>{formatTravelDateRange(startDate, endDate)}</span>
+            <span>
+              {formatTravelDateRange({
+                startDate,
+                endDate,
+                locale
+              })}
+            </span>
           </div>
 
           {Boolean(tags.length) && (
@@ -91,7 +102,12 @@ export const TravelCard = ({
       {actions && showActions && (
         <DropdownActions
           trigger={
-            <Button variant='secondary' size='icon-xs' className='absolute top-2 right-2'>
+            <Button
+              variant='secondary'
+              size='icon-xs'
+              className='absolute top-2 right-2'
+              aria-label={t('travelsList.moreActions')}
+            >
               <Ellipsis />
             </Button>
           }

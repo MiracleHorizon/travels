@@ -2,20 +2,20 @@ import { CalendarCheck, CalendarClock, Archive } from 'lucide-react'
 
 export const menuGroups = [
   {
-    title: 'Путешествия',
+    titleKey: 'nav.travels',
     items: [
       {
-        title: 'Запланированные',
+        titleKey: 'nav.planned',
         url: '/travels/planned',
         icon: CalendarClock
       },
       {
-        title: 'Прошедшие',
+        titleKey: 'nav.past',
         url: '/travels/past',
         icon: CalendarCheck
       },
       {
-        title: 'Архив',
+        titleKey: 'nav.archive',
         url: '/travels/archive',
         icon: Archive
       }

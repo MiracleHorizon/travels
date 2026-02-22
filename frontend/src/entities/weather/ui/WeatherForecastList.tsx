@@ -1,7 +1,8 @@
+import { useTranslation } from 'react-i18next'
 import { capitalizeFirst } from '@/shared/lib/format'
 import { Item, ItemMedia, ItemTitle } from '@/shared/ui'
 import type { DayForecast } from '../model/types'
-import { WEATHER_LOCALES, type WeatherLocale, type TemperatureUnit } from '../config/locales'
+import type { TemperatureUnit } from '../config/locales'
 import { OPENWEATHER_ICON_URL } from '../lib/consts'
 
 interface WeatherForecastListProps {
@@ -11,17 +12,16 @@ interface WeatherForecastListProps {
     description: string
     icon: string
   }
-  locale: WeatherLocale
   temperatureUnit?: TemperatureUnit
 }
 
 export const WeatherForecastList = ({
   dayForecasts,
   currentWeather,
-  locale,
   temperatureUnit = '°C'
 }: WeatherForecastListProps) => {
-  const { forecast } = WEATHER_LOCALES[locale]
+  const { t } = useTranslation()
+  const forecastLabel = t('weather.forecast')
 
   return (
     <div className='space-y-4'>
@@ -43,7 +43,7 @@ export const WeatherForecastList = ({
       </div>
 
       <div>
-        <h3 className='text-sm font-medium text-muted-foreground mb-3'>{forecast}</h3>
+        <h3 className='text-sm font-medium text-muted-foreground mb-3'>{forecastLabel}</h3>
 
         <div className='space-y-2'>
           {dayForecasts.map(day => (

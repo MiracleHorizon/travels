@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { useHideModal } from '@/shared/lib/modal'
 import { useCreateExpenseMutation } from '../api/useCreateExpenseMutation'
 import { useQueryClient } from '@tanstack/react-query'
@@ -24,6 +25,7 @@ const DEFAULT_FORM_FIELDS: ExpenseFormFields = {
 } as const
 
 export const useCreateExpense = ({ travelId }: { travelId: string }) => {
+  const { t } = useTranslation()
   const [formFields, setFormFields] = useState<ExpenseFormFields>(DEFAULT_FORM_FIELDS)
 
   const queryClient = useQueryClient()
@@ -56,11 +58,11 @@ export const useCreateExpense = ({ travelId }: { travelId: string }) => {
             queryKey: [EXPENSES_QUERY_KEY, travelId]
           })
           hideModal()
-          toast.success('Расход добавлен')
+          toast.success(t('toast.expense.created'))
         },
         onError: () => {
-          toast.error('Не удалось добавить расход', {
-            description: 'Пожалуйста, попробуйте еще раз'
+          toast.error(t('toast.expense.createError'), {
+            description: t('toast.tryAgain')
           })
         }
       }

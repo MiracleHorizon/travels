@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { TRAVELS_QUERY_KEY } from '@/entities/travel'
 import {
   UploadTravelPhotosDto,
@@ -14,6 +15,7 @@ interface TravelPhotoUploadFormFields {
 }
 
 export const useUploadTravelPhotos = () => {
+  const { t } = useTranslation()
   const [formFields, setFormFields] = useState<TravelPhotoUploadFormFields>({
     photo: null,
     description: ''
@@ -36,11 +38,11 @@ export const useUploadTravelPhotos = () => {
             queryKey: [TRAVELS_QUERY_KEY, travelId]
           })
           hideModal()
-          toast.success('Фотография загружена')
+          toast.success(t('toast.photo.uploaded'))
         },
         onError: () => {
-          toast.error('Не удалось загрузить фотографию', {
-            description: 'Пожалуйста, попробуйте еще раз'
+          toast.error(t('toast.photo.uploadError'), {
+            description: t('toast.tryAgain')
           })
         }
       }

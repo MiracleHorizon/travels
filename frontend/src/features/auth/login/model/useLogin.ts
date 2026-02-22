@@ -1,9 +1,11 @@
 import { useCallback } from 'react'
+import { useTranslation } from 'react-i18next'
 import { toast } from 'sonner'
 import { type LoginDto, useLoginMutation } from '../api/useLoginMutation'
 import { useNavigate } from 'react-router-dom'
 
 export const useLogin = () => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const mutation = useLoginMutation()
 
@@ -16,13 +18,13 @@ export const useLogin = () => {
           })
         },
         onError: () => {
-          toast.error('Не удалось войти', {
-            description: 'Пожалуйста, попробуйте еще раз'
+          toast.error(t('toast.auth.loginError'), {
+            description: t('toast.tryAgain')
           })
           navigate('/login', { replace: true })
         }
       }),
-    [mutation, navigate]
+    [mutation, navigate, t]
   )
 
   return {

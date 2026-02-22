@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Item,
   ItemContent,
@@ -16,6 +17,7 @@ import { Ellipsis, ExternalLinkIcon } from 'lucide-react'
 import { useState } from 'react'
 import { formatCurrency } from '@/shared/lib/format'
 import { cn } from '@/shared/lib'
+import { AppLocale } from '@/shared/lib/i18n'
 
 interface ExpenseCardProps {
   title: string
@@ -24,7 +26,7 @@ interface ExpenseCardProps {
   category: ExpenseCategory
   date?: string
   description?: string
-  locale: string
+  locale: AppLocale
   /**
    * Ссылка на внешний ресурс с дополнительной информацией о расходе.
    * Например, ссылка на отель, музей, ресторан.
@@ -48,13 +50,19 @@ export const ExpenseCard = ({
   actions,
   showCategoryBadge = false
 }: ExpenseCardProps) => {
+  const { t } = useTranslation()
+
   const formattedDate = date
     ? new Date(date).toLocaleDateString(locale, {
         day: 'numeric',
         month: 'short'
       })
     : null
-  const formattedAmount = formatCurrency(amount, currency, locale)
+  const formattedAmount = formatCurrency({
+    amount,
+    currency,
+    locale
+  })
 
   const [hovered, setHovered] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
@@ -102,10 +110,10 @@ export const ExpenseCard = ({
           )}
         >
           {link && (
-            <TooltipComposer content='Дополнительная информация'>
+            <TooltipComposer content={t('form.expense.linkTooltip')}>
               <Button variant='outline' size='xs' onClick={handleOpenLink}>
                 <ExternalLinkIcon />
-                Ссылка
+                {t('form.expense.link')}
               </Button>
             </TooltipComposer>
           )}
@@ -113,7 +121,7 @@ export const ExpenseCard = ({
           <DropdownActions
             trigger={
               actions && (
-                <Button variant='outline' size='icon-xs'>
+                <Button variant='outline' size='icon-xs' aria-label={t('travelsList.moreActions')}>
                   <Ellipsis />
                 </Button>
               )

@@ -4,12 +4,12 @@ import type { TravelDetailed } from '../model/types'
 
 export const TRAVELS_QUERY_KEY = 'travels'
 
-interface UseTravelsQueryParams {
+interface UseTravelsQueryProps {
   status?: 'upcoming' | 'past'
   archived?: boolean
 }
 
-export const useTravelsQuery = ({ status, archived }: UseTravelsQueryParams = {}) => {
+export const useTravelsQuery = ({ status, archived }: UseTravelsQueryProps = {}) => {
   return useQuery({
     queryKey: [TRAVELS_QUERY_KEY, status, archived],
     queryFn: async () => {

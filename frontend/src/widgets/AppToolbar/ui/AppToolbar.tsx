@@ -29,10 +29,8 @@ export const AppToolbar = ({ sidebarTrigger }: AppToolbarProps) => {
       const handle = match.handle as BreadcrumbHandle
       const breadcrumb = handle.breadcrumb
 
-      const rawLabel =
-        typeof breadcrumb === 'function' ? breadcrumb(match.data) : breadcrumb
-      const label =
-        typeof breadcrumb === 'function' ? rawLabel : t(rawLabel)
+      const rawLabel = typeof breadcrumb === 'function' ? breadcrumb(match.data) : breadcrumb
+      const label = typeof breadcrumb === 'function' ? rawLabel : t(rawLabel)
 
       return {
         label,

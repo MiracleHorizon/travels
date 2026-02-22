@@ -1,4 +1,5 @@
 import { capitalizeFirst } from '@/shared/lib/format'
+import { Item, ItemMedia, ItemTitle } from '@/shared/ui'
 import type { DayForecast } from '../model/types'
 import { WEATHER_LOCALES, type WeatherLocale, type TemperatureUnit } from '../config/locales'
 import { OPENWEATHER_ICON_URL } from '../lib/consts'
@@ -46,23 +47,21 @@ export const WeatherForecastList = ({
 
         <div className='space-y-2'>
           {dayForecasts.map(day => (
-            <div
-              key={day.date}
-              className='flex items-center justify-between gap-4 rounded-lg bg-muted/50 px-3 py-2'
-            >
-              <span className='text-sm font-medium min-w-16'>{day.weekday}</span>
-
-              <img
-                src={`https://openweathermap.org/img/wn/${day.icon}.png`}
-                alt={`${day.weekday} icon`}
-                className='size-8'
-              />
+            <Item key={day.date} variant='muted' size='sm' className='justify-between h-12 py-0'>
+              <ItemTitle className='min-w-16 capitalize'>{day.weekday}</ItemTitle>
+              <ItemMedia variant='image'>
+                <img
+                  src={`https://openweathermap.org/img/wn/${day.icon}.png`}
+                  alt={`${day.weekday} icon`}
+                  className='size-8'
+                />
+              </ItemMedia>
 
               <span className='text-sm font-semibold tabular-nums'>
                 {Math.round(day.minTemperature)} / {Math.round(day.maxTemperature)}
                 {temperatureUnit}
               </span>
-            </div>
+            </Item>
           ))}
         </div>
       </div>

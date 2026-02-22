@@ -5,47 +5,78 @@ import { OPENWEATHER_API_KEY } from '../../domains/weather/consts'
 
 export const getCurrentWeatherHandler = withAuth(async req => {
   if (!OPENWEATHER_API_KEY) {
-    return new Response(JSON.stringify({ error: 'Weather service unavailable' }), {
-      status: 503,
-      headers: { 'Content-Type': 'application/json' }
-    })
+    return new Response(
+      JSON.stringify({
+        error: 'Weather service unavailable'
+      }),
+      {
+        status: 503,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
   }
 
   try {
     const url = new URL(req.url)
-    const lat = url.searchParams.get('lat')
-    const lon = url.searchParams.get('lon')
+    const latParam = url.searchParams.get('lat')
+    const lngParam = url.searchParams.get('lng')
     const locale = (url.searchParams.get('locale') || 'ru') as keyof typeof OPENWEATHER_LANG
     const lang = OPENWEATHER_LANG[locale] ?? OPENWEATHER_LANG.ru
+    const units = url.searchParams.get('units') ?? 'metric'
 
-    if (!lat || !lon) {
-      return new Response(JSON.stringify({ error: 'lat and lon are required' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      })
+    if (!latParam || !lngParam) {
+      return new Response(
+        JSON.stringify({
+          error: 'lat and lng are required'
+        }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
     }
 
-    const latNum = Number.parseFloat(lat)
-    const lonNum = Number.parseFloat(lon)
+    const lat = Number.parseFloat(latParam)
+    const lng = Number.parseFloat(lngParam)
 
-    if (Number.isNaN(latNum) || Number.isNaN(lonNum)) {
-      return new Response(JSON.stringify({ error: 'Invalid lat or lon' }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      })
+    if (Number.isNaN(lat) || Number.isNaN(lng)) {
+      return new Response(
+        JSON.stringify({
+          error: 'Invalid lat or lng'
+        }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      )
     }
 
-    const data = await fetchCurrentWeather(latNum, lonNum, lang)
+    const data = await fetchCurrentWeather({
+      lat,
+      lng,
+      lang,
+      units
+    })
 
     return new Response(JSON.stringify(data), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
   } catch (error) {
     console.error('Weather fetch error:', error)
     return new Response(JSON.stringify({ error: 'Failed to fetch weather' }), {
       status: 500,
-      headers: { 'Content-Type': 'application/json' }
+      headers: {
+        'Content-Type': 'application/json'
+      }
     })
   }
 })

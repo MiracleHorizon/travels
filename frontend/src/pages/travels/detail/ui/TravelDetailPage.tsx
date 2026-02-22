@@ -15,8 +15,8 @@ export const TravelDetailPage = () => {
           {travel.description && (
             <Card>
               <CardContent>
-                <CardTitle className='text-xl font-semibold mb-4'>Описание</CardTitle>
-                <p className='text-muted-foreground leading-relaxed whitespace-pre-wrap'>
+                <CardTitle className='text-lg mb-2'>Описание</CardTitle>
+                <p className='text-muted-foreground text-sm leading-relaxed whitespace-pre-wrap'>
                   {travel.description}
                 </p>
               </CardContent>
@@ -34,7 +34,7 @@ export const TravelDetailPage = () => {
           {Boolean(travel.tags.length) && (
             <Card>
               <CardContent>
-                <CardTitle className='text-lg font-semibold mb-4'>Теги</CardTitle>
+                <CardTitle className='text-lg mb-2'>Теги</CardTitle>
                 <div className='flex flex-wrap gap-2'>
                   {travel.tags.map((tag, index) => (
                     <Badge key={index}>{tag}</Badge>

@@ -1,14 +1,9 @@
 import { Navigate, Outlet } from 'react-router-dom'
 
-import { useUser } from '@/entities/user'
-import { Loader } from '@/shared/ui'
+import { useSuspenseUserQuery } from '@/entities/user'
 
 export const ProtectedRoute = () => {
-  const { isPending, data: user, error } = useUser()
-
-  if (isPending) {
-    return <Loader variant='fullscreen' />
-  }
+  const { data: user, error } = useSuspenseUserQuery()
 
   if (error || !user) {
     return <Navigate to='/login' replace />

@@ -15,6 +15,8 @@ import {
 import { LoginPage, LoginCallbackPage } from '@/pages/login'
 import { API_BASE_URL } from '@/shared/api'
 import { TravelDetailed } from '@/entities/travel'
+import { Suspense } from 'react'
+import { Loader } from '@/shared/ui'
 
 export const router = createBrowserRouter([
   {
@@ -26,7 +28,11 @@ export const router = createBrowserRouter([
     element: <LoginCallbackPage />
   },
   {
-    element: <ProtectedRoute />,
+    element: (
+      <Suspense fallback={<Loader variant='fullscreen' />}>
+        <ProtectedRoute />
+      </Suspense>
+    ),
     children: [
       {
         element: <AppLayout />,

@@ -1,6 +1,6 @@
 import { format } from 'date-fns'
 import type { WeatherLocale } from '../config/locales'
-import { WEATHER_LOCALES, DATE_FNS_LOCALES } from '../config'
+import { WEATHER_LOCALES, DATE_FNS_LOCALES } from '../config/locales'
 import type { ForecastItem, DayForecast } from './types'
 
 const getLocalDateKey = (dt: number) => format(new Date(dt * 1000), 'yyyy-MM-dd')

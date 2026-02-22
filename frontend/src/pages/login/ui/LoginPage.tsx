@@ -1,10 +1,10 @@
-import { useUser } from '@/entities/user'
+import { useUserQuery } from '@/entities/user'
 import { LoginYandexButton, LoginGoogleButton } from '@/features/auth/login'
 import { Loader } from '@/shared/ui'
 import { Navigate } from 'react-router-dom'
 
 export const LoginPage = () => {
-  const { data: user, isPending } = useUser({
+  const { data: user, isPending } = useUserQuery({
     shouldRetry: false
   })
 

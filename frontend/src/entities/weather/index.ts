@@ -3,10 +3,11 @@ export { useWeatherQuery } from './api/useWeatherQuery'
 
 // Lib
 export { isValidCoords } from './lib/isValidCoords'
+export { getTemperatureUnit } from './lib/getTemperatureUnit'
 
 // Config
-export type { WeatherLocale } from './config/locales'
-export { DEFAULT_WEATHER_LOCALE, WEATHER_LOCALES } from './config'
+export type { WeatherLocale, WeatherUnits } from './config/locales'
+export { DEFAULT_WEATHER_LOCALE, WEATHER_LOCALES } from './config/locales'
 
 // Model
 export { groupForecastByDay } from './model/groupForecastByDay'

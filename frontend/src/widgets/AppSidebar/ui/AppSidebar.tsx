@@ -1,5 +1,4 @@
 import { Link, useLocation } from 'react-router-dom'
-import { ThemeToggle } from '@/entities/theme'
 import { menuGroups } from '../model/consts'
 import {
   Sidebar,
@@ -13,15 +12,17 @@ import {
   SidebarMenuButton,
   Button
 } from '@/shared/ui'
-import { Plus } from 'lucide-react'
+import { Plus, Settings } from 'lucide-react'
 import { ComponentPropsWithoutRef } from 'react'
 import { useCreateTravelAction } from '@/features/travel/create'
+import { useSettingsAction } from '@/features/settings'
 import { UserMenu } from './UserMenu'
 
 export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
-  const { createTravel } = useCreateTravelAction()
-
   const location = useLocation()
+
+  const { createTravel } = useCreateTravelAction()
+  const { openSettings } = useSettingsAction()
 
   return (
     <Sidebar {...props}>
@@ -33,11 +34,7 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
               <SidebarMenu>
                 {group.items.map(item => (
                   <SidebarMenuItem key={item.url}>
-                    <SidebarMenuButton
-                      asChild
-                      tooltip={item.title}
-                      isActive={location.pathname === item.url}
-                    >
+                    <SidebarMenuButton asChild isActive={location.pathname === item.url}>
                       <Link to={item.url}>
                         <item.icon />
                         <span>{item.title}</span>
@@ -63,7 +60,14 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
       </SidebarContent>
 
       <SidebarFooter>
-        <ThemeToggle />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={openSettings}>
+              <Settings />
+              Настройки
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
         <UserMenu />
       </SidebarFooter>
     </Sidebar>

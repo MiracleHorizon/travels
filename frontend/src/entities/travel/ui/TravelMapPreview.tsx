@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Map } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 import { useTheme } from '@/entities/theme'
 import { Button, Card } from '@/shared/ui'
@@ -12,6 +13,7 @@ interface TravelMapPreviewProps {
 }
 
 export const TravelMapPreview = ({ travelId }: TravelMapPreviewProps) => {
+  const { t } = useTranslation()
   const { realTheme } = useTheme()
 
   return (
@@ -19,7 +21,7 @@ export const TravelMapPreview = ({ travelId }: TravelMapPreviewProps) => {
       <img
         src={realTheme === 'light' ? mapPreviewLightPng : mapPreviewDarkPng}
         className='w-full aspect-2/1 object-cover block'
-        alt='Карта'
+        alt={t('travelPage.mapAlt')}
       />
 
       <Link
@@ -28,7 +30,7 @@ export const TravelMapPreview = ({ travelId }: TravelMapPreviewProps) => {
       >
         <Button size='sm'>
           <Map />
-          Посмотреть на карте
+          {t('travelPage.viewOnMap')}
         </Button>
       </Link>
     </Card>

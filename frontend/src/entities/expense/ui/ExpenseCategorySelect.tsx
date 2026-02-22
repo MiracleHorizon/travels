@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { Button } from '@/shared/ui'
 import {
   DropdownMenu,
@@ -6,8 +7,17 @@ import {
   DropdownMenuTrigger
 } from '@/shared/ui/dropdown-menu'
 import { ChevronDown } from 'lucide-react'
-import { EXPENSE_CATEGORIES, EXPENSE_CATEGORY_ICONS } from '../model/consts'
+import { EXPENSE_CATEGORY_ICONS } from '../model/consts'
 import type { ExpenseCategory } from '../model/types'
+
+const CATEGORY_KEYS: ExpenseCategory[] = [
+  'transport',
+  'accommodation',
+  'food',
+  'entertainment',
+  'shopping',
+  'other'
+]
 
 interface ExpenseCategorySelectProps {
   id?: string
@@ -17,15 +27,15 @@ interface ExpenseCategorySelectProps {
   placeholder?: string
 }
 
-const categories = Object.entries(EXPENSE_CATEGORIES) as [ExpenseCategory, string][]
-
 export const ExpenseCategorySelect = ({
   id,
   value,
   onChange,
   disabled = false,
-  placeholder = 'Выберите категорию'
+  placeholder
 }: ExpenseCategorySelectProps) => {
+  const { t } = useTranslation()
+  const resolvedPlaceholder = placeholder ?? t('form.expense.categoryPlaceholder')
   const SelectedIcon = value ? EXPENSE_CATEGORY_ICONS[value] : null
 
   return (
@@ -35,9 +45,9 @@ export const ExpenseCategorySelect = ({
           <span className='flex items-center gap-2 font-normal'>
             {SelectedIcon && <SelectedIcon className='size-4' />}
             {value ? (
-              EXPENSE_CATEGORIES[value]
+              t(`form.expense.categories.${value}`)
             ) : (
-              <span className='text-muted-foreground'>{placeholder}</span>
+              <span className='text-muted-foreground'>{resolvedPlaceholder}</span>
             )}
           </span>
 
@@ -46,13 +56,13 @@ export const ExpenseCategorySelect = ({
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className='w-full' align='start'>
-        {categories.map(([key, label]) => {
+        {CATEGORY_KEYS.map(key => {
           const Icon = EXPENSE_CATEGORY_ICONS[key]
 
           return (
             <DropdownMenuItem key={key} onClick={() => onChange(key)}>
               <Icon className='size-4' />
-              {label}
+              {t(`form.expense.categories.${key}`)}
             </DropdownMenuItem>
           )
         })}

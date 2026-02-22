@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -13,8 +14,8 @@ import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useCreateTravel } from '../model/useCreateTravel'
 
 const CreateTravelDialog = () => {
+  const { t } = useTranslation()
   const { isPending, formFields, setFormFields, createTravel } = useCreateTravel()
-
   const hideModal = useHideModal()
 
   return (
@@ -28,10 +29,8 @@ const CreateTravelDialog = () => {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Новое путешествие</DialogTitle>
-          <DialogDescription>
-            Спланируйте незабываемое путешествие или сохраните память о прошедшем
-          </DialogDescription>
+          <DialogTitle>{t('form.travel.newTitle')}</DialogTitle>
+          <DialogDescription>{t('form.travel.newDescription')}</DialogDescription>
         </DialogHeader>
 
         <TravelForm
@@ -44,12 +43,12 @@ const CreateTravelDialog = () => {
         <DialogFooter>
           <DialogClose asChild>
             <Button size='sm' variant='secondary' disabled={isPending}>
-              Отмена
+              {t('form.cancel')}
             </Button>
           </DialogClose>
 
           <Button size='sm' onClick={createTravel} isLoading={isPending}>
-            Создать
+            {t('form.create')}
           </Button>
         </DialogFooter>
       </DialogContent>

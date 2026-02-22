@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   useExpensesQuery,
   ExpenseBarChart,
@@ -24,16 +25,20 @@ import { useExpenseActions } from '../model/useExpenseActions'
 import { useExpensesByCategory } from '../model/useExpensesByCategory'
 import { formatCurrency } from '@/shared/lib/format'
 import { useCreateExpenseAction } from '@/features/expense/create'
+import { useSettings } from '@/features/settings'
 
 interface ExpensesListProps {
   travelId: string
 }
 
-const locale = 'ru-RU'
 // TODO: Выбор валюты
 const currency = 'RUB'
 
 export const ExpensesList = ({ travelId }: ExpensesListProps) => {
+  const { t } = useTranslation()
+  const { getSetting } = useSettings()
+  const locale = `${getSetting('locale')}-${getSetting('locale') === 'en' ? 'US' : 'RU'}`
+
   const { data: expenses, isLoading, isSuccess, error, refetch } = useExpensesQuery({ travelId })
   const { groups, categoriesWithExpenses } = useExpensesByCategory({ expenses })
 
@@ -55,12 +60,14 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
       <Card className='p-0'>
         <Empty>
           <EmptyHeader>
-            <EmptyDescription className='text-md'>Не удалось загрузить расходы</EmptyDescription>
+            <EmptyDescription className='text-md'>
+              {t('travelPage.expensesLoadError')}
+            </EmptyDescription>
           </EmptyHeader>
           <EmptyContent className='flex-row justify-center gap-2'>
             <Button variant='outline' size='sm' onClick={() => refetch()}>
               <RefreshCcw />
-              Попробовать снова
+              {t('travelPage.retry')}
             </Button>
           </EmptyContent>
         </Empty>
@@ -78,9 +85,9 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
     <Card>
       <CardContent className='group'>
         <div className='flex justify-between items-center'>
-          <CardTitle className='text-lg'>Расходы</CardTitle>
+          <CardTitle className='text-lg'>{t('travelPage.expenses')}</CardTitle>
 
-          <TooltipComposer content='Добавить расход'>
+          <TooltipComposer content={t('travelPage.addExpense')}>
             <Button
               size='icon-sm'
               variant='outline'
@@ -122,7 +129,10 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
             </div>
 
             <div className='pt-6 border-t'>
-              <TotalAmount amount={formatCurrency(total, currency)} />
+              <TotalAmount
+                label={t('travelPage.totalLabel')}
+                amount={formatCurrency(total, currency)}
+              />
             </div>
           </div>
         )}

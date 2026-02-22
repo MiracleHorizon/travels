@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { useTranslation } from 'react-i18next'
 import { X } from 'lucide-react'
 import { cn } from '@/shared/lib/styles/utils'
 import { Button } from './button'
@@ -14,10 +15,12 @@ export interface TagsInputProps {
 export function TagsInput({
   value = [],
   onChange,
-  placeholder = 'Добавить тег...',
+  placeholder,
   disabled = false,
   className
 }: TagsInputProps) {
+  const { t } = useTranslation()
+  const resolvedPlaceholder = placeholder ?? t('form.travel.tagsPlaceholder')
   const [inputValue, setInputValue] = React.useState('')
   const inputRef = React.useRef<HTMLInputElement>(null)
 
@@ -65,7 +68,7 @@ export function TagsInput({
             disabled={disabled}
           >
             <X className='h-3 w-3' />
-            <span className='sr-only'>Удалить тег</span>
+            <span className='sr-only'>{t('form.travel.removeTag')}</span>
           </Button>
         </span>
       ))}
@@ -75,7 +78,7 @@ export function TagsInput({
         value={inputValue}
         onChange={e => setInputValue(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder={value.length === 0 ? placeholder : ''}
+        placeholder={value.length === 0 ? resolvedPlaceholder : ''}
         disabled={disabled}
         className='flex-1 min-w-[120px] bg-transparent outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed'
       />

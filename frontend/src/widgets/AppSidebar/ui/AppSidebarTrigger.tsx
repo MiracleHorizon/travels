@@ -1,6 +1,8 @@
 import { SidebarTrigger, Tooltip, TooltipContent, TooltipTrigger, useSidebar } from '@/shared/ui'
+import { useTranslation } from 'react-i18next'
 
 export const AppSidebarTrigger = () => {
+  const { t } = useTranslation()
   const { open } = useSidebar()
 
   return (
@@ -8,7 +10,7 @@ export const AppSidebarTrigger = () => {
       <TooltipTrigger asChild>
         <SidebarTrigger />
       </TooltipTrigger>
-      <TooltipContent>{open ? 'Скрыть' : 'Показать'}</TooltipContent>
+      <TooltipContent>{open ? t('nav.hide') : t('nav.show')}</TooltipContent>
     </Tooltip>
   )
 }

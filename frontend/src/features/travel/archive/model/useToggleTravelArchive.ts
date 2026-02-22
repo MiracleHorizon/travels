@@ -1,9 +1,11 @@
+import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 import { TRAVELS_QUERY_KEY } from '@/entities/travel'
 import { useToggleTravelArchiveMutation } from '../api/useToggleTravelArchiveMutation'
 
 export const useToggleTravelArchive = () => {
+  const { t } = useTranslation()
   const queryClient = useQueryClient()
 
   const { isPending, mutate } = useToggleTravelArchiveMutation()
@@ -21,14 +23,14 @@ export const useToggleTravelArchive = () => {
           })
 
           if (isArchived) {
-            toast.success('Путешествие добавлено в архив')
+            toast.success(t('toast.travel.archived'))
           } else {
-            toast.success('Путешествие восстановлено из архива')
+            toast.success(t('toast.travel.restored'))
           }
         },
         onError: () => {
-          toast.error('Не удалось изменить статус архивации', {
-            description: 'Пожалуйста, попробуйте еще раз'
+          toast.error(t('toast.travel.archiveError'), {
+            description: t('toast.tryAgain')
           })
         }
       }

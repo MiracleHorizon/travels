@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Dialog,
   DialogContent,
@@ -15,6 +16,7 @@ interface UpdateTravelDialogProps {
 }
 
 const UpdateTravelDialog = ({ travelId }: UpdateTravelDialogProps) => {
+  const { t } = useTranslation()
   const { data: travel, isLoading } = useTravelQuery(travelId)
   const hideModal = useHideModal()
 
@@ -29,8 +31,8 @@ const UpdateTravelDialog = ({ travelId }: UpdateTravelDialogProps) => {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Редактирование путешествия</DialogTitle>
-          <DialogDescription>Измените детали путешествия</DialogDescription>
+          <DialogTitle>{t('form.travel.editTitle')}</DialogTitle>
+          <DialogDescription>{t('form.travel.editDescription')}</DialogDescription>
         </DialogHeader>
 
         {/* TODO: Скелетон формы */}

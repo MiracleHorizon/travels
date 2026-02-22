@@ -1,3 +1,5 @@
+import { useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ChartContainer,
   ChartTooltip,
@@ -9,7 +11,7 @@ import { Bar, BarChart, XAxis } from 'recharts'
 import type { TooltipProps } from 'recharts'
 import { EXPENSE_CHART_CATEGORIES } from '../model/consts'
 import { useBarExpenses } from '../model/useBarExpenses'
-import type { Expense } from '../model/types'
+import type { Expense, ExpenseCategory } from '../model/types'
 import { formatCurrency } from '@/shared/lib/format'
 import { cn } from '@/shared/lib/styles/utils'
 
@@ -18,9 +20,20 @@ interface ExpenseBarChartProps {
   className?: string
 }
 
-const chartConfig = EXPENSE_CHART_CATEGORIES
-
 export const ExpenseBarChart = ({ expenses, className }: ExpenseBarChartProps) => {
+  const { t } = useTranslation()
+  const chartConfig = useMemo(
+    () =>
+      Object.fromEntries(
+        (
+          Object.entries(EXPENSE_CHART_CATEGORIES) as [
+            ExpenseCategory,
+            { label: string; color: string }
+          ][]
+        ).map(([key, { color }]) => [key, { label: t(`form.expense.categories.${key}`), color }])
+      ),
+    [t]
+  )
   const chartData = useBarExpenses(expenses)
 
   if (chartData.length <= 1) {

@@ -1,4 +1,5 @@
-import { EXPENSE_CATEGORIES, EXPENSE_CATEGORY_ICONS } from '../model/consts'
+import { useTranslation } from 'react-i18next'
+import { EXPENSE_CATEGORY_ICONS } from '../model/consts'
 import type { ExpenseCategory, Expense } from '../model/types'
 import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/shared/ui'
 import { ChevronDown } from 'lucide-react'
@@ -23,6 +24,7 @@ export const ExpenseCategorySection = ({
   defaultOpen = false,
   renderItem
 }: ExpenseCategorySectionProps) => {
+  const { t } = useTranslation()
   const categorySum = expenses.reduce((s, e) => s + +e.amount, 0)
   const CategoryIcon = EXPENSE_CATEGORY_ICONS[category]
 
@@ -36,7 +38,7 @@ export const ExpenseCategorySection = ({
       >
         <span className='flex items-center gap-2'>
           <CategoryIcon className='h-4 w-4 shrink-0 text-muted-foreground' />
-          {EXPENSE_CATEGORIES[category]}
+          {t(`form.expense.categories.${category}`)}
         </span>
         <span className='flex items-center gap-2'>
           <span className='text-muted-foreground font-normal'>

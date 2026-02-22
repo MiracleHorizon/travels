@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { ToggleGroup, ToggleGroupItem } from '@/shared/ui'
 import { useTheme } from '../model/useTheme'
 import { THEME_OPTIONS } from '../model/options'
@@ -7,6 +8,7 @@ interface ThemeToggleProps {
 }
 
 export const ThemeToggle = ({ className }: ThemeToggleProps) => {
+  const { t } = useTranslation()
   const { theme, changeTheme } = useTheme()
 
   const handleChangeTheme = value => {
@@ -24,8 +26,13 @@ export const ThemeToggle = ({ className }: ThemeToggleProps) => {
       onValueChange={handleChangeTheme}
       className={className}
     >
-      {THEME_OPTIONS.map(({ value, label, icon: Icon }) => (
-        <ToggleGroupItem key={value} value={value} aria-label={label} className='flex-1'>
+      {THEME_OPTIONS.map(({ value, icon: Icon }) => (
+        <ToggleGroupItem
+          key={value}
+          value={value}
+          aria-label={t(`settings.themeOption.${value}`)}
+          className='flex-1'
+        >
           <Icon />
         </ToggleGroupItem>
       ))}

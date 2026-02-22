@@ -1,9 +1,9 @@
+import { useTranslation } from 'react-i18next'
 import {
   groupForecastByDay,
   getTemperatureUnit,
   WeatherDetails,
   WeatherForecastList,
-  WEATHER_LOCALES,
   type CurrentWeatherResponse,
   type WeatherLocale
 } from '@/entities/weather'
@@ -24,6 +24,7 @@ const WeatherForecastDialogContent = ({
   locale,
   currentWeather
 }: WeatherForecastDialogContentProps) => {
+  const { t } = useTranslation()
   const { getSetting } = useSettings()
 
   const units = getSetting('measurementUnit')
@@ -40,7 +41,7 @@ const WeatherForecastDialogContent = ({
   if (error || !forecast?.list) {
     return (
       <p className='text-sm text-muted-foreground text-center py-4'>
-        {WEATHER_LOCALES[locale].unavailable}
+        {t('weather.unavailable')}
       </p>
     )
   }
@@ -48,7 +49,8 @@ const WeatherForecastDialogContent = ({
   const dayForecasts = groupForecastByDay({
     list: forecast.list,
     maxDays: MAX_DAYS,
-    locale
+    locale,
+    todayLabel: t('weather.today')
   })
 
   return (
@@ -65,7 +67,7 @@ const WeatherForecastDialogContent = ({
       />
 
       <div className='pt-3 border-t border-border'>
-        <WeatherDetails data={currentWeather} locale={locale} />
+        <WeatherDetails data={currentWeather} />
       </div>
     </>
   )

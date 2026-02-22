@@ -1,24 +1,27 @@
 import { format } from 'date-fns'
-import { ru } from 'date-fns/locale'
+
+import { getDateFnsLocale, type AppLocale } from '@/shared/lib/i18n'
 
 /* eslint-disable no-irregular-whitespace */
-export const formatTravelDateRange = (startDate: string, endDate: string) => {
+export const formatTravelDateRange = (
+  startDate: string,
+  endDate: string,
+  locale: AppLocale = 'ru'
+) => {
   const start = new Date(startDate)
   const end = new Date(endDate)
+  const dateFnsLocale = getDateFnsLocale(locale)
 
   const sameYear = start.getFullYear() === end.getFullYear()
   const sameMonth = sameYear && start.getMonth() === end.getMonth()
 
   if (sameMonth) {
-    // Одинаковый месяц и год: "9 — 21 ноября 2025 г."
-    return `${format(start, 'd', { locale: ru })} — ${format(end, 'PPP', { locale: ru })}`
+    return `${format(start, 'd', { locale: dateFnsLocale })} — ${format(end, 'PPP', { locale: dateFnsLocale })}`
   }
 
   if (sameYear) {
-    // Одинаковый год: "9 октября — 21 ноября 2025 г."
-    return `${format(start, 'd MMMM', { locale: ru })} — ${format(end, 'PPP', { locale: ru })}`
+    return `${format(start, 'd MMMM', { locale: dateFnsLocale })} — ${format(end, 'PPP', { locale: dateFnsLocale })}`
   }
 
-  // Разные годы: "9 декабря 2025 г. — 21 января 2026 г."
-  return `${format(start, 'PPP', { locale: ru })} — ${format(end, 'PPP', { locale: ru })}`
+  return `${format(start, 'PPP', { locale: dateFnsLocale })} — ${format(end, 'PPP', { locale: dateFnsLocale })}`
 }

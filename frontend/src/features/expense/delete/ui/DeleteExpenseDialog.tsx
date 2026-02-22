@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,6 +19,7 @@ interface DeleteExpenseDialogProps {
 }
 
 const DeleteExpenseDialog = ({ travelId, expenseId, expenseTitle }: DeleteExpenseDialogProps) => {
+  const { t } = useTranslation()
   const { isPending, deleteExpense } = useDeleteExpense(travelId, expenseId)
   const hideModal = useHideModal()
 
@@ -25,19 +27,19 @@ const DeleteExpenseDialog = ({ travelId, expenseId, expenseTitle }: DeleteExpens
     <AlertDialog open>
       <AlertDialogContent size='sm'>
         <AlertDialogHeader>
-          <AlertDialogTitle>Удалить расход?</AlertDialogTitle>
+          <AlertDialogTitle>{t('form.expense.deleteConfirm')}</AlertDialogTitle>
 
           <AlertDialogDescription>
-            Вы уверены, что хотите удалить расход <strong>«{expenseTitle}»</strong>?
+            {t('form.expense.deleteDescription', { name: expenseTitle })}
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
           <AlertDialogCancel disabled={isPending} onClick={hideModal}>
-            Отмена
+            {t('form.cancel')}
           </AlertDialogCancel>
           <AlertDialogAction variant='destructive' onClick={deleteExpense} disabled={isPending}>
-            Удалить
+            {t('form.delete')}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

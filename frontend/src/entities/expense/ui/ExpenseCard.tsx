@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Item,
   ItemContent,
@@ -48,6 +49,7 @@ export const ExpenseCard = ({
   actions,
   showCategoryBadge = false
 }: ExpenseCardProps) => {
+  const { t } = useTranslation()
   const formattedDate = date
     ? new Date(date).toLocaleDateString(locale, {
         day: 'numeric',
@@ -102,10 +104,10 @@ export const ExpenseCard = ({
           )}
         >
           {link && (
-            <TooltipComposer content='Дополнительная информация'>
+            <TooltipComposer content={t('form.expense.linkTooltip')}>
               <Button variant='outline' size='xs' onClick={handleOpenLink}>
                 <ExternalLinkIcon />
-                Ссылка
+                {t('form.expense.link')}
               </Button>
             </TooltipComposer>
           )}
@@ -113,7 +115,7 @@ export const ExpenseCard = ({
           <DropdownActions
             trigger={
               actions && (
-                <Button variant='outline' size='icon-xs'>
+                <Button variant='outline' size='icon-xs' aria-label={t('travelsList.moreActions')}>
                   <Ellipsis />
                 </Button>
               )

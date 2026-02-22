@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { DropdownAction } from '@/shared/ui'
 import { Pencil, Trash } from 'lucide-react'
 import { useDeleteExpenseAction } from '@/features/expense/delete'
@@ -11,13 +12,14 @@ interface UseExpenseActionsParams {
 export const useExpenseActions = ({
   travelId
 }: UseExpenseActionsParams): ((expense: Expense) => DropdownAction[]) => {
+  const { t } = useTranslation()
   const deleteExpenseAction = useDeleteExpenseAction()
   const updateExpenseAction = useUpdateExpenseAction()
 
   return (expense: Expense) => [
     {
       type: 'item',
-      label: 'Редактировать',
+      label: t('nav.edit'),
       icon: <Pencil />,
       onClick: () => updateExpenseAction(expense)
     },
@@ -26,7 +28,7 @@ export const useExpenseActions = ({
     },
     {
       type: 'item',
-      label: 'Удалить',
+      label: t('form.delete'),
       icon: <Trash />,
       variant: 'destructive',
       onClick: () => deleteExpenseAction(travelId, expense.id, expense.title)

@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -20,6 +21,7 @@ interface UploadTravelPhotoDialogProps {
 }
 
 const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => {
+  const { t } = useTranslation()
   const hideModal = useHideModal()
 
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
@@ -65,8 +67,8 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Загрузка фотографии</DialogTitle>
-          <DialogDescription>Добавьте воспоминание к вашему путешествию</DialogDescription>
+          <DialogTitle>{t('upload.photoTitle')}</DialogTitle>
+          <DialogDescription>{t('upload.photoDescription')}</DialogDescription>
         </DialogHeader>
 
         <TravelPhotoUploadForm
@@ -94,18 +96,17 @@ const UploadTravelPhotoDialog = ({ travelId }: UploadTravelPhotoDialogProps) => 
         <DialogFooter>
           <DialogClose asChild>
             <Button size='sm' variant='secondary'>
-              Отмена
+              {t('upload.cancel')}
             </Button>
           </DialogClose>
 
           <Button
             size='sm'
             onClick={handleUpload}
-            // TODO: Валидация формы
             disabled={!formFields.photo || isPending}
             isLoading={isPending}
           >
-            Загрузить
+            {t('upload.upload')}
           </Button>
         </DialogFooter>
       </DialogContent>

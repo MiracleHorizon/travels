@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Field,
   FieldLabel,
@@ -11,12 +12,13 @@ import {
   FieldContent
 } from '@/shared/ui'
 import { ThemeToggle } from '@/entities/theme'
-import { MEASUREMENT_OPTIONS, TIME_FORMAT_OPTIONS } from '../model/options'
-import type { MeasurementUnit, TimeFormat } from '../model/types'
+import { MEASUREMENT_OPTIONS, TIME_FORMAT_OPTIONS, LOCALE_OPTIONS } from '../model/options'
+import type { MeasurementUnit, TimeFormat, Locale } from '../model/types'
 
 interface SettingsFormValue {
   timeFormat: TimeFormat
   measurementUnit: MeasurementUnit
+  locale: Locale
 }
 
 interface SettingsFormProps {
@@ -24,73 +26,106 @@ interface SettingsFormProps {
   onChange: (value: SettingsFormValue) => void
 }
 
-export const SettingsForm = ({ value, onChange }: SettingsFormProps) => (
-  <FieldGroup>
-    <Field orientation='responsive'>
-      <FieldContent>
-        <FieldLabel htmlFor='measurementUnit'>Единицы измерения</FieldLabel>
-      </FieldContent>
-      <Select
-        value={value.measurementUnit}
-        onValueChange={(v: MeasurementUnit) =>
-          onChange({
-            ...value,
-            measurementUnit: v
-          })
-        }
-      >
-        <SelectTrigger id='measurementUnit' size='sm' className='min-w-[150px]'>
-          <SelectValue />
-        </SelectTrigger>
+export const SettingsForm = ({ value, onChange }: SettingsFormProps) => {
+  const { t } = useTranslation()
 
-        <SelectContent position='popper'>
-          <SelectGroup>
-            {MEASUREMENT_OPTIONS.map(({ value: optValue, label }) => (
-              <SelectItem key={optValue} value={optValue}>
-                {label}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </Field>
+  return (
+    <FieldGroup>
+      <Field orientation='responsive'>
+        <FieldContent>
+          <FieldLabel htmlFor='locale'>{t('settings.language')}</FieldLabel>
+        </FieldContent>
+        <Select
+          value={value.locale}
+          onValueChange={(v: Locale) =>
+            onChange({
+              ...value,
+              locale: v
+            })
+          }
+        >
+          <SelectTrigger id='locale' size='sm' className='min-w-[150px]'>
+            <SelectValue />
+          </SelectTrigger>
 
-    <Field orientation='responsive'>
-      <FieldContent>
-        <FieldLabel htmlFor='timeFormat'>Формат времени</FieldLabel>
-      </FieldContent>
+          <SelectContent position='popper'>
+            <SelectGroup>
+              {LOCALE_OPTIONS.map(({ value: optValue }) => (
+                <SelectItem key={optValue} value={optValue}>
+                  {t(`settings.locale.${optValue}`)}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </Field>
 
-      <Select
-        value={value.timeFormat}
-        onValueChange={(v: TimeFormat) =>
-          onChange({
-            ...value,
-            timeFormat: v
-          })
-        }
-      >
-        <SelectTrigger id='timeFormat' size='sm' className='min-w-[150px]'>
-          <SelectValue />
-        </SelectTrigger>
+      <Field orientation='responsive'>
+        <FieldContent>
+          <FieldLabel htmlFor='measurementUnit'>{t('settings.measurementUnit')}</FieldLabel>
+        </FieldContent>
+        <Select
+          value={value.measurementUnit}
+          onValueChange={(v: MeasurementUnit) =>
+            onChange({
+              ...value,
+              measurementUnit: v
+            })
+          }
+        >
+          <SelectTrigger id='measurementUnit' size='sm' className='min-w-[150px]'>
+            <SelectValue />
+          </SelectTrigger>
 
-        <SelectContent position='popper'>
-          <SelectGroup>
-            {TIME_FORMAT_OPTIONS.map(({ value: optValue, label }) => (
-              <SelectItem key={optValue} value={optValue}>
-                {label}
-              </SelectItem>
-            ))}
-          </SelectGroup>
-        </SelectContent>
-      </Select>
-    </Field>
+          <SelectContent position='popper'>
+            <SelectGroup>
+              {MEASUREMENT_OPTIONS.map(({ value: optValue }) => (
+                <SelectItem key={optValue} value={optValue}>
+                  {t(`settings.measurement.${optValue}`)}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </Field>
 
-    <Field orientation='responsive'>
-      <FieldContent>
-        <FieldLabel>Тема</FieldLabel>
-      </FieldContent>
+      <Field orientation='responsive'>
+        <FieldContent>
+          <FieldLabel htmlFor='timeFormat'>{t('settings.timeFormat')}</FieldLabel>
+        </FieldContent>
 
-      <ThemeToggle className='min-w-[150px]' />
-    </Field>
-  </FieldGroup>
-)
+        <Select
+          value={value.timeFormat}
+          onValueChange={(v: TimeFormat) =>
+            onChange({
+              ...value,
+              timeFormat: v
+            })
+          }
+        >
+          <SelectTrigger id='timeFormat' size='sm' className='min-w-[150px]'>
+            <SelectValue />
+          </SelectTrigger>
+
+          <SelectContent position='popper'>
+            <SelectGroup>
+              {TIME_FORMAT_OPTIONS.map(({ value: optValue }) => (
+                <SelectItem key={optValue} value={optValue}>
+                  {t(`settings.timeFormatOption.${optValue}`)}
+                </SelectItem>
+              ))}
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </Field>
+
+      <Field orientation='responsive'>
+        <FieldContent>
+          <FieldLabel>{t('settings.theme')}</FieldLabel>
+        </FieldContent>
+
+        <ThemeToggle className='min-w-[150px]' />
+      </Field>
+    </FieldGroup>
+  )
+}

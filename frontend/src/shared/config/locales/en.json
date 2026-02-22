@@ -1,0 +1,215 @@
+{
+  "nav": {
+    "travels": "Travels",
+    "planned": "Planned",
+    "past": "Past",
+    "archive": "Archive",
+    "map": "Map",
+    "main": "Main",
+    "diary": "Diary",
+    "newTravel": "New travel",
+    "settings": "Settings",
+    "logout": "Log out",
+    "hide": "Hide",
+    "show": "Show",
+    "edit": "Edit",
+    "uploadPhoto": "Upload photo",
+    "clear": "Clear",
+    "toggleSidebar": "Toggle sidebar"
+  },
+  "locationPicker": {
+    "placeholder": "Enter city or address...",
+    "searching": "Searching..."
+  },
+  "travelsList": {
+    "plannedTitle": "Planned travels",
+    "plannedDescription": "Your upcoming travels",
+    "plannedEmpty": "You have no planned travels yet",
+    "pastTitle": "Past travels",
+    "pastDescription": "Memories of your travels",
+    "pastEmpty": "You have no past travels yet",
+    "archiveTitle": "Travel archive",
+    "archiveDescription": "Archived travels",
+    "archiveEmpty": "No travels in archive yet",
+    "loadError": "Failed to load travels",
+    "noTravels": "No travels",
+    "emptyDescription": "Create your first travel to start planning",
+    "restore": "Restore",
+    "archive": "Archive",
+    "coverAlt": "Travel cover",
+    "moreActions": "Actions"
+  },
+  "form": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "create": "Create",
+    "add": "Add",
+    "delete": "Delete",
+    "travel": {
+      "newTitle": "New travel",
+      "newDescription": "Plan a memorable trip or save a memory of a past one",
+      "editTitle": "Edit travel",
+      "editDescription": "Change travel details",
+      "name": "Name",
+      "namePlaceholder": "Phuket, 2026",
+      "destination": "Destination",
+      "destinationPlaceholder": "City or address",
+      "dateRange": "Date range",
+      "dateRangePlaceholder": "Select dates",
+      "description": "Description",
+      "descriptionPlaceholder": "Describe your trip...",
+      "tags": "Tags",
+      "tagsHint": "Add tags to categorize your trip (e.g. beach, mountains, culture)",
+      "tagsPlaceholder": "Add tag...",
+      "deleteConfirm": "Delete travel?",
+      "deleteDescription": "Are you sure you want to delete travel «{{name}}»?",
+      "removeTag": "Remove tag"
+    },
+    "expense": {
+      "addTitle": "Add expense",
+      "addDescription": "Enter amount and description to track this expense",
+      "editTitle": "Edit expense",
+      "editDescription": "Change details",
+      "title": "Title",
+      "titlePlaceholder": "Lunch at a café",
+      "amount": "Amount",
+      "amountPlaceholder": "156",
+      "category": "Category",
+      "categoryPlaceholder": "Select category",
+      "date": "Date",
+      "datePlaceholder": "Select date",
+    "noDate": "No date",
+      "description": "Description",
+      "descriptionPlaceholder": "What was this expense for and was it worth it?",
+      "link": "Link",
+      "linkTooltip": "Additional information",
+      "linkHint": "You can add a link to a hotel, museum, restaurant, etc.",
+      "linkPlaceholder": "https://...",
+      "deleteConfirm": "Delete expense?",
+      "deleteDescription": "Are you sure you want to delete expense «{{name}}»?",
+      "categories": {
+        "transport": "Transport",
+        "accommodation": "Accommodation",
+        "food": "Food",
+        "entertainment": "Entertainment",
+        "shopping": "Shopping",
+        "other": "Other"
+      }
+    },
+    "dateRangePlaceholder": "Select date range"
+  },
+  "weather": {
+    "today": "Today",
+    "feelsLike": "feels like",
+    "forecast": "Forecast",
+    "unavailable": "Weather unavailable",
+    "windDirections": ["N", "NE", "E", "SE", "S", "SW", "W", "NW"],
+    "precipitationUnit": "mm/h",
+    "windSpeedUnit": "m/s",
+    "pressureUnit": "hPa"
+  },
+  "travelPage": {
+    "description": "Description",
+    "tags": "Tags",
+    "day_one": "day",
+    "day_few": "days",
+    "day_many": "days",
+    "completed": "Completed",
+    "upcoming": "Upcoming",
+    "notFound": "Travel not found",
+    "notFoundDescription": "It may have been deleted or does not exist",
+    "backToList": "Back to list",
+    "expenses": "Expenses",
+    "totalLabel": "Total:",
+    "addExpense": "Add expense",
+    "expensesLoadError": "Failed to load expenses",
+    "retry": "Try again",
+    "noExpenses": "No expenses yet",
+    "noExpensesDescription": "Add your expenses to see how much you spent on the trip",
+    "trackExpenses": "Track expenses",
+    "viewOnMap": "View on map",
+    "mapAlt": "Map",
+    "mapUnavailable": "Map unavailable",
+    "mapUnavailableHint": "Add {{key}} to .env to display the map"
+  },
+  "login": {
+    "loggingIn": "Signing in with",
+    "authError": "Failed to sign in",
+    "tryAgain": "Please try again"
+  },
+  "toast": {
+    "tryAgain": "Please try again",
+    "travel": {
+      "created": "Travel created, you can start planning",
+      "updated": "Travel updated",
+      "deleted": "Travel deleted",
+      "createError": "Failed to create travel",
+      "updateError": "Failed to update travel",
+      "deleteError": "Failed to delete travel",
+      "archived": "Travel added to archive",
+      "restored": "Travel restored from archive",
+      "archiveError": "Failed to change archive status"
+    },
+    "expense": {
+      "created": "Expense added",
+      "updated": "Expense updated",
+      "deleted": "Expense deleted",
+      "createError": "Failed to add expense",
+      "updateError": "Failed to update expense",
+      "deleteError": "Failed to delete expense"
+    },
+    "photo": {
+      "uploaded": "Photo uploaded",
+      "uploadError": "Failed to upload photo"
+    },
+    "auth": {
+      "loginError": "Failed to sign in",
+      "logoutError": "Failed to sign out",
+      "authError": "Failed to authenticate"
+    }
+  },
+  "common": {
+    "loading": "Loading"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Customize the app to your liking",
+    "language": "Language",
+    "measurementUnit": "Units",
+    "timeFormat": "Time format",
+    "theme": "Theme",
+    "close": "Close",
+    "save": "Save",
+    "measurement": {
+      "metric": "Metric",
+      "imperial": "Imperial"
+    },
+    "timeFormatOption": {
+      "24h": "24 hours",
+      "12h": "12 hours"
+    },
+    "locale": {
+      "ru": "Русский",
+      "en": "English"
+    },
+    "themeOption": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System"
+    }
+  },
+  "upload": {
+    "photoTitle": "Upload photo",
+    "photoDescription": "Add a memory to your trip",
+    "cancel": "Cancel",
+    "upload": "Upload",
+    "formName": "Title",
+    "formNamePlaceholder": "Eiffel Tower, Paris",
+    "formNameHint": "The title will be used as the photo caption",
+    "formPhoto": "Photo",
+    "dragLabel": "Drag a photo or",
+    "selectLabel": "select a file",
+    "hintFormat": "PNG, JPG, WEBP up to {{maxSize}}",
+    "removePhoto": "Remove photo"
+  }
+}

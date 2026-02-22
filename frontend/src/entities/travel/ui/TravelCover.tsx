@@ -1,5 +1,7 @@
 import { Card, Badge } from '@/shared/ui'
-import { plural } from '@/shared/lib/i18n'
+import { useTranslation } from 'react-i18next'
+import { plural, type AppLocale } from '@/shared/lib/i18n'
+import { useSettings } from '@/features/settings'
 import { Calendar, Clock } from 'lucide-react'
 import { differenceInDays } from 'date-fns'
 import { ReactNode } from 'react'
@@ -21,7 +23,17 @@ export const TravelCover = ({
   isPast,
   renderGallery
 }: TravelCoverProps) => {
+  const { t } = useTranslation()
+  const { getSetting } = useSettings()
+  const appLocale = (getSetting('locale') ?? 'ru') as AppLocale
   const duration = differenceInDays(endDate, startDate)
+
+  const durationLabel = plural(duration, {
+    one: t('travelPage.day_one'),
+    few: t('travelPage.day_few'),
+    many: t('travelPage.day_many'),
+    other: t('travelPage.day_many')
+  })
 
   return (
     <Card className='overflow-hidden border-0 p-0'>
@@ -38,26 +50,22 @@ export const TravelCover = ({
               <div className='flex flex-wrap items-center gap-4 text-white/90'>
                 <div className='flex items-center gap-2'>
                   <Calendar className='h-5 w-5' />
-                  <span className='text-lg'>{formatTravelDateRange(startDate, endDate)}</span>
+                  <span className='text-lg'>
+                    {formatTravelDateRange(startDate, endDate, appLocale)}
+                  </span>
                 </div>
 
                 <div className='flex items-center gap-2'>
                   <Clock className='h-5 w-5' />
                   <span className='text-lg'>
-                    {duration}{' '}
-                    {plural(duration, {
-                      one: 'день',
-                      few: 'дня',
-                      many: 'дней',
-                      other: 'дней'
-                    })}
+                    {duration} {durationLabel}
                   </span>
                 </div>
               </div>
             </div>
 
             <Badge variant={isPast ? 'secondary' : 'default'} className='text-sm px-3 py-1'>
-              {isPast ? 'Завершено' : 'Предстоит'}
+              {isPast ? t('travelPage.completed') : t('travelPage.upcoming')}
             </Badge>
           </div>
         </div>

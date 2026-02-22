@@ -1,0 +1,215 @@
+{
+  "nav": {
+    "travels": "Путешествия",
+    "planned": "Запланированные",
+    "past": "Прошедшие",
+    "archive": "Архив",
+    "map": "Карта",
+    "main": "Основное",
+    "diary": "Дневник",
+    "newTravel": "Новое путешествие",
+    "settings": "Настройки",
+    "logout": "Выйти",
+    "hide": "Скрыть",
+    "show": "Показать",
+    "edit": "Редактировать",
+    "uploadPhoto": "Загрузить фотографию",
+    "clear": "Очистить",
+    "toggleSidebar": "Скрыть/показать меню"
+  },
+  "locationPicker": {
+    "placeholder": "Введите город или адрес...",
+    "searching": "Поиск..."
+  },
+  "travelsList": {
+    "plannedTitle": "Запланированные путешествия",
+    "plannedDescription": "Ваши предстоящие путешествия",
+    "plannedEmpty": "У вас пока нет запланированных путешествий",
+    "pastTitle": "Прошедшие путешествия",
+    "pastDescription": "Воспоминания о ваших путешествиях",
+    "pastEmpty": "У вас пока нет прошедших путешествий",
+    "archiveTitle": "Архив путешествий",
+    "archiveDescription": "Архивированные путешествия",
+    "archiveEmpty": "В архиве пока нет путешествий",
+    "loadError": "Не удалось загрузить путешествия",
+    "noTravels": "Нет путешествий",
+    "emptyDescription": "Создайте своё первое путешествие, чтобы начать планирование",
+    "restore": "Восстановить",
+    "archive": "Архивировать",
+    "coverAlt": "Обложка путешествия",
+    "moreActions": "Действия"
+  },
+  "form": {
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "create": "Создать",
+    "add": "Добавить",
+    "delete": "Удалить",
+    "travel": {
+      "newTitle": "Новое путешествие",
+      "newDescription": "Спланируйте незабываемое путешествие или сохраните память о прошедшем",
+      "editTitle": "Редактирование путешествия",
+      "editDescription": "Измените детали путешествия",
+      "name": "Название",
+      "namePlaceholder": "Пхукет, 2026",
+      "destination": "Точка назначения",
+      "destinationPlaceholder": "Город или адрес",
+      "dateRange": "Временные рамки",
+      "dateRangePlaceholder": "Выберите даты",
+      "description": "Описание",
+      "descriptionPlaceholder": "Опишите ваше путешествие...",
+      "tags": "Теги",
+      "tagsHint": "Добавьте теги для категоризации путешествия (например: пляж, горы, культура)",
+      "tagsPlaceholder": "Добавить тег...",
+      "deleteConfirm": "Удалить путешествие?",
+      "deleteDescription": "Вы уверены, что хотите удалить путешествие «{{name}}»?",
+      "removeTag": "Удалить тег"
+    },
+    "expense": {
+      "addTitle": "Добавление расхода",
+      "addDescription": "Укажите сумму и описание расхода для учета в путешествии",
+      "editTitle": "Редактирование расхода",
+      "editDescription": "Измените детали",
+      "title": "Название",
+      "titlePlaceholder": "Обед в кафе",
+      "amount": "Сумма",
+      "amountPlaceholder": "156$",
+      "category": "Категория",
+      "categoryPlaceholder": "Выберите категорию",
+      "date": "Дата",
+      "datePlaceholder": "Выберите дату",
+    "noDate": "Без даты",
+      "description": "Описание",
+      "descriptionPlaceholder": "Расскажите, чем была вызвана эта трата и стоила ли она того?",
+      "link": "Ссылка",
+      "linkTooltip": "Дополнительная информация",
+      "linkHint": "Вы можете оставить ссылку на отель, музей, ресторан и так далее",
+      "linkPlaceholder": "https://...",
+      "deleteConfirm": "Удалить расход?",
+      "deleteDescription": "Вы уверены, что хотите удалить расход «{{name}}»?",
+      "categories": {
+        "transport": "Транспорт",
+        "accommodation": "Проживание",
+        "food": "Еда",
+        "entertainment": "Развлечения",
+        "shopping": "Покупки",
+        "other": "Прочее"
+      }
+    },
+    "dateRangePlaceholder": "Выберите диапазон"
+  },
+  "weather": {
+    "today": "Сегодня",
+    "feelsLike": "ощущается как",
+    "forecast": "Прогноз",
+    "unavailable": "Погода недоступна",
+    "windDirections": ["С", "СВ", "В", "ЮВ", "Ю", "ЮЗ", "З", "СЗ"],
+    "precipitationUnit": "мм/ч",
+    "windSpeedUnit": "м/с",
+    "pressureUnit": "гПа"
+  },
+  "travelPage": {
+    "description": "Описание",
+    "tags": "Теги",
+    "day_one": "день",
+    "day_few": "дня",
+    "day_many": "дней",
+    "completed": "Завершено",
+    "upcoming": "Предстоит",
+    "notFound": "Путешествие не найдено",
+    "notFoundDescription": "Возможно, оно было удалено или не существует",
+    "backToList": "Вернуться к списку",
+    "expenses": "Расходы",
+    "totalLabel": "Всего:",
+    "addExpense": "Добавить расход",
+    "expensesLoadError": "Не удалось загрузить расходы",
+    "retry": "Попробовать снова",
+    "noExpenses": "Пока расходов нет",
+    "noExpensesDescription": "Добавьте информацию о них, чтобы узнать, сколько вы потратили на путешествие",
+    "trackExpenses": "Учесть расходы",
+    "viewOnMap": "Посмотреть на карте",
+    "mapAlt": "Карта",
+    "mapUnavailable": "Карта недоступна",
+    "mapUnavailableHint": "Добавьте {{key}} в .env для отображения карты"
+  },
+  "login": {
+    "loggingIn": "Входим через",
+    "authError": "Не удалось авторизоваться",
+    "tryAgain": "Пожалуйста, попробуйте еще раз"
+  },
+  "toast": {
+    "tryAgain": "Пожалуйста, попробуйте еще раз",
+    "travel": {
+      "created": "Путешествие создано, можно начать планировать",
+      "updated": "Путешествие обновлено",
+      "deleted": "Путешествие удалено",
+      "createError": "Не удалось создать путешествие",
+      "updateError": "Не удалось обновить путешествие",
+      "deleteError": "Не удалось удалить путешествие",
+      "archived": "Путешествие добавлено в архив",
+      "restored": "Путешествие восстановлено из архива",
+      "archiveError": "Не удалось изменить статус архивации"
+    },
+    "expense": {
+      "created": "Расход добавлен",
+      "updated": "Расход обновлен",
+      "deleted": "Расход удален",
+      "createError": "Не удалось добавить расход",
+      "updateError": "Не удалось обновить расход",
+      "deleteError": "Не удалось удалить расход"
+    },
+    "photo": {
+      "uploaded": "Фотография загружена",
+      "uploadError": "Не удалось загрузить фотографию"
+    },
+    "auth": {
+      "loginError": "Не удалось войти",
+      "logoutError": "Не удалось выйти из системы",
+      "authError": "Не удалось авторизоваться"
+    }
+  },
+  "common": {
+    "loading": "Загрузка"
+  },
+  "settings": {
+    "title": "Настройки",
+    "description": "Подстройте приложение под себя",
+    "language": "Язык",
+    "measurementUnit": "Единицы измерения",
+    "timeFormat": "Формат времени",
+    "theme": "Тема",
+    "close": "Закрыть",
+    "save": "Сохранить",
+    "measurement": {
+      "metric": "Метрические",
+      "imperial": "Имперские"
+    },
+    "timeFormatOption": {
+      "24h": "24 часа",
+      "12h": "12 часов"
+    },
+    "locale": {
+      "ru": "Русский",
+      "en": "English"
+    },
+    "themeOption": {
+      "light": "Светлая",
+      "dark": "Темная",
+      "system": "Системная"
+    }
+  },
+  "upload": {
+    "photoTitle": "Загрузка фотографии",
+    "photoDescription": "Добавьте воспоминание к вашему путешествию",
+    "cancel": "Отмена",
+    "upload": "Загрузить",
+    "formName": "Название",
+    "formNamePlaceholder": "Эйфелева башня, Париж",
+    "formNameHint": "Название будет использоваться как подпись к фотографии",
+    "formPhoto": "Фотография",
+    "dragLabel": "Перетащите фотографию или",
+    "selectLabel": "выберите файл",
+    "hintFormat": "PNG, JPG, WEBP до {{maxSize}}",
+    "removePhoto": "Удалить фотографию"
+  }
+}

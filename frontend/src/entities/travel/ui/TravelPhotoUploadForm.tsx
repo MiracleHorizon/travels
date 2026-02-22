@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { formatFileSize } from '@/shared/lib/file'
 import { Field, FieldContent, FieldLabel, FieldDescription, Input, FileDropzone } from '@/shared/ui'
 import { DropzoneOptions, useDropzone } from 'react-dropzone'
@@ -20,39 +21,38 @@ export const TravelPhotoUploadForm = ({
   dropzoneOptions,
   maxFileSize
 }: TravelPhotoUploadFormProps) => {
+  const { t } = useTranslation()
   const { getRootProps, getInputProps, isDragActive } = useDropzone(dropzoneOptions)
 
   return (
     <form className='space-y-4' onSubmit={ev => ev.preventDefault()}>
       <Field>
         <FieldContent>
-          <FieldLabel htmlFor='description'>Название</FieldLabel>
+          <FieldLabel htmlFor='description'>{t('upload.formName')}</FieldLabel>
           <Input
             required
             id='description'
             type='text'
             autoComplete='off'
-            placeholder='Эйфелева башня, Париж'
+            placeholder={t('upload.formNamePlaceholder')}
             value={value.description}
             onChange={ev => onChange({ ...value, description: ev.target.value })}
           />
-          <FieldDescription>
-            Название будет использоваться как подпись к фотографии
-          </FieldDescription>
+          <FieldDescription>{t('upload.formNameHint')}</FieldDescription>
         </FieldContent>
       </Field>
 
       <Field>
         <FieldContent>
-          <FieldLabel htmlFor='photo'>Фотография</FieldLabel>
+          <FieldLabel htmlFor='photo'>{t('upload.formPhoto')}</FieldLabel>
           <FileDropzone
             inputId='photo'
             getRootProps={getRootProps}
             getInputProps={getInputProps}
             isDragActive={isDragActive}
-            dragLabel='Перетащите фотографию или'
-            selectLabel='выберите файл'
-            hint={`PNG, JPG, WEBP до ${formatFileSize(maxFileSize)}`}
+            dragLabel={t('upload.dragLabel')}
+            selectLabel={t('upload.selectLabel')}
+            hint={t('upload.hintFormat', { maxSize: formatFileSize(maxFileSize) })}
           />
         </FieldContent>
       </Field>

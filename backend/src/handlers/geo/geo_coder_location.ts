@@ -2,6 +2,7 @@ import type { BunRequest } from 'bun'
 import {
   YANDEX_GEOCODER_API_KEY,
   YANDEX_GEOCODER_API_URL,
+  toYandexGeocoderLang,
   type GeocoderKind,
   type GeocoderResponse
 } from '../../domains/geo'
@@ -12,15 +13,16 @@ import {
 
 interface GetGeoCoderLocationBody {
   location: string
-  // Они только для фильтрации результатов, в запрос без geocoder их нет смысла передавать.
   kinds: GeocoderKind[]
+  /** Локаль приложения (ru/en) для языка ответа геокодера */
+  locale?: string
 }
 
 // https://yandex.ru/maps-api/docs/geocoder-api/quickstart.html
 export const getGeoCoderLocationHandler = async (req: BunRequest) => {
   try {
     const body = (await req.json()) as GetGeoCoderLocationBody
-    const { location, kinds } = body
+    const { location, kinds, locale } = body
 
     if (!location) {
       return new Response(JSON.stringify({ error: 'Location is required' }), {
@@ -43,7 +45,8 @@ export const getGeoCoderLocationHandler = async (req: BunRequest) => {
     const searchParams = new URLSearchParams({
       apikey: YANDEX_GEOCODER_API_KEY,
       geocode: location,
-      format: 'json'
+      format: 'json',
+      lang: toYandexGeocoderLang(locale)
     })
 
     const response = await fetch(`${YANDEX_GEOCODER_API_URL}/?${searchParams.toString()}`)

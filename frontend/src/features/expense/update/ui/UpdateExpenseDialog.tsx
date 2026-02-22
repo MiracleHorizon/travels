@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -17,10 +18,10 @@ interface UpdateExpenseDialogProps {
 }
 
 const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
+  const { t } = useTranslation()
   const { isPending, formFields, setFormFields, updateExpense } = useUpdateExpense({
     expense
   })
-
   const hideModal = useHideModal()
 
   return (
@@ -34,8 +35,8 @@ const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Редактирование расхода</DialogTitle>
-          <DialogDescription>Измените детали</DialogDescription>
+          <DialogTitle>{t('form.expense.editTitle')}</DialogTitle>
+          <DialogDescription>{t('form.expense.editDescription')}</DialogDescription>
         </DialogHeader>
 
         <ExpenseForm
@@ -48,12 +49,12 @@ const UpdateExpenseDialog = ({ expense }: UpdateExpenseDialogProps) => {
         <DialogFooter>
           <DialogClose asChild>
             <Button size='sm' variant='secondary' disabled={isPending}>
-              Отмена
+              {t('form.cancel')}
             </Button>
           </DialogClose>
 
           <Button size='sm' onClick={updateExpense} isLoading={isPending}>
-            Сохранить
+            {t('form.save')}
           </Button>
         </DialogFooter>
       </DialogContent>

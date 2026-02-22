@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { menuGroups } from '../model/consts'
 import {
   Sidebar,
@@ -19,6 +20,7 @@ import { useSettingsAction } from '@/features/settings'
 import { UserMenu } from './UserMenu'
 
 export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
+  const { t } = useTranslation()
   const location = useLocation()
 
   const { createTravel } = useCreateTravelAction()
@@ -28,8 +30,8 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
     <Sidebar {...props}>
       <SidebarContent>
         {menuGroups.map(group => (
-          <SidebarGroup key={group.title}>
-            <SidebarGroupLabel>{group.title}</SidebarGroupLabel>
+          <SidebarGroup key={group.titleKey}>
+            <SidebarGroupLabel>{t(group.titleKey)}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {group.items.map(item => (
@@ -37,7 +39,7 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
                     <SidebarMenuButton asChild isActive={location.pathname === item.url}>
                       <Link to={item.url}>
                         <item.icon />
-                        <span>{item.title}</span>
+                        <span>{t(item.titleKey)}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -52,7 +54,7 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
             <SidebarMenuItem className='flex items-center gap-2'>
               <Button size='sm' className='w-full' onClick={createTravel}>
                 <Plus />
-                Новое путешествие
+                {t('nav.newTravel')}
               </Button>
             </SidebarMenuItem>
           </SidebarGroupContent>
@@ -64,7 +66,7 @@ export const AppSidebar = (props: ComponentPropsWithoutRef<typeof Sidebar>) => {
           <SidebarMenuItem>
             <SidebarMenuButton onClick={openSettings}>
               <Settings />
-              Настройки
+              {t('nav.settings')}
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

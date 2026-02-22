@@ -1,14 +1,15 @@
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { ChevronDownIcon } from 'lucide-react'
 import { DateRange, Locale } from 'react-day-picker'
 import { format } from 'date-fns'
 
 import { cn } from '@/shared/lib/styles/utils'
+import { getDateFnsLocale, getDayPickerLocale, type AppLocale } from '@/shared/lib/i18n'
 import { Button } from './button'
 import { Calendar } from './calendar'
 import { Label } from './label'
 import { Popover, PopoverContent, PopoverTrigger } from './popover'
-import { ru } from 'react-day-picker/locale'
 
 interface DateRangePickerProps {
   value?: DateRange
@@ -18,6 +19,7 @@ interface DateRangePickerProps {
   placeholder?: string
   id?: string
   className?: string
+  appLocale?: AppLocale
   locale?: Locale
   captionLayout?: 'dropdown'
 }
@@ -27,19 +29,24 @@ export const DateRangePicker = ({
   onChange,
   disabled = false,
   label,
-  placeholder = 'Выберите диапазон',
+  placeholder: placeholderProp,
   id,
   className,
-  locale = ru,
+  appLocale = 'ru',
+  locale: localeProp,
   ...calendarProps
 }: DateRangePickerProps) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
+  const dayPickerLocale = localeProp ?? getDayPickerLocale(appLocale)
+  const dateFnsLocale = getDateFnsLocale(appLocale)
+  const placeholder = placeholderProp ?? t('form.dateRangePlaceholder')
 
   const formatDateRange = () => {
     if (!value?.from) return placeholder
-    if (!value.to) return format(value.from, 'PPP', { locale })
+    if (!value.to) return format(value.from, 'PPP', { locale: dateFnsLocale })
 
-    return `${format(value.from, 'PPP', { locale })} - ${format(value.to, 'PPP', { locale })}`
+    return `${format(value.from, 'PPP', { locale: dateFnsLocale })} - ${format(value.to, 'PPP', { locale: dateFnsLocale })}`
   }
 
   return (
@@ -68,7 +75,7 @@ export const DateRangePicker = ({
             selected={value}
             onSelect={onChange}
             numberOfMonths={2}
-            locale={locale}
+            locale={dayPickerLocale}
             disabled={disabled}
             {...calendarProps}
           />

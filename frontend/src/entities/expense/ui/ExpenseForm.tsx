@@ -1,8 +1,7 @@
 import { ChangeEvent } from 'react'
 import { CalendarIcon } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { format } from 'date-fns'
-import { ru as ruDateFns } from 'date-fns/locale'
-import { ru as ruDayPicker } from 'react-day-picker/locale'
 
 import {
   Button,
@@ -17,6 +16,8 @@ import {
   PopoverTrigger,
   FieldDescription
 } from '@/shared/ui'
+import { useSettings } from '@/features/settings'
+import { getDateFnsLocale, getDayPickerLocale, type AppLocale } from '@/shared/lib/i18n'
 import { cn } from '@/shared/lib/styles/utils'
 import { ExpenseCategorySelect } from './ExpenseCategorySelect'
 import { ExpenseCategory } from '../model/types'
@@ -38,6 +39,12 @@ interface ExpenseFormProps {
 }
 
 export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: ExpenseFormProps) => {
+  const { t } = useTranslation()
+  const { getSetting } = useSettings()
+  const appLocale = (getSetting('locale') ?? 'ru') as AppLocale
+  const dateFnsLocale = getDateFnsLocale(appLocale)
+  const dayPickerLocale = getDayPickerLocale(appLocale)
+
   const handleTitleChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange({
       ...values,
@@ -90,11 +97,11 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
       <div className='space-y-4 mt-2'>
         <Field>
           <FieldContent>
-            <FieldLabel htmlFor='title'>Название</FieldLabel>
+            <FieldLabel htmlFor='title'>{t('form.expense.title')}</FieldLabel>
             <Input
               id='title'
               type='text'
-              placeholder='Обед в кафе'
+              placeholder={t('form.expense.titlePlaceholder')}
               autoComplete='off'
               value={values.title}
               onChange={handleTitleChange}
@@ -106,11 +113,11 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
         <div className='grid grid-cols-2 gap-4'>
           <Field>
             <FieldContent>
-              <FieldLabel htmlFor='amount'>Сумма</FieldLabel>
+              <FieldLabel htmlFor='amount'>{t('form.expense.amount')}</FieldLabel>
               <Input
                 id='amount'
                 type='number'
-                placeholder='156$'
+                placeholder={t('form.expense.amountPlaceholder')}
                 value={values.amount}
                 onChange={handleAmountChange}
                 disabled={disabled}
@@ -122,12 +129,13 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
 
           <Field>
             <FieldContent>
-              <FieldLabel htmlFor='category'>Категория</FieldLabel>
+              <FieldLabel htmlFor='category'>{t('form.expense.category')}</FieldLabel>
               <ExpenseCategorySelect
                 id='category'
                 value={values.category}
                 onChange={handleCategoryChange}
                 disabled={disabled}
+                placeholder={t('form.expense.categoryPlaceholder')}
               />
             </FieldContent>
           </Field>
@@ -135,7 +143,7 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
 
         <Field>
           <FieldContent>
-            <FieldLabel htmlFor='date'>Дата</FieldLabel>
+            <FieldLabel htmlFor='date'>{t('form.expense.date')}</FieldLabel>
             <Popover>
               <PopoverTrigger asChild>
                 <Button
@@ -149,9 +157,9 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
                 >
                   <CalendarIcon className='h-4 w-4' />
                   {values.date ? (
-                    format(values.date, 'PPP', { locale: ruDateFns })
+                    format(values.date, 'PPP', { locale: dateFnsLocale })
                   ) : (
-                    <span>Выберите дату</span>
+                    <span>{t('form.expense.datePlaceholder')}</span>
                   )}
                 </Button>
               </PopoverTrigger>
@@ -161,7 +169,7 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
                   mode='single'
                   selected={values.date}
                   onSelect={handleDateChange}
-                  locale={ruDayPicker}
+                  locale={dayPickerLocale}
                   captionLayout='dropdown'
                 />
               </PopoverContent>
@@ -171,10 +179,10 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
 
         <Field>
           <FieldContent>
-            <FieldLabel htmlFor='description'>Описание</FieldLabel>
+            <FieldLabel htmlFor='description'>{t('form.expense.description')}</FieldLabel>
             <Textarea
               id='description'
-              placeholder='Расскажите, чем была вызвана эта трата и стоила ли она того?'
+              placeholder={t('form.expense.descriptionPlaceholder')}
               value={values.description}
               onChange={handleDescriptionChange}
               disabled={disabled}
@@ -185,14 +193,12 @@ export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: Ex
 
         <Field>
           <FieldContent>
-            <FieldLabel htmlFor='link'>Ссылка</FieldLabel>
-            <FieldDescription>
-              Вы можете оставить ссылку на отель, музей, ресторан и так далее
-            </FieldDescription>
+            <FieldLabel htmlFor='link'>{t('form.expense.link')}</FieldLabel>
+            <FieldDescription>{t('form.expense.linkHint')}</FieldDescription>
             <Input
               id='link'
               type='url'
-              placeholder='https://...'
+              placeholder={t('form.expense.linkPlaceholder')}
               autoComplete='off'
               value={values.link}
               onChange={handleLinkChange}

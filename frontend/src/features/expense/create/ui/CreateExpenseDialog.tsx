@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   Dialog,
@@ -17,10 +18,10 @@ interface CreateExpenseDialogProps {
 }
 
 const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
+  const { t } = useTranslation()
   const { isPending, formFields, setFormFields, createExpense } = useCreateExpense({
     travelId
   })
-
   const hideModal = useHideModal()
 
   return (
@@ -34,10 +35,8 @@ const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
     >
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Добавление расхода</DialogTitle>
-          <DialogDescription>
-            Укажите сумму и описание расхода для учета в путешествии
-          </DialogDescription>
+          <DialogTitle>{t('form.expense.addTitle')}</DialogTitle>
+          <DialogDescription>{t('form.expense.addDescription')}</DialogDescription>
         </DialogHeader>
 
         <ExpenseForm
@@ -50,12 +49,12 @@ const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
         <DialogFooter>
           <DialogClose asChild>
             <Button size='sm' variant='secondary' disabled={isPending}>
-              Отмена
+              {t('form.cancel')}
             </Button>
           </DialogClose>
 
           <Button size='sm' onClick={createExpense} isLoading={isPending}>
-            Добавить
+            {t('form.add')}
           </Button>
         </DialogFooter>
       </DialogContent>

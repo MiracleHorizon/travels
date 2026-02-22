@@ -7,7 +7,7 @@ export { getTemperatureUnit } from './lib/getTemperatureUnit'
 
 // Config
 export type { WeatherLocale, WeatherUnits } from './config/locales'
-export { DEFAULT_WEATHER_LOCALE, WEATHER_LOCALES } from './config/locales'
+export { DEFAULT_WEATHER_LOCALE } from './config/locales'
 
 // Model
 export { groupForecastByDay } from './model/groupForecastByDay'

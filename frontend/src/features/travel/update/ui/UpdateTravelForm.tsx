@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { TravelForm } from '@/entities/travel'
 import { TravelDetailed } from '@/entities/travel'
 import { DialogFooter, DialogClose, Button } from '@/shared/ui'
@@ -8,6 +9,7 @@ interface UpdateTravelFormProps {
 }
 
 export const UpdateTravelForm = ({ travel }: UpdateTravelFormProps) => {
+  const { t } = useTranslation()
   const { isPending, formFields, setFormFields, updateTravel } = useUpdateTravel({ travel })
 
   return (
@@ -22,12 +24,12 @@ export const UpdateTravelForm = ({ travel }: UpdateTravelFormProps) => {
       <DialogFooter>
         <DialogClose asChild>
           <Button size='sm' variant='secondary' disabled={isPending}>
-            Отмена
+            {t('form.cancel')}
           </Button>
         </DialogClose>
 
         <Button size='sm' onClick={updateTravel} isLoading={isPending}>
-          Сохранить
+          {t('form.save')}
         </Button>
       </DialogFooter>
     </>

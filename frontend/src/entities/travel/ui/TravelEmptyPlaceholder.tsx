@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import {
   Empty,
   EmptyHeader,
@@ -16,6 +17,7 @@ interface TravelEmptyPlaceholderProps {
 }
 
 export const TravelEmptyPlaceholder = ({ actions }: TravelEmptyPlaceholderProps) => {
+  const { t } = useTranslation()
   const navigate = useNavigate()
   const navigateBack = () => navigate('/travels/planned')
 
@@ -25,14 +27,14 @@ export const TravelEmptyPlaceholder = ({ actions }: TravelEmptyPlaceholderProps)
         <EmptyMedia variant='icon'>
           <MapPinOff className='h-6 w-6' />
         </EmptyMedia>
-        <EmptyTitle>Путешествие не найдено</EmptyTitle>
-        <EmptyDescription>Возможно, оно было удалено или не существует</EmptyDescription>
+        <EmptyTitle>{t('travelPage.notFound')}</EmptyTitle>
+        <EmptyDescription>{t('travelPage.notFoundDescription')}</EmptyDescription>
       </EmptyHeader>
       <EmptyContent>
         {actions ?? (
           <Button onClick={navigateBack} variant='outline'>
             <ArrowLeft />
-            Вернуться к списку
+            {t('travelPage.backToList')}
           </Button>
         )}
       </EmptyContent>

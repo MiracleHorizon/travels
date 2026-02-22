@@ -1,6 +1,7 @@
 import { ChevronRight } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { capitalizeFirst } from '@/shared/lib/format'
-import { WEATHER_LOCALES, type WeatherLocale, type TemperatureUnit } from '../config/locales'
+import { type WeatherLocale, type TemperatureUnit } from '../config/locales'
 import { cn } from '@/shared/lib'
 import { OPENWEATHER_ICON_URL } from '../lib/consts'
 import type { Ref } from 'react'
@@ -31,11 +32,10 @@ export const WeatherCurrentCard = ({
   ref,
   ...rest
 }: WeatherCurrentCardProps) => {
-  const {
-    today: todayLabel,
-    feelsLike: feelsLikeLabel,
-    forecast: forecastLabel
-  } = WEATHER_LOCALES[locale]
+  const { t } = useTranslation()
+  const todayLabel = t('weather.today')
+  const feelsLikeLabel = t('weather.feelsLike')
+  const forecastLabel = t('weather.forecast')
 
   return (
     <div

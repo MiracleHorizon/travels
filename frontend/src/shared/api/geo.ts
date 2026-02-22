@@ -8,19 +8,27 @@ export interface GeoLocationResult {
 
 const GEOCODER_KINDS = ['locality', 'country', 'province', 'area', 'street', 'house'] as const
 
-export const searchLocations = async (query: string): Promise<GeoLocationResult[]> => {
+export const searchLocations = async (
+  query: string,
+  locale?: string
+): Promise<GeoLocationResult[]> => {
   if (!query.trim()) {
     return []
+  }
+
+  const body: { location: string; kinds: readonly string[]; locale?: string } = {
+    location: query.trim(),
+    kinds: GEOCODER_KINDS
+  }
+  if (locale) {
+    body.locale = locale
   }
 
   const response = await fetch(`${API_BASE_URL}/v1/geo/location`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({
-      location: query.trim(),
-      kinds: GEOCODER_KINDS
-    })
+    body: JSON.stringify(body)
   })
 
   if (!response.ok) {

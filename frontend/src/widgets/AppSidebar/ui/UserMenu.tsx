@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next'
 import { useUserQuery, UserCard } from '@/entities/user'
 import { useLogout } from '@/features/auth/logout'
 import {
@@ -17,6 +18,7 @@ import { ChevronsUpDown, LogOut } from 'lucide-react'
 // Этот интерфейс не отобразится до того как будет загружен пользователь,
 // поэтому мы можем быть уверены в наличии данных.
 export const UserMenu = () => {
+  const { t } = useTranslation()
   const { data: user } = useUserQuery()
   const { logout, isPending: isLogoutPending } = useLogout()
   const { isMobile } = useSidebar()
@@ -50,7 +52,7 @@ export const UserMenu = () => {
 
             <DropdownMenuItem onClick={logout} disabled={isLogoutPending}>
               <LogOut />
-              Выйти
+              {t('nav.logout')}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -3,13 +3,14 @@ import { withAuth } from '../../middlewares/with_auth'
 
 const DEFAULT_MEASUREMENT_UNIT = 'metric'
 const DEFAULT_TIME_FORMAT = '24h'
+const DEFAULT_LOCALE = 'ru'
 
 export const getUserSettingsHandler = withAuth(async req => {
   const userId = req.userId
 
   try {
     const rows = await postgres`
-      SELECT measurement_unit, time_format
+      SELECT measurement_unit, time_format, locale
       FROM user_settings
       WHERE user_id = ${userId}
       LIMIT 1
@@ -19,7 +20,8 @@ export const getUserSettingsHandler = withAuth(async req => {
       return new Response(
         JSON.stringify({
           measurementUnit: DEFAULT_MEASUREMENT_UNIT,
-          timeFormat: DEFAULT_TIME_FORMAT
+          timeFormat: DEFAULT_TIME_FORMAT,
+          locale: DEFAULT_LOCALE
         }),
         {
           status: 200,
@@ -32,7 +34,8 @@ export const getUserSettingsHandler = withAuth(async req => {
     return new Response(
       JSON.stringify({
         measurementUnit: (row.measurement_unit as string) ?? DEFAULT_MEASUREMENT_UNIT,
-        timeFormat: (row.time_format as string) ?? DEFAULT_TIME_FORMAT
+        timeFormat: (row.time_format as string) ?? DEFAULT_TIME_FORMAT,
+        locale: (row.locale as string) ?? DEFAULT_LOCALE
       }),
       {
         status: 200,

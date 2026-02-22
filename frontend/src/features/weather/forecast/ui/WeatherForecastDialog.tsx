@@ -1,6 +1,6 @@
 import { lazy, Suspense, useState, type ReactNode } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
-  WEATHER_LOCALES,
   type CurrentWeatherResponse,
   type WeatherLocale
 } from '@/entities/weather'
@@ -23,15 +23,15 @@ export const WeatherForecastDialog = ({
   currentWeather,
   trigger
 }: WeatherForecastDialogProps) => {
+  const { t } = useTranslation()
   const [open, setOpen] = useState(false)
-  const { today: todayLabel } = WEATHER_LOCALES[locale]
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent className='sm:max-w-md'>
-        <DialogTitle>{todayLabel}</DialogTitle>
+        <DialogTitle>{t('weather.today')}</DialogTitle>
 
         {open && (
           <Suspense fallback={<WeatherForecastDialogSkeleton />}>

@@ -1,19 +1,22 @@
 import { postgres } from '../../database'
+import {
+  MEASUREMENT_UNITS,
+  TIME_FORMATS,
+  type MeasurementUnit,
+  type TimeFormat
+} from '../../domains/user-settings'
 import { withAuth } from '../../middlewares/with_auth'
 
-const MEASUREMENT_UNITS = ['metric', 'imperial'] as const
-const TIME_FORMATS = ['24h', '12h'] as const
-
-interface UpdateSettingsDto {
-  measurementUnit?: (typeof MEASUREMENT_UNITS)[number]
-  timeFormat?: (typeof TIME_FORMATS)[number]
+interface UpdateUserSettingsDto {
+  measurementUnit?: MeasurementUnit
+  timeFormat?: TimeFormat
 }
 
-export const updateSettingsHandler = withAuth(async req => {
+export const updateUserSettingsHandler = withAuth(async req => {
   const userId = req.userId
 
   try {
-    const body = (await req.json()) as UpdateSettingsDto
+    const body = (await req.json()) as UpdateUserSettingsDto
 
     const measurementUnit =
       body.measurementUnit && MEASUREMENT_UNITS.includes(body.measurementUnit)

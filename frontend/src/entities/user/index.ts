@@ -1,5 +1,6 @@
 // API
-export { useUser, USER_QUERY_KEY } from './api/user'
+export { useSuspenseUserQuery } from './api/useSuspenseUserQuery'
+export { useUserQuery } from './api/useUserQuery'
 
 // Model
 export type { User } from './model/types'

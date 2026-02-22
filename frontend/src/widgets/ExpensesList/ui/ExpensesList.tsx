@@ -78,7 +78,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
     <Card>
       <CardContent className='group'>
         <div className='flex justify-between items-center'>
-          <CardTitle className='text-xl font-semibold'>Расходы</CardTitle>
+          <CardTitle className='text-lg'>Расходы</CardTitle>
 
           <TooltipComposer content='Добавить расход'>
             <Button
@@ -96,9 +96,9 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
           <ExpensesListEmpty onAddExpense={createExpense} />
         ) : (
           <div className='flex flex-col'>
-            <ExpenseBarChart expenses={expenses} className='mt-5' />
+            <ExpenseBarChart expenses={expenses} className='mt-4' />
 
-            <Separator className='mt-6' />
+            <Separator className='mt-4' />
 
             <div className='space-y-1 my-4 -mx-1'>
               {categoriesWithExpenses.map((category, index) => (

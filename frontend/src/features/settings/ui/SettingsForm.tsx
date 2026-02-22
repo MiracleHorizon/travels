@@ -38,7 +38,7 @@ export const SettingsForm = ({ value, onChange }: SettingsFormProps) => (
             })
           }
         >
-          <SelectTrigger id='measurementUnit' className='!w-full'>
+          <SelectTrigger id='measurementUnit' className='w-full!'>
             <SelectValue />
           </SelectTrigger>
 
@@ -68,7 +68,7 @@ export const SettingsForm = ({ value, onChange }: SettingsFormProps) => (
             })
           }
         >
-          <SelectTrigger id='timeFormat' className='!w-full'>
+          <SelectTrigger id='timeFormat' className='w-full!'>
             <SelectValue />
           </SelectTrigger>
 

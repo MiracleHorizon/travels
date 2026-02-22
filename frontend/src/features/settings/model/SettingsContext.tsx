@@ -1,28 +1,19 @@
-import { createContext, useContext, useState, useCallback, ReactNode, useMemo } from 'react'
+import { createContext, useContext, useCallback, ReactNode, useMemo } from 'react'
+import { useSettingsQuery } from '../api/useSettingsQuery'
 import type { UserSettings } from './types'
 
-const defaultSettings: UserSettings = {
-  measurementUnit: 'metric',
-  timeFormat: '24h'
+interface SettingsContextValue {
+  getSetting: <K extends keyof UserSettings>(key: K) => UserSettings[K]
 }
 
-interface SettingsContextValue {
-  setSettings: (settings: UserSettings) => void
-  getSetting: <K extends keyof UserSettings>(key: K) => UserSettings[K]
-  updateSetting: <K extends keyof UserSettings>(key: K, value: UserSettings[K]) => void
+interface SettingsProviderProps {
+  children: ReactNode
 }
 
 const SettingsContext = createContext<SettingsContextValue | null>(null)
 
-export const SettingsProvider = ({ children }: { children: ReactNode }) => {
-  const [settings, setSettings] = useState<UserSettings>(defaultSettings)
-
-  const updateSetting = useCallback(
-    <K extends keyof UserSettings>(key: K, value: UserSettings[K]) => {
-      setSettings(prev => ({ ...prev, [key]: value }))
-    },
-    []
-  )
+export const SettingsProvider = ({ children }: SettingsProviderProps) => {
+  const { data: settings } = useSettingsQuery()
 
   const getSetting = useCallback(
     <K extends keyof UserSettings>(key: K) => {
@@ -31,14 +22,11 @@ export const SettingsProvider = ({ children }: { children: ReactNode }) => {
     [settings]
   )
 
-  const value = useMemo(
-    () => ({
-      setSettings,
-      updateSetting,
+  const value = useMemo(() => {
+    return {
       getSetting
-    }),
-    [setSettings, updateSetting, getSetting]
-  )
+    }
+  }, [getSetting])
 
   return <SettingsContext.Provider value={value}>{children}</SettingsContext.Provider>
 }

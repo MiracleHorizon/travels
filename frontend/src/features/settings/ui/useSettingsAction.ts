@@ -8,5 +8,7 @@ export const useSettingsAction = () => {
     showModal(settingsModalDefinition)
   }
 
-  return { openSettings }
+  return {
+    openSettings
+  }
 }

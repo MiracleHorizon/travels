@@ -12,21 +12,26 @@ import {
 } from '@/shared/ui'
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useSettings } from '../model/SettingsContext'
+import { useUpdateSettingsMutation } from '../api/useUpdateSettingsMutation'
 import { SettingsForm } from './SettingsForm'
 
 const SettingsDialog = () => {
   const hideModal = useHideModal()
 
-  const { getSetting, updateSetting } = useSettings()
+  const { getSetting } = useSettings()
+  const { mutate: saveSettings, isPending } = useUpdateSettingsMutation()
+
   const [draft, setDraft] = useState(() => ({
     measurementUnit: getSetting('measurementUnit'),
     timeFormat: getSetting('timeFormat')
   }))
 
   const handleSave = () => {
-    updateSetting('measurementUnit', draft.measurementUnit)
-    updateSetting('timeFormat', draft.timeFormat)
-    hideModal()
+    saveSettings(draft, {
+      onSuccess: () => {
+        hideModal()
+      }
+    })
   }
 
   return (
@@ -54,8 +59,10 @@ const SettingsDialog = () => {
               Закрыть
             </Button>
           </DialogClose>
-          <Button size='sm' onClick={handleSave}>
-            Сохранить
+
+          {/* TODO: при добавлении rhf можно будет обновить только если форма isDirty */}
+          <Button size='sm' onClick={handleSave} disabled={isPending}>
+            {isPending ? 'Сохранение…' : 'Сохранить'}
           </Button>
         </DialogFooter>
       </DialogContent>

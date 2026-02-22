@@ -4,7 +4,7 @@ import { withAuth } from '../../middlewares/with_auth'
 const DEFAULT_MEASUREMENT_UNIT = 'metric'
 const DEFAULT_TIME_FORMAT = '24h'
 
-export const getSettingsHandler = withAuth(async req => {
+export const getUserSettingsHandler = withAuth(async req => {
   const userId = req.userId
 
   try {

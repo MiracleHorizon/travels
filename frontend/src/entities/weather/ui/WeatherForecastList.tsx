@@ -59,8 +59,7 @@ export const WeatherForecastList = ({
               />
 
               <span className='text-sm font-semibold tabular-nums'>
-                {Math.round(day.minTemperature)}
-                {temperatureUnit} / {Math.round(day.maxTemperature)}
+                {Math.round(day.minTemperature)} / {Math.round(day.maxTemperature)}
                 {temperatureUnit}
               </span>
             </div>

@@ -17,7 +17,10 @@ const createNewScript = (src: string) => {
 
 // TODO: Комментарии
 // TODO: Вынести в пакет
-export const initYMaps = async (apiKey: string): Promise<YMapsType> =>
+/**
+ * @param lang Язык карты в формате Яндекс API (ru_RU, en_US и т.д.)
+ */
+export const initYMaps = async (apiKey: string, lang: string): Promise<YMapsType> =>
   new Promise((resolve, reject) => {
     if (window.ymaps3) {
       const ymaps = window.ymaps3
@@ -45,7 +48,7 @@ export const initYMaps = async (apiKey: string): Promise<YMapsType> =>
         })
         .catch(reject)
     } else {
-      const src = `https://api-maps.yandex.ru/v3/?apikey=${apiKey}&lang=ru_RU`
+      const src = `https://api-maps.yandex.ru/v3/?apikey=${apiKey}&lang=${lang}`
       const script =
         document.querySelector<HTMLScriptElement>(`script[src="${src}"]`) || createNewScript(src)
 

@@ -1,7 +1,7 @@
 import { ChevronRight } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { capitalizeFirst } from '@/shared/lib/format'
-import { type WeatherLocale, type TemperatureUnit } from '../config/locales'
+import { type TemperatureUnit } from '../config/locales'
 import { cn } from '@/shared/lib'
 import { OPENWEATHER_ICON_URL } from '../lib/consts'
 import type { Ref } from 'react'
@@ -11,9 +11,7 @@ interface WeatherCurrentCardProps {
   feelsLike: number | undefined
   description: string
   icon: string
-  locale: WeatherLocale
   temperatureUnit?: TemperatureUnit
-  hasForecast: boolean
   ref?: Ref<HTMLDivElement>
   onClick?: () => void
 }
@@ -26,7 +24,6 @@ export const WeatherCurrentCard = ({
   description,
   icon,
   feelsLike,
-  locale,
   temperatureUnit = '°C',
   onClick,
   ref,

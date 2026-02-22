@@ -9,6 +9,7 @@ import { Travel } from '@/entities/travel'
 
 export const useTravelActions = (): ((travel: Travel) => DropdownAction[]) => {
   const { t } = useTranslation()
+
   const deleteTravelAction = useDeleteTravelAction()
   const updateTravelAction = useUpdateTravelAction()
   const toggleArchiveAction = useToggleTravelArchiveAction()

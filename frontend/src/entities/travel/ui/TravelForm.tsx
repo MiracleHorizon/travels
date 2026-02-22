@@ -14,10 +14,9 @@ import {
   FieldContent,
   LocationPicker
 } from '@/shared/ui'
-import { useSettings } from '@/features/settings'
 import { ChangeEvent } from 'react'
 import { GeoLocationResult } from '@/shared/api/geo'
-import type { AppLocale } from '@/shared/lib/i18n'
+import { AppLocale } from '@/shared/lib/i18n'
 
 interface TravelFormData {
   name: string
@@ -32,12 +31,17 @@ interface TravelFormProps {
   onChange: (value: TravelFormData) => void
   onSubmit: () => void
   disabled?: boolean
+  locale: AppLocale
 }
 
-export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: TravelFormProps) => {
+export const TravelForm = ({
+  values,
+  disabled = false,
+  locale,
+  onChange,
+  onSubmit
+}: TravelFormProps) => {
   const { t } = useTranslation()
-  const { getSetting } = useSettings()
-  const appLocale = (getSetting('locale') ?? 'ru') as AppLocale
 
   const handleNameChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange({
@@ -120,7 +124,7 @@ export const TravelForm = ({ values, onChange, disabled = false, onSubmit }: Tra
               disabled={disabled}
               placeholder={t('form.travel.dateRangePlaceholder')}
               captionLayout='dropdown'
-              appLocale={appLocale}
+              locale={locale}
             />
           </FieldContent>
         </Field>

@@ -16,6 +16,7 @@ import FadePlugin from 'embla-carousel-fade'
 
 export const TravelLayout = () => {
   const { t } = useTranslation()
+
   const { travelId } = useParams<{ travelId: string }>()
   const { data: travel, isLoading, error } = useTravelQuery(travelId)
 

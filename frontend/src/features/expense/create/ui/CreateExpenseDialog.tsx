@@ -12,6 +12,7 @@ import {
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useCreateExpense } from '../model/useCreateExpense'
 import { ExpenseForm } from '@/entities/expense'
+import { useSettings } from '@/features/settings'
 
 interface CreateExpenseDialogProps {
   travelId: string
@@ -19,6 +20,10 @@ interface CreateExpenseDialogProps {
 
 const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
   const { t } = useTranslation()
+
+  const { getSetting } = useSettings()
+  const locale = getSetting('locale')
+
   const { isPending, formFields, setFormFields, createExpense } = useCreateExpense({
     travelId
   })
@@ -42,6 +47,7 @@ const CreateExpenseDialog = ({ travelId }: CreateExpenseDialogProps) => {
         <ExpenseForm
           values={formFields}
           disabled={isPending}
+          locale={locale}
           onChange={setFormFields}
           onSubmit={createExpense}
         />

@@ -10,7 +10,7 @@ import {
   DropdownAction,
   DropdownActions
 } from '@/shared/ui'
-import { cn } from '@/shared/lib/styles/utils'
+import { cn } from '@/shared/lib'
 import type { AppLocale } from '@/shared/lib/i18n'
 import { formatTravelDateRange } from '../lib/formatters'
 import { useState } from 'react'
@@ -20,16 +20,15 @@ interface TravelCardProps {
   startDate: string
   endDate: string
   tags: string[]
+  locale: AppLocale
   className?: string
   actions?: DropdownAction[]
   onClick?: () => void
-  /** Локаль для форматирования дат (из настроек пользователя) */
-  locale?: AppLocale
 }
 
 const MAX_BADGES_TO_SHOW = 3
 
-// TODO: При наведении цветной анимированный бордер
+// TODO: При наведении цветной анимированный бордер?
 export const TravelCard = ({
   name,
   startDate,
@@ -37,11 +36,10 @@ export const TravelCard = ({
   tags,
   className,
   actions,
-  onClick,
-  locale: localeProp
+  locale,
+  onClick
 }: TravelCardProps) => {
   const { t } = useTranslation()
-  const appLocale = localeProp ?? 'ru'
   const [hovered, setHovered] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
 
@@ -79,7 +77,13 @@ export const TravelCard = ({
         <CardContent className='gap-3 flex flex-col pt-0'>
           <div className='flex items-center gap-2 text-sm text-muted-foreground'>
             <Calendar className='h-4 w-4 shrink-0' />
-            <span>{formatTravelDateRange(startDate, endDate, appLocale)}</span>
+            <span>
+              {formatTravelDateRange({
+                startDate,
+                endDate,
+                locale
+              })}
+            </span>
           </div>
 
           {Boolean(tags.length) && (

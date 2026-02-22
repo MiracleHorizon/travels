@@ -17,6 +17,7 @@ import { Ellipsis, ExternalLinkIcon } from 'lucide-react'
 import { useState } from 'react'
 import { formatCurrency } from '@/shared/lib/format'
 import { cn } from '@/shared/lib'
+import { AppLocale } from '@/shared/lib/i18n'
 
 interface ExpenseCardProps {
   title: string
@@ -25,7 +26,7 @@ interface ExpenseCardProps {
   category: ExpenseCategory
   date?: string
   description?: string
-  locale: string
+  locale: AppLocale
   /**
    * Ссылка на внешний ресурс с дополнительной информацией о расходе.
    * Например, ссылка на отель, музей, ресторан.
@@ -50,13 +51,18 @@ export const ExpenseCard = ({
   showCategoryBadge = false
 }: ExpenseCardProps) => {
   const { t } = useTranslation()
+
   const formattedDate = date
     ? new Date(date).toLocaleDateString(locale, {
         day: 'numeric',
         month: 'short'
       })
     : null
-  const formattedAmount = formatCurrency(amount, currency, locale)
+  const formattedAmount = formatCurrency({
+    amount,
+    currency,
+    locale
+  })
 
   const [hovered, setHovered] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)

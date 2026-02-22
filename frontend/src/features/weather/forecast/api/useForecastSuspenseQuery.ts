@@ -1,27 +1,22 @@
 import { useSuspenseQuery } from '@tanstack/react-query'
 
-import {
-  DEFAULT_WEATHER_LOCALE,
-  isValidCoords,
-  type WeatherLocale,
-  type WeatherForecastResponse,
-  type WeatherUnits
-} from '@/entities/weather'
+import { isValidCoords, type WeatherForecastResponse, type WeatherUnits } from '@/entities/weather'
 import { API_BASE_URL } from '@/shared/api'
 import type { GeoCoords } from '@/shared/lib/geo'
+import { AppLocale } from '@/shared/lib/i18n'
 
 const FORECAST_QUERY_KEY = 'forecast'
 
 interface UseForecastQueryProps {
   coords: GeoCoords
-  locale?: WeatherLocale
-  units?: WeatherUnits
+  locale: AppLocale
+  units: WeatherUnits
 }
 
 export const useForecastSuspenseQuery = ({
   coords: { lat, lng },
-  locale = DEFAULT_WEATHER_LOCALE,
-  units = 'metric'
+  locale,
+  units
 }: UseForecastQueryProps) => {
   return useSuspenseQuery<WeatherForecastResponse>({
     queryKey: [FORECAST_QUERY_KEY, lat, lng, locale, units],

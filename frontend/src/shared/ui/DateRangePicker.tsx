@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ChevronDownIcon } from 'lucide-react'
-import { DateRange, Locale } from 'react-day-picker'
+import { DateRange } from 'react-day-picker'
 import { format } from 'date-fns'
 
 import { cn } from '@/shared/lib/styles/utils'
@@ -19,8 +19,7 @@ interface DateRangePickerProps {
   placeholder?: string
   id?: string
   className?: string
-  appLocale?: AppLocale
-  locale?: Locale
+  locale: AppLocale
   captionLayout?: 'dropdown'
 }
 
@@ -32,14 +31,14 @@ export const DateRangePicker = ({
   placeholder: placeholderProp,
   id,
   className,
-  appLocale = 'ru',
-  locale: localeProp,
+  locale,
   ...calendarProps
 }: DateRangePickerProps) => {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
-  const dayPickerLocale = localeProp ?? getDayPickerLocale(appLocale)
-  const dateFnsLocale = getDateFnsLocale(appLocale)
+
+  const dayPickerLocale = getDayPickerLocale(locale)
+  const dateFnsLocale = getDateFnsLocale(locale)
   const placeholder = placeholderProp ?? t('form.dateRangePlaceholder')
 
   const formatDateRange = () => {

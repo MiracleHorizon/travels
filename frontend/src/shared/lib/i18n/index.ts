@@ -3,5 +3,8 @@ export {
   getDateFnsLocale,
   getDayPickerLocale,
   getLocaleString,
-  type AppLocale
+  getYandexMapsLang,
+  AppLocale,
+  AppLocaleString,
+  DEFAULT_LOCALE_STRING
 } from './dateLocales'

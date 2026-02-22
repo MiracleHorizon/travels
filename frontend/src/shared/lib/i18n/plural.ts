@@ -1,3 +1,5 @@
+import { AppLocale } from './dateLocales'
+
 type PluralForm = 'zero' | 'one' | 'two' | 'few' | 'many' | 'other'
 
 interface PluralForms {
@@ -7,6 +9,12 @@ interface PluralForms {
   few?: string
   many?: string
   other: string
+}
+
+interface PluralParams {
+  count: number
+  forms: PluralForms
+  locale: AppLocale
 }
 
 /**
@@ -21,7 +29,7 @@ interface PluralForms {
  * plural(2, { one: 'день', few: 'дня', many: 'дней' }) // 'дня'
  * plural(5, { one: 'день', few: 'дня', many: 'дней' }) // 'дней'
  */
-export const plural = (count: number, forms: PluralForms, locale = 'ru'): string => {
+export const plural = ({ count, forms, locale }: PluralParams): string => {
   const pluralRules = new Intl.PluralRules(locale)
   const form = pluralRules.select(count) as PluralForm
 

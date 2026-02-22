@@ -12,9 +12,14 @@ import {
 import { TravelForm } from '@/entities/travel'
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useCreateTravel } from '../model/useCreateTravel'
+import { useSettings } from '@/features/settings'
 
 const CreateTravelDialog = () => {
   const { t } = useTranslation()
+
+  const { getSetting } = useSettings()
+  const locale = getSetting('locale')
+
   const { isPending, formFields, setFormFields, createTravel } = useCreateTravel()
   const hideModal = useHideModal()
 
@@ -34,6 +39,7 @@ const CreateTravelDialog = () => {
         </DialogHeader>
 
         <TravelForm
+          locale={locale}
           values={formFields}
           disabled={isPending}
           onChange={setFormFields}
@@ -57,6 +63,6 @@ const CreateTravelDialog = () => {
 }
 
 export const createTravelModalDefinition: ModalDefinition = {
-  name: 'createTravelModal',
+  name: 'CreateTravelDialog',
   component: CreateTravelDialog
 }

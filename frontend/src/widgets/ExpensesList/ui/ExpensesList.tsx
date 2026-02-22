@@ -37,7 +37,7 @@ const currency = 'RUB'
 export const ExpensesList = ({ travelId }: ExpensesListProps) => {
   const { t } = useTranslation()
   const { getSetting } = useSettings()
-  const locale = `${getSetting('locale')}-${getSetting('locale') === 'en' ? 'US' : 'RU'}`
+  const locale = getSetting('locale')
 
   const { data: expenses, isLoading, isSuccess, error, refetch } = useExpensesQuery({ travelId })
   const { groups, categoriesWithExpenses } = useExpensesByCategory({ expenses })
@@ -76,7 +76,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
   }
 
   const isEmpty = isSuccess && expenses && expenses.length === 0
-  const total =
+  const amount =
     expenses && expenses.length > 0
       ? expenses.reduce((total, expense) => total + +expense.amount, 0)
       : 0
@@ -103,7 +103,7 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
           <ExpensesListEmpty onAddExpense={createExpense} />
         ) : (
           <div className='flex flex-col'>
-            <ExpenseBarChart expenses={expenses} className='mt-4' />
+            <ExpenseBarChart expenses={expenses} locale={locale} className='mt-4' />
 
             <Separator className='mt-4' />
 
@@ -131,7 +131,11 @@ export const ExpensesList = ({ travelId }: ExpensesListProps) => {
             <div className='pt-6 border-t'>
               <TotalAmount
                 label={t('travelPage.totalLabel')}
-                amount={formatCurrency(total, currency)}
+                amount={formatCurrency({
+                  amount,
+                  currency,
+                  locale
+                })}
               />
             </div>
           </div>

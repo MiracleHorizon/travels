@@ -18,6 +18,7 @@ interface TravelEmptyPlaceholderProps {
 
 export const TravelEmptyPlaceholder = ({ actions }: TravelEmptyPlaceholderProps) => {
   const { t } = useTranslation()
+
   const navigate = useNavigate()
   const navigateBack = () => navigate('/travels/planned')
 

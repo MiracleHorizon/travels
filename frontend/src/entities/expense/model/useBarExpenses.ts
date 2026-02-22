@@ -2,8 +2,7 @@ import type { Expense } from './types'
 import { format } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 
-import { getDateFnsLocale, type AppLocale } from '@/shared/lib/i18n'
-import { useSettings } from '@/features/settings'
+import { AppLocale, getDateFnsLocale } from '@/shared/lib/i18n'
 
 const NO_DATE_FLAG = 'no_date'
 
@@ -17,11 +16,16 @@ interface DayTotal {
   other: number
 }
 
-export const useBarExpenses = (expenses: Expense[]) => {
+interface UseBarExpensesProps {
+  expenses: Expense[]
+  locale: AppLocale
+}
+
+export const useBarExpenses = ({ expenses, locale }: UseBarExpensesProps) => {
   const { t } = useTranslation()
-  const { getSetting } = useSettings()
-  const appLocale = (getSetting('locale') ?? 'ru') as AppLocale
-  const dateFnsLocale = getDateFnsLocale(appLocale)
+
+  const dateFnsLocale = getDateFnsLocale(locale)
+
   // Группируем расходы по дням и категориям
   const dayTotals = expenses.reduce(
     (acc, expense) => {
@@ -64,7 +68,9 @@ export const useBarExpenses = (expenses: Expense[]) => {
     }
 
     const date = new Date(item.day)
-    const formattedDate = format(date, 'dd.MM.yyyy', { locale: dateFnsLocale })
+    const formattedDate = format(date, 'dd.MM.yyyy', {
+      locale: dateFnsLocale
+    })
 
     return {
       ...item,

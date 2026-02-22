@@ -17,11 +17,11 @@ interface TravelFormFields {
   destination: GeoLocationResult | null
 }
 
-interface UseUpdateTravelParams {
+interface UseUpdateTravelProps {
   travel: TravelDetailed
 }
 
-export const useUpdateTravel = ({ travel }: UseUpdateTravelParams) => {
+export const useUpdateTravel = ({ travel }: UseUpdateTravelProps) => {
   const { t } = useTranslation()
   const [formFields, setFormFields] = useState<TravelFormFields>({
     name: travel.name,

@@ -4,8 +4,7 @@ import {
   getTemperatureUnit,
   WeatherDetails,
   WeatherForecastList,
-  type CurrentWeatherResponse,
-  type WeatherLocale
+  type CurrentWeatherResponse
 } from '@/entities/weather'
 import { useSettings } from '@/features/settings'
 import { useForecastSuspenseQuery } from '../api/useForecastSuspenseQuery'
@@ -15,18 +14,18 @@ const MAX_DAYS = 5
 
 interface WeatherForecastDialogContentProps {
   coords: GeoCoords
-  locale: WeatherLocale
+  // TODO: Оторвать от CurrentWeatherResponse
   currentWeather: CurrentWeatherResponse
 }
 
 const WeatherForecastDialogContent = ({
   coords,
-  locale,
   currentWeather
 }: WeatherForecastDialogContentProps) => {
   const { t } = useTranslation()
   const { getSetting } = useSettings()
 
+  const locale = getSetting('locale')
   const units = getSetting('measurementUnit')
   const temperatureUnit = getTemperatureUnit(units)
 
@@ -40,9 +39,7 @@ const WeatherForecastDialogContent = ({
 
   if (error || !forecast?.list) {
     return (
-      <p className='text-sm text-muted-foreground text-center py-4'>
-        {t('weather.unavailable')}
-      </p>
+      <p className='text-sm text-muted-foreground text-center py-4'>{t('weather.unavailable')}</p>
     )
   }
 
@@ -62,7 +59,6 @@ const WeatherForecastDialogContent = ({
           description: weather.description,
           icon: weather.icon
         }}
-        locale={locale}
         temperatureUnit={temperatureUnit}
       />
 

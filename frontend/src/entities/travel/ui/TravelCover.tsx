@@ -1,7 +1,6 @@
 import { Card, Badge } from '@/shared/ui'
 import { useTranslation } from 'react-i18next'
-import { plural, type AppLocale } from '@/shared/lib/i18n'
-import { useSettings } from '@/features/settings'
+import { type AppLocale, plural } from '@/shared/lib/i18n'
 import { Calendar, Clock } from 'lucide-react'
 import { differenceInDays } from 'date-fns'
 import { ReactNode } from 'react'
@@ -13,6 +12,7 @@ interface TravelCoverProps {
   startDate: string
   endDate: string
   isPast: boolean
+  locale: AppLocale
   renderGallery?: () => ReactNode
 }
 
@@ -21,18 +21,22 @@ export const TravelCover = ({
   endDate,
   name,
   isPast,
+  locale,
   renderGallery
 }: TravelCoverProps) => {
   const { t } = useTranslation()
-  const { getSetting } = useSettings()
-  const appLocale = (getSetting('locale') ?? 'ru') as AppLocale
+
   const duration = differenceInDays(endDate, startDate)
 
-  const durationLabel = plural(duration, {
-    one: t('travelPage.day_one'),
-    few: t('travelPage.day_few'),
-    many: t('travelPage.day_many'),
-    other: t('travelPage.day_many')
+  const durationLabel = plural({
+    count: duration,
+    forms: {
+      one: t('travelPage.day_one'),
+      few: t('travelPage.day_few'),
+      many: t('travelPage.day_many'),
+      other: t('travelPage.day_many')
+    },
+    locale
   })
 
   return (
@@ -51,7 +55,11 @@ export const TravelCover = ({
                 <div className='flex items-center gap-2'>
                   <Calendar className='h-5 w-5' />
                   <span className='text-lg'>
-                    {formatTravelDateRange(startDate, endDate, appLocale)}
+                    {formatTravelDateRange({
+                      startDate,
+                      endDate,
+                      locale
+                    })}
                   </span>
                 </div>
 

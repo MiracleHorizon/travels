@@ -4,7 +4,11 @@ import type { Expense } from '../model/types'
 
 export const EXPENSES_QUERY_KEY = 'expenses-list'
 
-export const useExpensesQuery = ({ travelId }: { travelId: string }) => {
+interface UseExpensesQueryProps {
+  travelId: string
+}
+
+export const useExpensesQuery = ({ travelId }: UseExpensesQueryProps) => {
   return useQuery<Expense[]>({
     queryKey: [EXPENSES_QUERY_KEY, travelId],
     queryFn: async () => {

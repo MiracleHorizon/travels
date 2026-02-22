@@ -3,6 +3,7 @@ import { TravelForm } from '@/entities/travel'
 import { TravelDetailed } from '@/entities/travel'
 import { DialogFooter, DialogClose, Button } from '@/shared/ui'
 import { useUpdateTravel } from '../model/useUpdateTravel'
+import { useSettings } from '@/features/settings'
 
 interface UpdateTravelFormProps {
   travel: TravelDetailed
@@ -10,6 +11,10 @@ interface UpdateTravelFormProps {
 
 export const UpdateTravelForm = ({ travel }: UpdateTravelFormProps) => {
   const { t } = useTranslation()
+
+  const { getSetting } = useSettings()
+  const locale = getSetting('locale')
+
   const { isPending, formFields, setFormFields, updateTravel } = useUpdateTravel({ travel })
 
   return (
@@ -17,6 +22,7 @@ export const UpdateTravelForm = ({ travel }: UpdateTravelFormProps) => {
       <TravelForm
         values={formFields}
         disabled={isPending}
+        locale={locale}
         onChange={setFormFields}
         onSubmit={updateTravel}
       />

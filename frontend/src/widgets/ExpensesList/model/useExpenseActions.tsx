@@ -13,6 +13,7 @@ export const useExpenseActions = ({
   travelId
 }: UseExpenseActionsParams): ((expense: Expense) => DropdownAction[]) => {
   const { t } = useTranslation()
+
   const deleteExpenseAction = useDeleteExpenseAction()
   const updateExpenseAction = useUpdateExpenseAction()
 

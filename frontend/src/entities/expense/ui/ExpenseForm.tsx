@@ -16,8 +16,7 @@ import {
   PopoverTrigger,
   FieldDescription
 } from '@/shared/ui'
-import { useSettings } from '@/features/settings'
-import { getDateFnsLocale, getDayPickerLocale, type AppLocale } from '@/shared/lib/i18n'
+import { AppLocale, getDateFnsLocale, getDayPickerLocale } from '@/shared/lib/i18n'
 import { cn } from '@/shared/lib/styles/utils'
 import { ExpenseCategorySelect } from './ExpenseCategorySelect'
 import { ExpenseCategory } from '../model/types'
@@ -33,17 +32,23 @@ interface ExpenseFormData {
 
 interface ExpenseFormProps {
   values: ExpenseFormData
+  disabled?: boolean
+  locale: AppLocale
   onChange: (value: ExpenseFormData) => void
   onSubmit: () => void
-  disabled?: boolean
 }
 
-export const ExpenseForm = ({ values, onChange, disabled = false, onSubmit }: ExpenseFormProps) => {
+export const ExpenseForm = ({
+  values,
+  disabled = false,
+  locale,
+  onSubmit,
+  onChange
+}: ExpenseFormProps) => {
   const { t } = useTranslation()
-  const { getSetting } = useSettings()
-  const appLocale = (getSetting('locale') ?? 'ru') as AppLocale
-  const dateFnsLocale = getDateFnsLocale(appLocale)
-  const dayPickerLocale = getDayPickerLocale(appLocale)
+
+  const dateFnsLocale = getDateFnsLocale(locale)
+  const dayPickerLocale = getDayPickerLocale(locale)
 
   const handleTitleChange = (ev: ChangeEvent<HTMLInputElement>) => {
     onChange({

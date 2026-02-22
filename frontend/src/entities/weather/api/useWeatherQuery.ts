@@ -3,23 +3,20 @@ import { useQuery } from '@tanstack/react-query'
 import { API_BASE_URL } from '@/shared/api'
 import type { GeoCoords } from '@/shared/lib/geo'
 
-import { DEFAULT_WEATHER_LOCALE, type WeatherLocale, type WeatherUnits } from '../config/locales'
 import { isValidCoords } from '../lib/isValidCoords'
+import type { WeatherUnits } from '../config/locales'
 import type { CurrentWeatherResponse } from '../model/types'
+import { AppLocale } from '@/shared/lib/i18n'
 
 const WEATHER_QUERY_KEY = 'weather'
 
 interface UseWeatherQueryProps {
   coords: GeoCoords
-  locale?: WeatherLocale
-  units?: WeatherUnits
+  locale: AppLocale
+  units: WeatherUnits
 }
 
-export const useWeatherQuery = ({
-  coords: { lat, lng },
-  locale = DEFAULT_WEATHER_LOCALE,
-  units = 'metric'
-}: UseWeatherQueryProps) => {
+export const useWeatherQuery = ({ coords: { lat, lng }, locale, units }: UseWeatherQueryProps) => {
   return useQuery<CurrentWeatherResponse>({
     queryKey: [WEATHER_QUERY_KEY, lat, lng, locale, units],
     enabled: isValidCoords({ lat, lng }),

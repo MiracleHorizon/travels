@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next'
 import { capitalizeFirst } from '@/shared/lib/format'
 import { Item, ItemMedia, ItemTitle } from '@/shared/ui'
 import type { DayForecast } from '../model/types'
-import { type WeatherLocale, type TemperatureUnit } from '../config/locales'
+import type { TemperatureUnit } from '../config/locales'
 import { OPENWEATHER_ICON_URL } from '../lib/consts'
 
 interface WeatherForecastListProps {
@@ -12,14 +12,12 @@ interface WeatherForecastListProps {
     description: string
     icon: string
   }
-  locale: WeatherLocale
   temperatureUnit?: TemperatureUnit
 }
 
 export const WeatherForecastList = ({
   dayForecasts,
   currentWeather,
-  locale,
   temperatureUnit = '°C'
 }: WeatherForecastListProps) => {
   const { t } = useTranslation()

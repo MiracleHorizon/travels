@@ -16,10 +16,9 @@ import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useSettings } from '../model/SettingsContext'
 import { useUpdateSettingsMutation } from '../api/useUpdateSettingsMutation'
 import { SettingsForm } from './SettingsForm'
-import i18n from '@/shared/config/i18n'
 
 const SettingsDialog = () => {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const hideModal = useHideModal()
 
   const { getSetting } = useSettings()
@@ -28,12 +27,12 @@ const SettingsDialog = () => {
   const [draft, setDraft] = useState(() => ({
     measurementUnit: getSetting('measurementUnit'),
     timeFormat: getSetting('timeFormat'),
-    locale: getSetting('locale') ?? 'ru'
+    locale: getSetting('locale')
   }))
 
   const handleSave = () => {
     saveSettings(draft, {
-      onSuccess: (data) => {
+      onSuccess: data => {
         if (data.locale) {
           i18n.changeLanguage(data.locale)
         }

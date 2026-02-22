@@ -1,7 +1,6 @@
 import { format } from 'date-fns'
-import type { WeatherLocale } from '../config/locales'
-import { DATE_FNS_LOCALES } from '../config/locales'
 import type { ForecastItem, DayForecast } from './types'
+import { AppLocale, getDateFnsLocale } from '@/shared/lib/i18n'
 
 const getLocalDateKey = (dt: number) => format(new Date(dt * 1000), 'yyyy-MM-dd')
 const getLocalHour = (dt: number) => new Date(dt * 1000).getHours()
@@ -24,15 +23,15 @@ const findNoonSlot = (slots: ForecastItem[]) => {
 export const groupForecastByDay = ({
   list = [],
   maxDays = 5,
-  locale = 'ru',
+  locale,
   todayLabel
 }: {
   list: ForecastItem[]
   maxDays?: number
-  locale?: WeatherLocale
+  locale: AppLocale
   todayLabel: string
 }): DayForecast[] => {
-  const dateFnsLocale = DATE_FNS_LOCALES[locale]
+  const dateFnsLocale = getDateFnsLocale(locale)
   const byDate = new Map<string, ForecastItem[]>()
 
   for (const item of list) {

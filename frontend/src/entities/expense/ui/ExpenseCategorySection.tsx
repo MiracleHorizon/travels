@@ -6,11 +6,12 @@ import { ChevronDown } from 'lucide-react'
 import { formatCurrency } from '@/shared/lib/format'
 import { cn } from '@/shared/lib'
 import { ReactNode } from 'react'
+import { AppLocale } from '@/shared/lib/i18n'
 
 interface ExpenseCategorySectionProps {
   category: ExpenseCategory
   expenses: Expense[]
-  locale: string
+  locale: AppLocale
   currency: string
   defaultOpen?: boolean
   renderItem: (expense: Expense) => ReactNode
@@ -25,7 +26,8 @@ export const ExpenseCategorySection = ({
   renderItem
 }: ExpenseCategorySectionProps) => {
   const { t } = useTranslation()
-  const categorySum = expenses.reduce((s, e) => s + +e.amount, 0)
+
+  const amount = expenses.reduce((s, e) => s + +e.amount, 0)
   const CategoryIcon = EXPENSE_CATEGORY_ICONS[category]
 
   return (
@@ -40,9 +42,14 @@ export const ExpenseCategorySection = ({
           <CategoryIcon className='h-4 w-4 shrink-0 text-muted-foreground' />
           {t(`form.expense.categories.${category}`)}
         </span>
+
         <span className='flex items-center gap-2'>
           <span className='text-muted-foreground font-normal'>
-            {formatCurrency(categorySum, currency, locale)}
+            {formatCurrency({
+              amount,
+              currency,
+              locale
+            })}
           </span>
           <ChevronDown className='h-4 w-4 shrink-0 transition-transform' />
         </span>

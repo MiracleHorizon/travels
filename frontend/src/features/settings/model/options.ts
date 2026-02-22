@@ -1,4 +1,5 @@
-import type { MeasurementUnit, TimeFormat, Locale } from './types'
+import { AppLocale } from '@/shared/lib/i18n'
+import type { MeasurementUnit, TimeFormat } from './types'
 
 interface SettingsOption<T extends string> {
   value: T
@@ -27,7 +28,13 @@ export const TIME_FORMAT_OPTIONS: SettingsOption<TimeFormat>[] = [
   }
 ] as const
 
-export const LOCALE_OPTIONS: SettingsOption<Locale>[] = [
-  { value: 'ru', label: 'Русский' },
-  { value: 'en', label: 'English' }
+export const LOCALE_OPTIONS: SettingsOption<AppLocale>[] = [
+  {
+    value: AppLocale.RU,
+    label: 'Русский'
+  },
+  {
+    value: AppLocale.EN,
+    label: 'English'
+  }
 ] as const

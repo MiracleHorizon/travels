@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next'
 import { Plane } from 'lucide-react'
 import { Travel, TravelCard } from '@/entities/travel'
 import { useSettings } from '@/features/settings'
-import type { AppLocale } from '@/shared/lib/i18n'
 import { cn } from '@/shared/lib'
 import {
   Empty,
@@ -36,8 +35,10 @@ export const TravelsList = ({
   error
 }: TravelsListProps) => {
   const { t } = useTranslation()
+
   const { getSetting } = useSettings()
-  const appLocale = (getSetting('locale') ?? 'ru') as AppLocale
+  const locale = getSetting('locale')
+
   const { createTravel } = useCreateTravelAction()
   const actions = useTravelActions()
   const resolvedEmptyMessage = emptyMessage ?? t('travelsList.noTravels')
@@ -95,7 +96,7 @@ export const TravelsList = ({
           endDate={travel.end_date}
           actions={actions(travel)}
           onClick={() => navigateToTravel(travel.id)}
-          locale={appLocale}
+          locale={locale}
         />
       ))}
     </div>

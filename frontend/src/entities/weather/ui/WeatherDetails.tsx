@@ -6,12 +6,16 @@ import { getPrecipitation } from '../lib/getPrecipitation'
 import type { CurrentWeatherResponse } from '../model/types'
 
 interface WeatherDetailsProps {
+  // TODO: Оторвать от CurrentWeatherResponse
   data: CurrentWeatherResponse
 }
 
 export const WeatherDetails = ({ data }: WeatherDetailsProps) => {
   const { t } = useTranslation()
-  const windDirections = t('weather.windDirections', { returnObjects: true }) as string[]
+  const windDirections = t('weather.windDirections', {
+    returnObjects: true
+  }) as string[]
+
   const precipitation = getPrecipitation(data)
   const windDirection = getWindDirection(data.wind.deg, windDirections)
 

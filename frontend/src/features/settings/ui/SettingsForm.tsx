@@ -13,12 +13,13 @@ import {
 } from '@/shared/ui'
 import { ThemeToggle } from '@/entities/theme'
 import { MEASUREMENT_OPTIONS, TIME_FORMAT_OPTIONS, LOCALE_OPTIONS } from '../model/options'
-import type { MeasurementUnit, TimeFormat, Locale } from '../model/types'
+import type { MeasurementUnit, TimeFormat } from '../model/types'
+import { AppLocale } from '@/shared/lib/i18n'
 
 interface SettingsFormValue {
+  locale: AppLocale
   timeFormat: TimeFormat
   measurementUnit: MeasurementUnit
-  locale: Locale
 }
 
 interface SettingsFormProps {
@@ -37,7 +38,7 @@ export const SettingsForm = ({ value, onChange }: SettingsFormProps) => {
         </FieldContent>
         <Select
           value={value.locale}
-          onValueChange={(v: Locale) =>
+          onValueChange={(v: AppLocale) =>
             onChange({
               ...value,
               locale: v

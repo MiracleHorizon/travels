@@ -8,7 +8,8 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-  DialogClose
+  DialogClose,
+  Separator
 } from '@/shared/ui'
 import { ModalDefinition, useHideModal } from '@/shared/lib/modal'
 import { useSettings } from '../model/SettingsContext'
@@ -43,17 +44,21 @@ const SettingsDialog = () => {
         }
       }}
     >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Настройки</DialogTitle>
-          <DialogDescription>
-            Подстройте приложение под себя - как вам удобнее видеть данные и интерфейс
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className='px-0 pb-4'>
+        <div className='px-6'>
+          <DialogHeader>
+            <DialogTitle>Настройки</DialogTitle>
+            <DialogDescription>Подстройте приложение под себя</DialogDescription>
+          </DialogHeader>
+        </div>
 
-        <SettingsForm value={draft} onChange={setDraft} />
+        <Separator className='mb-2' />
+        <div className='flex flex-col gap-6 px-6'>
+          <SettingsForm value={draft} onChange={setDraft} />
+        </div>
+        <Separator className='mt-2' />
 
-        <DialogFooter>
+        <DialogFooter className='px-6 pb-0'>
           <DialogClose asChild>
             <Button size='sm' variant='secondary'>
               Закрыть
@@ -61,8 +66,8 @@ const SettingsDialog = () => {
           </DialogClose>
 
           {/* TODO: при добавлении rhf можно будет обновить только если форма isDirty */}
-          <Button size='sm' onClick={handleSave} disabled={isPending}>
-            {isPending ? 'Сохранение…' : 'Сохранить'}
+          <Button size='sm' onClick={handleSave} isLoading={isPending}>
+            Сохранить
           </Button>
         </DialogFooter>
       </DialogContent>

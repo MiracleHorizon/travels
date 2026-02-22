@@ -58,7 +58,6 @@ export const SettingsForm = ({ value, onChange }: SettingsFormProps) => (
     <Field>
       <FieldContent>
         <FieldLabel htmlFor='timeFormat'>Формат времени</FieldLabel>
-
         <Select
           value={value.timeFormat}
           onValueChange={(v: TimeFormat) =>

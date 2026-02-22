@@ -1,32 +1,17 @@
-import { Moon, Sun, Monitor } from 'lucide-react'
 import { ToggleGroup, ToggleGroupItem } from '@/shared/ui'
 import { useTheme } from '../model/useTheme'
-import { Theme } from '../model/types'
+import { THEME_OPTIONS } from '../model/options'
 
-const themeItems = [
-  {
-    value: 'light',
-    Icon: Sun,
-    label: 'Светлая'
-  },
-  {
-    value: 'dark',
-    Icon: Moon,
-    label: 'Темная'
-  },
-  {
-    value: 'system',
-    Icon: Monitor,
-    label: 'Системная'
-  }
-] as const
+interface ThemeToggleProps {
+  withLabel?: boolean
+}
 
-export const ThemeToggle = () => {
+export const ThemeToggle = ({ withLabel = false }: ThemeToggleProps) => {
   const { theme, changeTheme } = useTheme()
 
-  const handleChangeTheme = (value: Theme) => {
+  const handleChangeTheme = value => {
     if (value) {
-      changeTheme(value as Theme)
+      changeTheme(value)
     }
   }
 
@@ -38,9 +23,10 @@ export const ThemeToggle = () => {
       value={theme}
       onValueChange={handleChangeTheme}
     >
-      {themeItems.map(({ value, label, Icon }) => (
+      {THEME_OPTIONS.map(({ value, label, icon: Icon }) => (
         <ToggleGroupItem key={value} value={value} aria-label={label}>
           <Icon />
+          {withLabel && <span className='hidden sm:inline'>{label}</span>}
         </ToggleGroupItem>
       ))}
     </ToggleGroup>

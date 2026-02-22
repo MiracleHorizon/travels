@@ -2,9 +2,11 @@ import {
   DEFAULT_WEATHER_LOCALE,
   useWeatherQuery,
   WeatherCurrentCard,
-  WEATHER_LOCALES
+  WEATHER_LOCALES,
+  getTemperatureUnit
 } from '@/entities/weather'
 import { WeatherForecastDialog } from '@/features/weather/forecast'
+import { useSettings } from '@/features/settings'
 import { WeatherWidgetSkeleton } from './WeatherWidgetSkeleton'
 import type { GeoCoords } from '@/shared/lib/geo'
 import type { WeatherLocale } from '@/entities/weather'
@@ -15,7 +17,16 @@ interface WeatherWidgetProps {
 }
 
 export const WeatherWidget = ({ coords, locale = DEFAULT_WEATHER_LOCALE }: WeatherWidgetProps) => {
-  const { data, isLoading, error } = useWeatherQuery(coords, locale)
+  const { getSetting } = useSettings()
+
+  const units = getSetting('measurementUnit')
+  const temperatureUnit = getTemperatureUnit(units)
+
+  const { data, isLoading, error } = useWeatherQuery({
+    coords,
+    locale,
+    units
+  })
 
   if (isLoading) {
     return <WeatherWidgetSkeleton />
@@ -45,6 +56,7 @@ export const WeatherWidget = ({ coords, locale = DEFAULT_WEATHER_LOCALE }: Weath
           description={weather.description}
           icon={weather.icon}
           locale={locale}
+          temperatureUnit={temperatureUnit}
           hasForecast
         />
       }

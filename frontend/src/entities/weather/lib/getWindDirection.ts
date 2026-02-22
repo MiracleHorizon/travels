@@ -1,5 +1,5 @@
 import type { WeatherLocale } from '../config/locales'
-import { WEATHER_LOCALES } from '../config'
+import { WEATHER_LOCALES } from '../config/locales'
 
 const WIND_GRADUATION = 45
 const WIND_DIRECTIONS_COUNT = 8

@@ -1,11 +1,13 @@
 import {
   groupForecastByDay,
+  getTemperatureUnit,
   WeatherDetails,
   WeatherForecastList,
   WEATHER_LOCALES,
   type CurrentWeatherResponse,
   type WeatherLocale
 } from '@/entities/weather'
+import { useSettings } from '@/features/settings'
 import { useForecastSuspenseQuery } from '../api/useForecastSuspenseQuery'
 import type { GeoCoords } from '@/shared/lib/geo'
 
@@ -22,9 +24,15 @@ const WeatherForecastDialogContent = ({
   locale,
   currentWeather
 }: WeatherForecastDialogContentProps) => {
+  const { getSetting } = useSettings()
+
+  const units = getSetting('measurementUnit')
+  const temperatureUnit = getTemperatureUnit(units)
+
   const { data: forecast, error } = useForecastSuspenseQuery({
     coords,
-    locale
+    locale,
+    units
   })
 
   const weather = currentWeather.weather[0]
@@ -53,6 +61,7 @@ const WeatherForecastDialogContent = ({
           icon: weather.icon
         }}
         locale={locale}
+        temperatureUnit={temperatureUnit}
       />
 
       <div className='pt-3 border-t border-border'>

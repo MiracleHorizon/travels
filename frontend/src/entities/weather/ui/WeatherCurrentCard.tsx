@@ -1,7 +1,6 @@
 import { ChevronRight } from 'lucide-react'
 import { capitalizeFirst } from '@/shared/lib/format'
-import type { WeatherLocale } from '../config/locales'
-import { WEATHER_LOCALES } from '../config'
+import { WEATHER_LOCALES, type WeatherLocale, type TemperatureUnit } from '../config/locales'
 import { cn } from '@/shared/lib'
 import { OPENWEATHER_ICON_URL } from '../lib/consts'
 import type { Ref } from 'react'
@@ -12,6 +11,7 @@ interface WeatherCurrentCardProps {
   description: string
   icon: string
   locale: WeatherLocale
+  temperatureUnit?: TemperatureUnit
   hasForecast: boolean
   ref?: Ref<HTMLDivElement>
   onClick?: () => void
@@ -26,6 +26,7 @@ export const WeatherCurrentCard = ({
   icon,
   feelsLike,
   locale,
+  temperatureUnit = '°C',
   onClick,
   ref,
   ...rest
@@ -53,7 +54,8 @@ export const WeatherCurrentCard = ({
 
         <div className='flex items-center gap-2'>
           <p className='text-3xl sm:text-5xl font-bold tabular-nums leading-none'>
-            {Math.round(temperature)}°
+            {Math.round(temperature)}
+            {temperatureUnit}
           </p>
           <img
             src={`${OPENWEATHER_ICON_URL}/${icon}@4x.png`}
@@ -70,7 +72,8 @@ export const WeatherCurrentCard = ({
         <div className='flex items-center gap-2 flex-wrap'>
           {feelsLike !== undefined && (
             <span className='text-xs opacity-90'>
-              {feelsLikeLabel} {Math.round(feelsLike)}°
+              {feelsLikeLabel} {Math.round(feelsLike)}
+              {temperatureUnit}
             </span>
           )}
         </div>

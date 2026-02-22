@@ -1,5 +1,5 @@
 import { ru, enUS } from 'date-fns/locale'
-import type { Locale } from 'date-fns'
+import type { Locale as DateFnsLocale } from 'date-fns'
 
 /**
  * Коды языков OpenWeather API: https://openweathermap.org/api/one-call-3#multi
@@ -10,11 +10,14 @@ export const OPENWEATHER_LANG: Record<WeatherLocale, string> = {
 } as const
 
 export type WeatherLocale = keyof typeof WEATHER_LOCALES
+export type WeatherUnits = 'metric' | 'imperial'
+export type TemperatureUnit = '°C' | '°F'
 
-export const DATE_FNS_LOCALES: Record<WeatherLocale, Locale> = {
+export const DATE_FNS_LOCALES: Record<WeatherLocale, DateFnsLocale> = {
   ru,
   en: enUS
 }
+export const DEFAULT_WEATHER_LOCALE: WeatherLocale = 'ru'
 
 // TODO: i18n
 export const WEATHER_LOCALES = {

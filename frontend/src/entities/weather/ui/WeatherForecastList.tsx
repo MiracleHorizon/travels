@@ -1,7 +1,6 @@
 import { capitalizeFirst } from '@/shared/lib/format'
 import type { DayForecast } from '../model/types'
-import type { WeatherLocale } from '../config/locales'
-import { WEATHER_LOCALES } from '../config'
+import { WEATHER_LOCALES, type WeatherLocale, type TemperatureUnit } from '../config/locales'
 import { OPENWEATHER_ICON_URL } from '../lib/consts'
 
 interface WeatherForecastListProps {
@@ -12,12 +11,14 @@ interface WeatherForecastListProps {
     icon: string
   }
   locale: WeatherLocale
+  temperatureUnit?: TemperatureUnit
 }
 
 export const WeatherForecastList = ({
   dayForecasts,
   currentWeather,
-  locale
+  locale,
+  temperatureUnit = '°C'
 }: WeatherForecastListProps) => {
   const { forecast } = WEATHER_LOCALES[locale]
 
@@ -31,7 +32,8 @@ export const WeatherForecastList = ({
         />
         <div>
           <p className='text-3xl font-bold tabular-nums'>
-            {Math.round(currentWeather.temperature)}°
+            {Math.round(currentWeather.temperature)}
+            {temperatureUnit}
           </p>
           <p className='text-sm text-muted-foreground'>
             {capitalizeFirst(currentWeather.description)}
@@ -57,7 +59,9 @@ export const WeatherForecastList = ({
               />
 
               <span className='text-sm font-semibold tabular-nums'>
-                {Math.round(day.minTemperature)}° / {Math.round(day.maxTemperature)}°
+                {Math.round(day.minTemperature)}
+                {temperatureUnit} / {Math.round(day.maxTemperature)}
+                {temperatureUnit}
               </span>
             </div>
           ))}

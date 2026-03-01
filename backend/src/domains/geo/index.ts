@@ -1,6 +1,7 @@
 export {
   extractComponentsFromGeocoderResponse,
   extractLocationsFromGeocoderResponse,
+  fetchCountryNameByCoords,
   type GeocoderLocationResult
 } from './geocoder'
 

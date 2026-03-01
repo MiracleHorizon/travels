@@ -10,12 +10,16 @@ import { Button, Spinner, Tabs, TabsList, TabsTrigger } from '@/shared/ui'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useUploadTravelPhotoAction } from '@/features/travel/upload-photo'
 import { useUpdateTravelAction } from '@/features/travel/update'
+import { useSettings } from '@/features/settings'
 
 import AutoplayPlugin from 'embla-carousel-autoplay'
 import FadePlugin from 'embla-carousel-fade'
 
 export const TravelLayout = () => {
   const { t } = useTranslation()
+
+  const { getSetting } = useSettings()
+  const locale = getSetting('locale')
 
   const { travelId } = useParams<{ travelId: string }>()
   const { data: travel, isLoading, error } = useTravelQuery(travelId)
@@ -54,6 +58,7 @@ export const TravelLayout = () => {
         startDate={travel.start_date}
         endDate={travel.end_date}
         isPast={travel.status === 'past'}
+        locale={locale}
         renderGallery={() => (
           <TravelGallery
             images={travel.photos.map(photo => photo.url)}

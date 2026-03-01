@@ -1,6 +1,8 @@
 import { withAuth } from '../../middlewares/with_auth'
 import { fetchCountryByName } from '../../domains/country/restcountries'
 
+const COUNTRY_FIELDS = ['name', 'capital', 'currencies', 'population', 'flag', 'languages'] as const
+
 export const getCountryInfoHandler = withAuth(async req => {
   const url = new URL(req.url)
   const name = url.searchParams.get('name')
@@ -20,7 +22,7 @@ export const getCountryInfoHandler = withAuth(async req => {
   }
 
   try {
-    const data = await fetchCountryByName(name)
+    const data = await fetchCountryByName(name, [...COUNTRY_FIELDS])
 
     return new Response(JSON.stringify(data), {
       status: 200,

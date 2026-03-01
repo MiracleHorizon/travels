@@ -160,3 +160,5 @@ export interface CountryInfo {
   anthem: string
   hdi: number
 }
+
+export type CountryField = keyof CountryInfo

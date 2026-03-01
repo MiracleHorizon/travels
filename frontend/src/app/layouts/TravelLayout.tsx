@@ -1,4 +1,4 @@
-import { Pencil, Upload } from 'lucide-react'
+import { Globe, Pencil, Upload } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import {
   TravelCover,
@@ -10,6 +10,7 @@ import { Button, Spinner, Tabs, TabsList, TabsTrigger } from '@/shared/ui'
 import { Outlet, useLocation, useNavigate, useParams } from 'react-router-dom'
 import { useUploadTravelPhotoAction } from '@/features/travel/upload-photo'
 import { useUpdateTravelAction } from '@/features/travel/update'
+import { useCountryInfoAction } from '@/features/travel/country-info'
 import { useSettings } from '@/features/settings'
 
 import AutoplayPlugin from 'embla-carousel-autoplay'
@@ -26,6 +27,7 @@ export const TravelLayout = () => {
 
   const updateTravel = useUpdateTravelAction()
   const uploadTravelPhoto = useUploadTravelPhotoAction()
+  const showCountryInfo = useCountryInfoAction()
 
   const navigate = useNavigate()
   const location = useLocation()
@@ -87,6 +89,13 @@ export const TravelLayout = () => {
           </div>
 
           <div className='flex gap-2 ml-auto'>
+            {travel.country_name && (
+              <Button variant='secondary' size='sm' onClick={() => showCountryInfo(travel.country_name)}>
+                <Globe className='size-4' aria-hidden={true} />
+                {travel.country_name}
+              </Button>
+            )}
+
             <Button variant='secondary' size='sm' onClick={() => updateTravel(travelId)}>
               <Pencil className='size-4' aria-hidden={true} />
               {t('nav.edit')}

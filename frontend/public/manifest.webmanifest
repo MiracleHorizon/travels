@@ -1,0 +1,26 @@
+{
+  "id": "/",
+  "name": "Travels",
+  "short_name": "Travels",
+  "description": "Планируйте и сохраняйте свои путешествия.",
+  "lang": "ru",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f7f8fc",
+  "theme_color": "#2557d6",
+  "icons": [
+    {
+      "src": "/pwa/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa/icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

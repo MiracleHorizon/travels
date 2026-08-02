@@ -16,6 +16,7 @@ export interface Travel {
 export interface TravelDetailed extends Travel {
   photos: TravelPhoto[]
   coords?: GeoCoords
+  country_name?: string | null
 }
 
 export interface TravelPhoto {

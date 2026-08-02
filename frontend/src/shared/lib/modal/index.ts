@@ -1,5 +1,5 @@
 export { ModalProvider } from './ModalContext'
-export { ModalsContainer } from './ModalsContainer '
+export { ModalsContainer } from './ModalsContainer'
 export { useShowModal } from './useShowModal'
 export { useHideModal } from './useHideModal'
 export type { ModalDefinition } from './types'

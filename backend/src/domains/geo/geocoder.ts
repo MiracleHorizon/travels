@@ -1,3 +1,4 @@
+import { YANDEX_GEOCODER_API_KEY, YANDEX_GEOCODER_API_URL } from './consts'
 import type { GeocoderKind, GeocoderResponse, GeoCoords } from './types'
 
 export type GeocoderComponentsResult = Partial<Record<GeocoderKind, string>>
@@ -43,6 +44,31 @@ export const extractLocationsFromGeocoderResponse = (
       }
     })
     .filter((r): r is GeocoderLocationResult => r !== null)
+}
+
+/**
+ * Делает обратный геокодинг по координатам и возвращает название страны на английском.
+ * Возвращает null если страна не определена или запрос завершился ошибкой.
+ */
+export const fetchCountryNameByCoords = async (coords: GeoCoords): Promise<string | null> => {
+  try {
+    const searchParams = new URLSearchParams({
+      apikey: YANDEX_GEOCODER_API_KEY,
+      geocode: `${coords.lng},${coords.lat}`,
+      format: 'json',
+      lang: 'en_US'
+    })
+
+    const response = await fetch(`${YANDEX_GEOCODER_API_URL}/?${searchParams.toString()}`)
+    if (!response.ok) return null
+
+    const data = (await response.json()) as GeocoderResponse
+    const components = extractComponentsFromGeocoderResponse(data, ['country'])
+
+    return components?.country ?? null
+  } catch {
+    return null
+  }
 }
 
 /**

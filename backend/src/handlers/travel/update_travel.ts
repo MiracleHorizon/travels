@@ -1,5 +1,5 @@
 import { postgres } from '../../database'
-import type { GeoCoords } from '../../domains/geo'
+import { fetchCountryNameByCoords, type GeoCoords } from '../../domains/geo'
 import { withAuth } from '../../middlewares/with_auth'
 
 interface UpdateTravelDto {
@@ -20,6 +20,11 @@ export const updateTravelHandler = withAuth(async req => {
 
     const { lat, lng } = body.coords ?? {}
     const hasCoords = lat != null && lng != null && !isNaN(lat) && !isNaN(lng)
+    const coordsProvided = body.coords !== undefined
+
+    const countryName = hasCoords
+      ? await fetchCountryNameByCoords({ lat: lat!, lng: lng! })
+      : null
 
     const result = await postgres`
       UPDATE travels 
@@ -29,8 +34,9 @@ export const updateTravelHandler = withAuth(async req => {
         start_date = COALESCE(${body.startDate}, start_date), 
         end_date = COALESCE(${body.endDate}, end_date), 
         tags = COALESCE(${body.tags}, tags),
-        lat = ${hasCoords ? lat : null},
-        lng = ${hasCoords ? lng : null},
+        lat = ${coordsProvided ? (hasCoords ? lat : null) : postgres`lat`},
+        lng = ${coordsProvided ? (hasCoords ? lng : null) : postgres`lng`},
+        country_name = ${coordsProvided ? countryName : postgres`country_name`},
         updated_at = NOW() 
       WHERE id = ${travelId} AND user_id = ${userId}
       RETURNING *

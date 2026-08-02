@@ -10,12 +10,13 @@ import {
   extractComponentsFromGeocoderResponse,
   extractLocationsFromGeocoderResponse
 } from '../../domains/geo/geocoder'
+import type { Locale } from '../../domains/user-settings'
 
 interface GetGeoCoderLocationBody {
   location: string
   kinds: GeocoderKind[]
   /** Локаль приложения (ru/en) для языка ответа геокодера */
-  locale?: string
+  locale?: Locale
 }
 
 // https://yandex.ru/maps-api/docs/geocoder-api/quickstart.html
@@ -25,21 +26,31 @@ export const getGeoCoderLocationHandler = async (req: BunRequest) => {
     const { location, kinds, locale } = body
 
     if (!location) {
-      return new Response(JSON.stringify({ error: 'Location is required' }), {
-        status: 400,
-        headers: {
-          'Content-Type': 'application/json'
+      return new Response(
+        JSON.stringify({
+          error: 'Location is required'
+        }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      })
+      )
     }
 
     if (!kinds || !kinds.length) {
-      return new Response(JSON.stringify({ error: 'Kinds are required' }), {
-        status: 400,
-        headers: {
-          'Content-Type': 'application/json'
+      return new Response(
+        JSON.stringify({
+          error: 'Kinds are required'
+        }),
+        {
+          status: 400,
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      })
+      )
     }
 
     const searchParams = new URLSearchParams({
@@ -61,14 +72,23 @@ export const getGeoCoderLocationHandler = async (req: BunRequest) => {
       }),
       {
         status: 200,
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+          'Content-Type': 'application/json'
+        }
       }
     )
   } catch (error) {
     console.error(error)
-    return new Response(JSON.stringify({ error: 'Failed to get geo coder location' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    })
+    return new Response(
+      JSON.stringify({
+        error: 'Failed to get geo coder location'
+      }),
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+    )
   }
 }
